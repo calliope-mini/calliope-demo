@@ -147,7 +147,15 @@ volatile static bool introEventSkip = false;
 
 void simpleEventHandler(MicroBitEvent event) { eventOK = true; }
 
+void leaveBeep() {
+    uBit.soundmotor.soundOn(784);
+    uBit.sleep(125);
+    uBit.soundmotor.soundOff();
+}
+
 void introSkipEventHandler(MicroBitEvent event) {
+    leaveBeep();
+    uBit.display.stopAnimation();
     introEventSkip = true;
     eventOK = true;
 }
@@ -205,10 +213,26 @@ void dadadada() {
     uBit.soundmotor.soundOff();
 }
 
+void freeFall(MicroBitEvent event) {
+    if(event.source == MICROBIT_ID_GESTURE && event.value == MICROBIT_ACCELEROMETER_EVT_FREEFALL) {
+        invoke(dadadada);
+    }
+}
+
+void startSound() {
+    uBit.soundmotor.soundOn(262);
+    fiber_sleep(125);
+    uBit.soundmotor.soundOff();
+    fiber_sleep(63);
+    uBit.soundmotor.soundOn(784);
+    fiber_sleep(500);
+    uBit.soundmotor.soundOff();
+}
+
 void showIntro() {
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_LONG_CLICK, introSkipEventHandler);
 
-    invoke(dadadada);
+    invoke(startSound);
 
     uBit.display.scroll("Hallo!");
     // press A
@@ -317,6 +341,7 @@ void menuAnimateLeave() {
 void leaveOracle(MicroBitEvent event) {
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, simpleEventHandler);
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveOracle);
+    leaveBeep();
     state = Menu;
     eventOK = true;
 }
@@ -347,6 +372,7 @@ void oracle() {
 void leaveRockPaperScissors(MicroBitEvent event) {
     uBit.messageBus.ignore(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, simpleEventHandler);
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveRockPaperScissors);
+    leaveBeep();
     state = Menu;
     eventOK = true;
 }
@@ -394,7 +420,7 @@ void loveMeterMeasuring() {
 
 void leaveLoveMeter(MicroBitEvent event) {
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveLoveMeter);
-    uBit.serial.send("leave love meter...\r\n");
+    leaveBeep();
     state = Menu;
     eventOK = true;
 }
@@ -447,6 +473,7 @@ void loveMeter() {
 // Snake Demo
 void leaveSnake(MicroBitEvent event) {
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveSnake);
+    leaveBeep();
     state = Menu;
     eventOK = true;
 }
@@ -514,6 +541,7 @@ int main() {
 
     showIntro();
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_LONG_CLICK, introSkipEventHandler);
+    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_EVT_ANY, freeFall);
 
     state = Menu;
 
