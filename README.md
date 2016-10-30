@@ -14,7 +14,7 @@ flashing the device. Any subsequent reset or power cycle will not show it again.
 - If further testing is required the board can be tilted and turned to show:
     - `+` face up, `-` down
     - `L` tilted left, `R` right, `U` up, `D` down
-    - `S' shaked, `2' 2G, `8` 8G, `F` free fall
+    - `S` shaked, `2` 2G, `8` 8G, `F` free fall
     - `0`-`3`, `A`, `B`, `A+B` touch pins and buttons
     
 ## Demonstration code
