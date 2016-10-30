@@ -152,7 +152,8 @@ void introSkipEventHandler(MicroBitEvent event) {
     eventOK = true;
 }
 
-void blinkImage(const MicroBitImage &image, int interval, int rate, bool &on) {
+static bool on = true;
+void blinkImage(const MicroBitImage &image, int interval, int rate) {
     if (rate % interval == 0) {
         if (on) uBit.display.printAsync(image, 0, 0, 0, 100);
         else uBit.display.clear();
@@ -163,8 +164,7 @@ void blinkImage(const MicroBitImage &image, int interval, int rate, bool &on) {
 
 void introBlinkImage(const MicroBitImage &image, int interval) {
     int rate = 0;
-    bool on = true;
-    do blinkImage(image, interval, ++rate, on); while (!eventOK);
+    do blinkImage(image, interval, ++rate); while (!eventOK);
     uBit.display.clear();
 }
 
@@ -260,16 +260,16 @@ void showIntro() {
 
     // show heart and change RGB led colors randomly
 
-    bool on = true;
+    on = true;
     for (int rate = 0; rate < 25; rate++) {
         if (introEventSkip) return;
-        blinkImage(Heart, 2, rate, on);
+        blinkImage(Heart, 2, rate);
         uBit.seedRandom();
         if (rate % 2 == 0) {
             int r = uBit.random(DEFAULT_PAUSE);
             if (r < 100) uBit.rgb.setColour(0xFF, 0xA5, 0x00, 0x00);
             else if (r < 200) uBit.rgb.setColour(0x00, 0xFF, 0x00, 0x00);
-            else if (r < DEFAULT_PAUSE) uBit.rgb.setColour(0xFF, 0xA5, 0x00, 0x000);
+            else if (r < 300) uBit.rgb.setColour(0xFF, 0xA5, 0x00, 0x000);
         }
         uBit.sleep(100);
     }
@@ -282,6 +282,7 @@ void showIntro() {
 }
 
 
+// MENU handling
 volatile state_t state = Intro;
 
 static int selectedDemo = 0;
@@ -312,6 +313,7 @@ void menuAnimateLeave() {
     uBit.display.clear();
 }
 
+// Oracle Demo
 void leaveOracle(MicroBitEvent event) {
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, simpleEventHandler);
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveOracle);
@@ -341,6 +343,7 @@ void oracle() {
     } while (state == Oracle);
 }
 
+// Rock Paper Scissors Well Demo
 void leaveRockPaperScissors(MicroBitEvent event) {
     uBit.messageBus.ignore(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, simpleEventHandler);
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveRockPaperScissors);
@@ -351,9 +354,12 @@ void leaveRockPaperScissors(MicroBitEvent event) {
 void rockPaperScissors() {
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveRockPaperScissors);
 
-    uBit.display.print(Rock, 0, 0, 0, DEFAULT_PAUSE);
-    uBit.display.print(Full, 0, 0, 0, DEFAULT_PAUSE);
-    uBit.display.print(Scissors, 0, 0, 0, DEFAULT_PAUSE);
+    uBit.display.print(Rock, 0, 0, 0, DEFAULT_PAUSE*2);
+    uBit.display.print(Full, 0, 0, 0, DEFAULT_PAUSE*2);
+    uBit.display.print(Scissors, 0, 0, 0, DEFAULT_PAUSE*2);
+    uBit.display.print(Well, 0, 0, 0, DEFAULT_PAUSE*2);
+    uBit.display.clear();
+    uBit.sleep(DEFAULT_PAUSE);
 
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, simpleEventHandler);
     do {
@@ -370,6 +376,7 @@ void rockPaperScissors() {
     } while (state == RockPaperScissors);
 }
 
+// Love Meter Demo
 int touch_p1 = 0;
 int touch_p2 = 0;
 
@@ -437,7 +444,7 @@ void loveMeter() {
     } while (state == LoveMeter);
 }
 
-
+// Snake Demo
 void leaveSnake(MicroBitEvent event) {
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveSnake);
     state = Menu;
@@ -450,6 +457,7 @@ void runSnake() {
     snake();
 }
 
+// Menu Selection
 void menuSelect(MicroBitEvent event);
 
 void initializeMenu() {
@@ -509,6 +517,13 @@ int main() {
 
     state = Menu;
 
+    uBit.display.clear();
+    on = true;
+    for(int i = 0; i < 10; i++) {
+        blinkImage(Dot, 2, 2);
+        uBit.sleep(DEFAULT_PAUSE);
+    }
+    uBit.display.clear();
     initializeMenu();
 
     while (true) uBit.sleep(100);
