@@ -654,12 +654,12 @@ int main() {
     uBit.serial.baud(115200);
     uBit.serial.send("Calliope Demo v1.0\r\n");
     // call the test board procedure, will return if done already
-//    testBoard();
+    testBoard();
 
     // initialize random
     uBit.seedRandom();
 
-//    showIntro();
+    showIntro();
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_LONG_CLICK, introSkipEventHandler);
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_EVT_ANY, freeFall);
 
