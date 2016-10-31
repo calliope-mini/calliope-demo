@@ -8,7 +8,8 @@ typedef volatile enum State {
     Oracle,
     RockPaperScissors,
     LoveMeter,
-    Snake
+    Snake,
+    TakeOver = 99,
 } state_t;
 
 extern const MicroBitImage Full;

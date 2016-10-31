@@ -264,6 +264,7 @@ void showIntro() {
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, simpleEventHandler);
     introBlinkImage(ArrowLeftRight, 4);
     if (introEventSkip) return;
+    leaveBeep();
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, simpleEventHandler);
     eventOK = false;
     uBit.display.print(Tick);
@@ -484,6 +485,121 @@ void runSnake() {
     snake();
 }
 
+bool takeOverActive = false;
+bool takeOverState = false;
+uint8_t neighbors = 0;
+uint8_t neighborIndex = 0;
+
+void onData(MicroBitEvent event) {
+    PacketBuffer packet = uBit.radio.datagram.recv();
+
+    if(takeOverActive) {
+        if(packet.getByte(0) == 'E') {
+            state = Menu;
+            takeOverActive = false;
+            neighborIndex = 99;
+            selectedDemo = 0;
+            // proxy end of game
+            uBit.radio.datagram.send("E");
+        } else if (neighborIndex < 8) {
+            switch (packet.getByte(0)) {
+                case '0':
+                    neighborIndex++;
+                    break;
+                case '1':
+                    neighbors++;
+                    neighborIndex++;
+                    break;
+                default:
+                    break;
+            }
+        }
+    } else {
+        if(packet.getByte(0) == 'S') {
+            takeOverActive = true;
+            state = Menu;
+            eventOK = true;
+            selectedDemo = 4;
+            uBit.messageBus.send(MicroBitEvent(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE));
+            uBit.radio.datagram.send("S");
+        } else if(packet.getByte(0) == 'E') {
+            // proxy end of game
+            takeOverActive = false;
+            uBit.radio.datagram.send("E");
+        }
+    }
+}
+
+void liveOrDead() {
+    uBit.display.image.setPixelValue(1, 1, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(1, 2, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(1, 3, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(2, 1, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(2, 2, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(2, 3, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(3, 1, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(3, 2, (uint8_t) (takeOverState ? 255 : 0));
+    uBit.display.image.setPixelValue(3, 3, (uint8_t) (takeOverState ? 255 : 0));
+}
+
+void takeOver() {
+    int displayMode = uBit.display.getDisplayMode();
+    uBit.display.setDisplayMode(DISPLAY_MODE_GREYSCALE);
+
+    neighborIndex = 0;
+    neighbors = 0;
+    takeOverState = uBit.random(100) > 50;
+    liveOrDead();
+
+    uBit.soundmotor.soundOn(262);
+    uBit.sleep(125);
+    uBit.soundmotor.soundOff();
+    uBit.sleep(63);
+    uBit.soundmotor.soundOn(784);
+    uBit.sleep(125);
+    uBit.soundmotor.soundOff();
+
+    uBit.display.clear();
+    while(state == TakeOver) {
+        unsigned long timeout = uBit.systemTime() + 5000;
+        uBit.serial.send(neighborIndex);
+
+        int x = 0, y = 0;
+        uBit.display.image.setPixelValue(x, y, 64);
+        while(neighborIndex < 8 && timeout > uBit.systemTime()) {
+            uBit.sleep(200);
+            uBit.display.image.setPixelValue(x, y, 0);
+            if(y == 0 && x < 4) x++;
+            else if(x == 4 && y < 4) y++;
+            else if(y == 4 && x > 0) x--;
+            else if(x == 0 && y > 0) y--;
+            uBit.display.image.setPixelValue(x, y, 64);
+        }
+        uBit.display.image.setPixelValue(x, y, 0);
+        // only act if takeover is active
+        if(takeOverActive) {
+            if (takeOverState && (neighbors < 2 || neighbors > 3)) takeOverState = false;
+            else if (!takeOverState && neighbors == 3) takeOverState = true;
+
+            liveOrDead();
+
+            neighbors = 0;
+            neighborIndex = 0;
+            uBit.radio.datagram.send(takeOverState ? "1" : "0");
+        }
+        uBit.sleep(DEFAULT_PAUSE);
+    }
+    uBit.soundmotor.soundOn(784);
+    uBit.sleep(125);
+    uBit.soundmotor.soundOff();
+    uBit.sleep(63);
+    uBit.soundmotor.soundOn(262);
+    uBit.sleep(125);
+    uBit.soundmotor.soundOff();
+
+    uBit.display.setDisplayMode((DisplayMode) displayMode);
+}
+
 // Menu Selection
 void menuSelect(MicroBitEvent event);
 
@@ -517,6 +633,10 @@ void menuSelect(MicroBitEvent event) {
             state = Snake;
             runSnake();
             break;
+        case 4:
+            state = TakeOver;
+            takeOver();
+            break;
         default:
             state = Menu;
             uBit.display.scroll("Huch?");
@@ -534,12 +654,12 @@ int main() {
     uBit.serial.baud(115200);
     uBit.serial.send("Calliope Demo v1.0\r\n");
     // call the test board procedure, will return if done already
-    testBoard();
+//    testBoard();
 
     // initialize random
     uBit.seedRandom();
 
-    showIntro();
+//    showIntro();
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_LONG_CLICK, introSkipEventHandler);
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_EVT_ANY, freeFall);
 
@@ -547,11 +667,17 @@ int main() {
 
     uBit.display.clear();
     on = true;
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < 5; i++) {
         blinkImage(Dot, 2, 2);
         uBit.sleep(DEFAULT_PAUSE);
     }
     uBit.display.clear();
+
+    // init take over
+    uBit.messageBus.listen(MICROBIT_ID_RADIO, MICROBIT_RADIO_EVT_DATAGRAM, onData);
+    uBit.radio.enable();
+    uBit.radio.setGroup(227);
+
     initializeMenu();
 
     while (true) uBit.sleep(100);
