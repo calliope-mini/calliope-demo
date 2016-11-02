@@ -548,7 +548,7 @@ void takeOver() {
 
     neighborIndex = 0;
     neighbors = 0;
-    takeOverState = uBit.random(100) > 50;
+    takeOverState = uBit.random(100) > 20;
     liveOrDead();
 
     uBit.soundmotor.soundOn(262);

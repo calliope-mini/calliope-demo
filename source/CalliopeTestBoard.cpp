@@ -51,13 +51,13 @@ void testBoard() {
     uBit.serial.send("RGB led\r\n");
     uBit.rgb.off();
     uBit.rgb.setColour(255, 0, 0, 0);
-    uBit.sleep(100);
+    uBit.sleep(200);
     uBit.rgb.off();
     uBit.rgb.setColour(0, 255, 0, 0);
-    uBit.sleep(100);
+    uBit.sleep(200);
     uBit.rgb.off();
     uBit.rgb.setColour(0, 0, 255, 0);
-    uBit.sleep(100);
+    uBit.sleep(200);
     uBit.rgb.off();
 
 
