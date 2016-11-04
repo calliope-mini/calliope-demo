@@ -633,8 +633,6 @@ void takeOver() {
 }
 
 void specialAttachment() {
-    uBit.radio.setTransmitPower(1);
-
     uBit.soundmotor.soundOn(262);
     uBit.sleep(125);
     uBit.soundmotor.soundOff();
