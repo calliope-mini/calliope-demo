@@ -1,6 +1,21 @@
 /**
  * Calliope Demo Code.
  *
+ * The code contains is the wrapper for the main functionality found after
+ * unpacking the Calliope mini. It contains the basic test functionality for
+ * in-production testing, as well as some small demo programs that can be
+ * selected using A and B buttons.
+ *
+ * - Oracle (press a button and get a smiley or sad face)
+ * - Rock, Paper, Scissors, Well
+ * - Love Meter (Pin 1 and 2)
+ * - Snake (adapted from the original microbit-samples)
+ * - ((game of life))
+ * - ((proximty hearts))
+ *
+ * The last two require the CalliopeDemoMaster to be compiled and put on
+ * an extra board. Then those games can be activated via Radio.
+ *
  * @copyright (c) Calliope gGmbH.
  *
  * Licensed under the Apache Software License 2.0 (ASL 2.0)
@@ -11,8 +26,11 @@
  * @author Franka Futterlieb <franka@urbn.de>
  * @author Niranjan Rao
  */
+
 #include "MicroBit.h"
 #include "CalliopeDemo.h"
+
+#ifndef COMPILE_FIRMWARE_MASTER
 
 const uint8_t full[25] = {1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1,
@@ -746,3 +764,5 @@ int main() {
 
     while (true) uBit.sleep(100);
 }
+
+#endif
