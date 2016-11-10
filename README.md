@@ -28,6 +28,30 @@ flashing the device. Any subsequent reset or power cycle will not show it again.
 
 Clicking `A+B` should reset back to the menu selection.     
 
+## Pin naming and positions
+
+![Calliope rev. 0.3](calliope-v0.3.jpg)
+
+* `0` - `3` - edge connectors P0 - P3
+* Connector Double Row (IO)
+    ```
+    G  1  3  5  7  9  G 11 13 15 17 19  G
+    o  o  o  o  o  o  o  o  o  o  o  o  o
+    o  o  o  o  o  o  o  o  o  o  o  o  o
+    G  0  2  4  6  8  G 10 12 14 16 18  G
+    ```
+    * `C1` - `C15` - GPIO pins
+    * `C16` / `C17` - UART RX / TX
+    * `C18` / `C19` - I²C - SCL / SDA
+* Single Connector Row (Motor)
+    ```
+    G  2  1  G  VM
+    o  o  o  o  o 
+    ```
+    * `G` - GND
+    * `1` / `2` Motor pins
+    * `VM` external power 
+ 
 (c) 2016 Calliope gGmbH
 
 Licensed under the Apache Software License 2.0, see LICENE.
