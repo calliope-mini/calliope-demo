@@ -39,13 +39,14 @@ Clicking `A+B` should reset back to the menu selection.
     * `C18` / `C19` - I²C - SCL / SDA
 
 ```
-G  1  3  5  7  9  G 11 13 15 17 19  G
+V  1  3  5  7  9  G 11 13 15 17 19  G
 o  o  o  o  o  o  o  o  o  o  o  o  o
 o  o  o  o  o  o  o  o  o  o  o  o  o
-G  0  2  4  6  8  G 10 12 14 16 18  G
+G  0  2  4  6  8  G 10 12 14 16 18  V
 ```
     
 * Single Connector Row (Motor)
+    * `V` - VCC
     * `G` - GND
     * `1` / `2` Motor pins
     * `VM` external power 
