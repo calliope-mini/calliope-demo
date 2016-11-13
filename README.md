@@ -22,7 +22,7 @@ flashing the device. Any subsequent reset or power cycle will not show it again.
 - An Intro is shown (may be skipped using long `A+B` click).
 - Menu: 1-4
      - 1: Oracle (shows a smiley or sadly on button press)
-     - 2: Rock, Paper, Scissors, Wall
+     - 2: Rock, Paper, Scissors, Well
      - 3: Love Meter (touch P1 and P2 to show value, errata: it's P0 and P3 in the booklet)
      - 4: Snake (adaped snake code from the [microbit-samples](https://github.com/lancaster-university/microbit-samples/))
 
