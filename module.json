@@ -4,7 +4,7 @@
   "description": "Calliope mini Demo",
   "license": "ASL 2.0",
   "dependencies": {
-    "microbit": "calliope-mini/microbit#v0.2.9-calliope"
+    "microbit": "calliope-mini/microbit#v1.0.2-calliope"
   },
   "targetDependencies": {},
   "bin": "./source"
