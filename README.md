@@ -6,7 +6,7 @@ This repository contains the demo code and the board test code. The board test i
 flashing the device. Any subsequent reset or power cycle will not show it again.
 
 ## Test Code 
->> Code is disabled.
+> Code is disabled.
 
 - LED matrix full on, dimming down, and back up
 - check reading the accelerometer (final checkmark)
