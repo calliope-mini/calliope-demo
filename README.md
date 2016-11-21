@@ -5,7 +5,8 @@ Calliope mini Demo.
 This repository contains the demo code and the board test code. The board test is only shown after initially 
 flashing the device. Any subsequent reset or power cycle will not show it again.
 
-## Test Code
+## Test Code 
+>> Code is disabled.
 
 - LED matrix full on, dimming down, and back up
 - check reading the accelerometer (final checkmark)
