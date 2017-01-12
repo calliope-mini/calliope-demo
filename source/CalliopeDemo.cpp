@@ -737,7 +737,7 @@ int main() {
     uBit.serial.send("Calliope Demo v1.0\r\n");
     // disabled the test board procedure as it may confuse users who burn the initial firmware
     // call the test board procedure, will return if done already
-    // testBoard();
+    testBoard();
 
     // initialize random
     uBit.seedRandom();
