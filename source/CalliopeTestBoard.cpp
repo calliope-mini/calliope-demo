@@ -3,21 +3,75 @@
 
 extern MicroBit uBit;
 
-void onButtonA(MicroBitEvent event) { uBit.display.print("A"); }
-void onButtonB(MicroBitEvent event) { uBit.display.print("B"); }
-void onButtonAB(MicroBitEvent event) { uBit.display.print("A+B"); }
-void onButton0(MicroBitEvent event) { uBit.display.print("0"); }
-void onButton1(MicroBitEvent event) { uBit.display.print("1"); }
-void onButton2(MicroBitEvent event) { uBit.display.print("2"); }
-void onButton3(MicroBitEvent event) { uBit.display.print("3"); }
+void onButtonA(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("A");
+}
 
-void onShake(MicroBitEvent event) { uBit.display.print("S"); }
-void onFaceUp(MicroBitEvent event) { uBit.display.print("+"); }
-void onFaceDown(MicroBitEvent event) { uBit.display.print("-"); }
-void onTiltUp(MicroBitEvent event) { uBit.display.print("U"); }
-void onTiltDown(MicroBitEvent event) { uBit.display.print("D"); }
-void onTiltLeft(MicroBitEvent event) { uBit.display.print("L"); }
-void onTiltRight(MicroBitEvent event) { uBit.display.print("R"); }
+void onButtonB(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("B");
+}
+
+void onButtonAB(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("A+B");
+}
+
+void onButton0(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("0");
+}
+
+void onButton1(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("1");
+}
+
+void onButton2(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("2");
+}
+
+void onButton3(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("3");
+}
+
+void onShake(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("S");
+}
+
+void onFaceUp(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("+");
+}
+
+void onFaceDown(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("-");
+}
+
+void onTiltUp(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("U");
+}
+
+void onTiltDown(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("D");
+}
+
+void onTiltLeft(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("L");
+}
+
+void onTiltRight(MicroBitEvent event) {
+    (void) event;
+    uBit.display.print("R");
+}
 
 void testBoard() {
     KeyValuePair *firstTime = uBit.storage.get("initial");

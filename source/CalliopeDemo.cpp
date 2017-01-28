@@ -163,7 +163,10 @@ static const int DEFAULT_PAUSE = 300;
 volatile bool eventOK = false;
 volatile static bool introEventSkip = false;
 
-void simpleEventHandler(MicroBitEvent event) { eventOK = true; }
+void simpleEventHandler(MicroBitEvent event) {
+    (void) event;
+    eventOK = true;
+}
 
 void leaveBeep() {
     uBit.soundmotor.soundOn(784);
@@ -172,6 +175,7 @@ void leaveBeep() {
 }
 
 void introSkipEventHandler(MicroBitEvent event) {
+    (void)event;
     leaveBeep();
     uBit.display.stopAnimation();
     introEventSkip = true;
@@ -332,12 +336,14 @@ volatile state_t state = Intro;
 static int selectedDemo = 0;
 
 void menuDown(MicroBitEvent event) {
+    (void)event;
     selectedDemo--;
     if (selectedDemo < 0) selectedDemo = MAX_DEMOS;
     uBit.display.print(ManagedString(selectedDemo + 1));
 }
 
 void menuUp(MicroBitEvent event) {
+    (void)event;
     selectedDemo++;
     if (selectedDemo > MAX_DEMOS) selectedDemo = 0;
     uBit.display.print(ManagedString(selectedDemo + 1));
@@ -359,6 +365,7 @@ void menuAnimateLeave() {
 
 // Oracle Demo
 void leaveOracle(MicroBitEvent event) {
+    (void)event;
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, simpleEventHandler);
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveOracle);
     leaveBeep();
@@ -390,6 +397,7 @@ void oracle() {
 
 // Rock Paper Scissors Well Demo
 void leaveRockPaperScissors(MicroBitEvent event) {
+    (void)event;
     uBit.messageBus.ignore(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, simpleEventHandler);
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveRockPaperScissors);
     leaveBeep();
@@ -439,6 +447,7 @@ void loveMeterMeasuring() {
 }
 
 void leaveLoveMeter(MicroBitEvent event) {
+    (void)event;
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveLoveMeter);
     leaveBeep();
     state = Menu;
@@ -492,6 +501,7 @@ void loveMeter() {
 
 // Snake Demo
 void leaveSnake(MicroBitEvent event) {
+    (void)event;
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveSnake);
     leaveBeep();
     state = Menu;
@@ -514,12 +524,13 @@ uint8_t neighbors = 0;
 uint8_t neighborIndex = 0;
 
 void onData(MicroBitEvent event) {
+    (void)event;
     PacketBuffer packet = uBit.radio.datagram.recv();
     uBit.serial.send(packet);
 
     if (specialAttachmentActive) {
-        if(packet.getByte(0) == 'E') {
-            specialAttachmentTransmitPower = min(packet.getByte(1) - '0',7);
+        if (packet.getByte(0) == 'E') {
+            specialAttachmentTransmitPower = min(packet.getByte(1) - '0', 7);
             state = Menu;
             specialAttachmentActive = false;
             selectedDemo = 0;
@@ -554,7 +565,7 @@ void onData(MicroBitEvent event) {
             }
         }
     } else {
-        if(packet.getByte(0) == 'H') {
+        if (packet.getByte(0) == 'H') {
             specialAttachmentActive = true;
             state = Menu;
             eventOK = true;
@@ -661,8 +672,8 @@ void specialAttachment() {
 
     uBit.display.clear();
     while (state == SpecialAttachment) {
-        if(uBit.systemTime() % 1000 < 500) uBit.display.clear();
-        else if(foundPartner) uBit.display.print(Heart);
+        if (uBit.systemTime() % 1000 < 500) uBit.display.clear();
+        else if (foundPartner) uBit.display.print(Heart);
         else uBit.display.image.setPixelValue(2, 2, 255);
         uBit.radio.setTransmitPower(specialAttachmentTransmitPower);
         uBit.radio.datagram.send("!");
@@ -689,6 +700,7 @@ void initializeMenu() {
 }
 
 void menuSelect(MicroBitEvent event) {
+    (void)event;
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, menuDown);
     uBit.messageBus.ignore(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, menuUp);
     uBit.messageBus.ignore(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, menuSelect);

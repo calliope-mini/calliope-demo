@@ -73,11 +73,13 @@ static bool a_pressed = false;
 static bool b_pressed = false;
 
 void buttonAPressed(MicroBitEvent event) {
+    (void)event;
     accel_disabled = true;
     a_pressed = true;
 }
 
 void buttonBPressed(MicroBitEvent event) {
+    (void)event;
     accel_disabled = true;
     b_pressed = true;
 }
