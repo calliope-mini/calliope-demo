@@ -128,18 +128,18 @@ void testBoard() {
     uBit.display.clear();
 
     // we need to trigger touch sensing
+    uBit.io.P12.isTouched();
     uBit.io.P0.isTouched();
     uBit.io.P1.isTouched();
-    uBit.io.P2.isTouched();
-    uBit.io.CAL_P22.isTouched();
+    uBit.io.P16.isTouched();
 
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, onButtonAB);
-    uBit.messageBus.listen(MICROBIT_ID_IO_P0, MICROBIT_EVT_ANY, onButton0);
-    uBit.messageBus.listen(MICROBIT_ID_IO_P1, MICROBIT_EVT_ANY, onButton1);
-    uBit.messageBus.listen(MICROBIT_ID_IO_P2, MICROBIT_EVT_ANY, onButton2);
-    uBit.messageBus.listen(CALLIOPE_ID_IO_P22, MICROBIT_EVT_ANY, onButton3);
+    uBit.messageBus.listen(MICROBIT_ID_IO_P12, MICROBIT_EVT_ANY, onButton0);
+    uBit.messageBus.listen(MICROBIT_ID_IO_P0, MICROBIT_EVT_ANY, onButton1);
+    uBit.messageBus.listen(MICROBIT_ID_IO_P1, MICROBIT_EVT_ANY, onButton2);
+    uBit.messageBus.listen(MICROBIT_ID_IO_P16, MICROBIT_EVT_ANY, onButton3);
 
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, onShake);
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_FACE_UP, onFaceUp);
