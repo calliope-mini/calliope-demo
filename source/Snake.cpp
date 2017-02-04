@@ -169,8 +169,8 @@ void snake() {
 
 
             } else {
-                int dx = uBit.accelerometer.getY();
-                int dy = uBit.accelerometer.getX();
+                int dx = uBit.accelerometer.getX();
+                int dy = uBit.accelerometer.getY();
 
                 // use accelerometer
                 if (abs(dx) > abs(dy)) {
