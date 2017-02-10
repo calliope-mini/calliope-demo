@@ -30,27 +30,32 @@ MicroBit uBit;
 
 
 void buttonA(MicroBitEvent event) {
+    (void)event;
     uBit.serial.send("START\r\n");
     uBit.radio.datagram.send("S");
 }
 
 void buttonB(MicroBitEvent event) {
+    (void)event;
     uBit.serial.send("START 1\r\n");
     uBit.radio.datagram.send("H1");
 }
 
 void buttonB1(MicroBitEvent event) {
+    (void)event;
     uBit.serial.send("RANDOM SEED\r\n");
     uBit.radio.datagram.send(uBit.random(100) > 20 ? "1" : "0");
 }
 
 void buttonAB(MicroBitEvent event) {
+    (void)event;
     uBit.serial.send("END\r\n");
     uBit.radio.datagram.send("E");
 }
 
 
 void onData(MicroBitEvent event) {
+    (void)event;
     PacketBuffer packet = uBit.radio.datagram.recv();
     uBit.serial.send("RECEIVED\r\n");
     uBit.serial.send(packet);
