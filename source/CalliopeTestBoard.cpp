@@ -80,6 +80,17 @@ void testBoard() {
     uint8_t done = 1;
     uBit.storage.put("initial", &done, sizeof(int));
 
+    uBit.serial.send("sound\r\n");
+    uBit.soundmotor.setSoundSilentMode(true);
+    uBit.soundmotor.soundOn(500);
+    uBit.sleep(100);
+    uBit.soundmotor.soundOn(2000);
+    uBit.sleep(100);
+    uBit.soundmotor.soundOn(3000);
+    uBit.sleep(100);
+    uBit.soundmotor.soundOff();
+    uBit.sleep(500);
+
     uBit.serial.send("display\r\n");
     uBit.display.clear();
     uBit.display.print(Full);
@@ -93,15 +104,6 @@ void testBoard() {
         uBit.sleep(3);
     }
 
-    uBit.serial.send("accelerometer\r\n");
-    for (int i = 0; i < 10; i++) {
-        uBit.accelerometer.getX();
-        uBit.accelerometer.getY();
-        uBit.accelerometer.getZ();
-    }
-    uBit.display.print(Tick);
-    uBit.sleep(80);
-
     uBit.serial.send("RGB led\r\n");
     uBit.rgb.off();
     uBit.rgb.setColour(255, 0, 0, 0);
@@ -114,18 +116,13 @@ void testBoard() {
     uBit.sleep(200);
     uBit.rgb.off();
 
-
-    uBit.serial.send("sound\r\n");
-    uBit.soundmotor.setSoundSilentMode(true);
-    uBit.soundmotor.soundOn(500);
-    uBit.sleep(100);
-    uBit.soundmotor.soundOn(2000);
-    uBit.sleep(100);
-    uBit.soundmotor.soundOn(3000);
-    uBit.sleep(100);
-    uBit.soundmotor.soundOff();
-
-    uBit.display.clear();
+    uBit.serial.send("accelerometer\r\n");
+    for (int i = 0; i < 10; i++) {
+        uBit.accelerometer.getX();
+        uBit.accelerometer.getY();
+        uBit.accelerometer.getZ();
+    }
+    uBit.display.print(Tick);
 
     // we need to trigger touch sensing
     uBit.io.P12.isTouched();
