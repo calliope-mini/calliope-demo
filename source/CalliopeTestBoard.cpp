@@ -6,16 +6,23 @@ extern MicroBit uBit;
 void onButtonA(MicroBitEvent event) {
     (void) event;
     uBit.display.print("A");
+    uBit.rgb.off();
+    uBit.rgb.setColour(0, 0, 255, 0);
 }
 
 void onButtonB(MicroBitEvent event) {
     (void) event;
     uBit.display.print("B");
+    uBit.rgb.off();
+    uBit.rgb.setColour(255, 0, 0, 0);
+
 }
 
 void onButtonAB(MicroBitEvent event) {
     (void) event;
-    uBit.display.print("A+B");
+    uBit.display.print("#");
+    uBit.rgb.off();
+    uBit.rgb.setColour(0, 255, 0, 0);
 }
 
 void onButton0(MicroBitEvent event) {
