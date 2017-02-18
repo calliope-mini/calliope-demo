@@ -1,10 +1,10 @@
 {
   "name": "calliope-demo",
-  "version": "1.0.3",
-  "description": "Calliope mini Demo",
+  "version": "1.0.3-2016",
+  "description": "Calliope mini Demo (rev 0.3)",
   "license": "Apache 2.0",
   "dependencies": {
-    "microbit": "calliope-mini/microbit#v2.0.0-rc7-calliope-p9"
+    "microbit": "calliope-mini/microbit#v2.0.0-rc7-calliope-p9-2016-2"
   },
   "targetDependencies": {},
   "bin": "./source"
