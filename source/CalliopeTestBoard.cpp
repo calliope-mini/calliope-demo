@@ -153,5 +153,15 @@ void testBoard() {
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT, onTiltLeft);
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT, onTiltRight);
 
-    while (1) uBit.sleep(100);
+    while (1) {
+        int mic = uBit.io.P21.getAnalogValue() - 512;
+        if (mic < -20) {
+            uBit.serial.printf("mic: %d\r\n", mic);
+            uBit.display.print(Full);
+            uBit.sleep(500);
+            uBit.display.clear();
+        } else {
+            uBit.sleep(10);
+        }
+    }
 }
