@@ -6,17 +6,21 @@ This repository contains the demo code and the board test code. The board test i
 flashing the device. Any subsequent reset or power cycle will not show it again.
 
 ## Test Code 
-> Code is disabled.
 
+After flashing this code, the test program will be executed once. Pressing `RESET` will directly go
+into the demonstration code, as desribed in the next section.
+
+- Triple beep
 - LED matrix full on, dimming down, and back up
 - check reading the accelerometer (final checkmark)
 - RGB led colors (red, green, blue)
-- Triple beep
 - If further testing is required the board can be tilted and turned to show:
     - `+` face up, `-` down
     - `L` tilted left, `R` right, `U` up, `D` down
     - `S` shaked, `2` 2G, `8` 8G, `F` free fall
     - `0`-`3`, `A`, `B`, `A+B` touch pins and buttons
+- Pressing A, B or A+B will also light up the RGB led in different colors.    
+- Blow on the microphone will light up the LED matrix.    
     
 ## Demonstration code
 
@@ -29,10 +33,17 @@ flashing the device. Any subsequent reset or power cycle will not show it again.
 
 Clicking `A+B` should reset back to the menu selection.     
 
-## Pin naming and positions
+## Hardware
 
-![Calliope rev. 0.3](calliope-v0.3.jpg)
+### Revision 1.0 (2017, startnext, school rollout)
+![Calliope mini rev. 1.0](calliope-mini-v1.0.png)
 
+
+### Revision 0.3 (old, 2016, IT-Gipfel)
+![Calliope mini rev. 0.3](calliope-mini-v0.3.jpg)
+
+
+### Pin Descriptions
 * `0` - `3` - edge connectors P0 - P3
 * Connector Double Row (IO)
     * `C1` - `C15` - GPIO pins
