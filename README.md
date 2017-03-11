@@ -68,7 +68,7 @@ G  0  2  4  6  8  G 10 12 14 16 18  V
  o  o  o  o  o 
  ```
 
-(c) 2016 Calliope gGmbH
+(c) 2016, 2017 Calliope gGmbH
 
 Licensed under the Apache Software License 2.0, see LICENSE.
 
