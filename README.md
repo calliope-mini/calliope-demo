@@ -40,7 +40,7 @@ Clicking `A+B` should reset back to the menu selection.
 
 
 ### Revision 0.3 (old, 2016, IT-Gipfel)
-![Calliope mini rev. 0.3](calliope-mini-v0.3.jpg)
+![Calliope mini rev. 0.3](calliope-mini-v0.3.png)
 
 
 ### Pin Descriptions
