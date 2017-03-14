@@ -156,7 +156,7 @@ const MicroBitImage Wave(7, 5, wave);
 
 MicroBit uBit;
 
-// DEMO 0 - 3 
+// DEMO 0 - 3
 static const int MAX_DEMOS = 3;
 static const int DEFAULT_PAUSE = 300;
 
@@ -257,7 +257,7 @@ void showIntro() {
 
     invoke(startSound);
 
-    uBit.display.scroll("Hallo!");
+    uBit.display.scroll(DISPLAY_HELLO);
     // press A
     uBit.display.print("A");
     uBit.sleep(DEFAULT_PAUSE);
@@ -295,7 +295,7 @@ void showIntro() {
     uBit.display.clear();
 
     // shake
-    uBit.display.scroll("SCHUETTELN");
+    uBit.display.scroll(DISPLAY_SHAKE);
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, simpleEventHandler);
     introAnimateImage(DoubleRow, 2, -1, 2);
     if (introEventSkip) return;
@@ -304,7 +304,7 @@ void showIntro() {
     uBit.display.print(Tick);
     uBit.sleep(DEFAULT_PAUSE);
     uBit.display.clear();
-    uBit.display.scroll("SUPER!");
+    uBit.display.scroll(DISPLAY_SUPER);
 
     // show heart and change RGB led colors randomly
 
@@ -376,7 +376,7 @@ void leaveOracle(MicroBitEvent event) {
 void oracle() {
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, leaveOracle);
 
-    uBit.display.scroll("Orakel");
+    uBit.display.scroll(DISPLAY_ORACLE);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, simpleEventHandler);
     do {
         eventOK = false;
@@ -733,7 +733,7 @@ void menuSelect(MicroBitEvent event) {
             break;
         default:
             state = Menu;
-            uBit.display.scroll("Huch?");
+            uBit.display.scroll(DISPLAY_ERROR);
             selectedDemo = 0;
             uBit.messageBus.send(MicroBitEvent(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK));
             break;

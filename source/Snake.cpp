@@ -196,7 +196,7 @@ void snake() {
 
             int status = map.getPixelValue(newHead.x, newHead.y);
             if (status == SNAKE_UP || status == SNAKE_DOWN || status == SNAKE_LEFT || status == SNAKE_RIGHT) {
-                uBit.display.scroll("ENDE");
+                uBit.display.scroll(DISPLAY_THEEND);
                 uBit.display.scroll(score);
 
                 return;
