@@ -5,6 +5,12 @@ Calliope mini Demo.
 This repository contains the demo code and the board test code. The board test is only shown after initially 
 flashing the device. Any subsequent reset or power cycle will not show it again.
 
+## Compiling
+
+- `yt build` (add `--config config_en.json` to compile with English localization, default is German)
+- copy the `calliope-demo-combined.hex` on the board
+
+
 ## Test Code 
 
 After flashing this code, the test program will be executed once. Pressing `RESET` will directly go
