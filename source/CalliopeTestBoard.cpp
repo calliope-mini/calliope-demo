@@ -154,14 +154,17 @@ void testBoard() {
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT, onTiltRight);
 
     while (1) {
-        int mic = uBit.io.P21.getAnalogValue() - 512;
-        if (mic < -20) {
-            uBit.serial.printf("mic: %d\r\n", mic);
-            uBit.display.print(Full);
-            uBit.sleep(500);
-            uBit.display.clear();
-        } else {
+        int mic = uBit.io.P21.getAnalogValue();
+        // ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
+        if (mic > 512) {
+            const int gauge = ((log2(mic - 511) * 5) / 9);
+
+            for (int i = 0; i <= 4; i++) {
+                uBit.display.image.setPixelValue(4, 4 - i, i > gauge ? 0 : 255);
+            }
             uBit.sleep(10);
+
+            uBit.serial.printf("mic: %d -> %d\r\n", mic, gauge);
         }
     }
 }
