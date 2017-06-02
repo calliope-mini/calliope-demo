@@ -157,7 +157,7 @@ void testBoard() {
         int mic = uBit.io.P21.getAnalogValue();
         // ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         if (mic > 512) {
-            const int gauge = ((log2(mic - 511) * 5) / 9);
+            const int gauge = ((log2(mic - 511) * 4) / 9);
 
             for (int i = 0; i <= 4; i++) {
                 uBit.display.image.setPixelValue(4, 4 - i, i > gauge ? 0 : 255);
