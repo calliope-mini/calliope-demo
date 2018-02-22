@@ -1,91 +1,92 @@
-#include <MicroBit.h>
-#include "CalliopeDemo.h"
+#include "RunTests.h"
+#include "MicroBit.h"
+#include "MicroBitSerial.h"
+#include "Images.h"
+#include "Utils.h"
 
 extern MicroBit uBit;
 
-void onButtonA(MicroBitEvent event) {
-    (void) event;
+void onButtonA(MicroBitEvent)
+{
     uBit.display.print("A");
     uBit.rgb.off();
     uBit.rgb.setColour(0, 0, 255, 0);
 }
 
-void onButtonB(MicroBitEvent event) {
-    (void) event;
+void onButtonB(MicroBitEvent)
+{
     uBit.display.print("B");
     uBit.rgb.off();
     uBit.rgb.setColour(255, 0, 0, 0);
-
 }
 
-void onButtonAB(MicroBitEvent event) {
-    (void) event;
+void onButtonAB(MicroBitEvent)
+{
     uBit.display.print("#");
     uBit.rgb.off();
     uBit.rgb.setColour(0, 255, 0, 0);
 }
 
-void onButton0(MicroBitEvent event) {
-    (void) event;
+void onButton0(MicroBitEvent)
+{
     uBit.display.print("0");
 }
 
-void onButton1(MicroBitEvent event) {
-    (void) event;
+void onButton1(MicroBitEvent)
+{
     uBit.display.print("1");
 }
 
-void onButton2(MicroBitEvent event) {
-    (void) event;
+void onButton2(MicroBitEvent)
+{
     uBit.display.print("2");
 }
 
-void onButton3(MicroBitEvent event) {
-    (void) event;
+void onButton3(MicroBitEvent)
+{
     uBit.display.print("3");
 }
 
-void onShake(MicroBitEvent event) {
-    (void) event;
+void onShake(MicroBitEvent)
+{
     uBit.display.print("S");
 }
 
-void onFaceUp(MicroBitEvent event) {
-    (void) event;
+void onFaceUp(MicroBitEvent)
+{
     uBit.display.print("+");
 }
 
-void onFaceDown(MicroBitEvent event) {
-    (void) event;
+void onFaceDown(MicroBitEvent)
+{
     uBit.display.print("-");
 }
 
-void onTiltUp(MicroBitEvent event) {
-    (void) event;
+void onTiltUp(MicroBitEvent)
+{
     uBit.display.print("U");
 }
 
-void onTiltDown(MicroBitEvent event) {
-    (void) event;
+void onTiltDown(MicroBitEvent)
+{
     uBit.display.print("D");
 }
 
-void onTiltLeft(MicroBitEvent event) {
-    (void) event;
+void onTiltLeft(MicroBitEvent)
+{
     uBit.display.print("L");
 }
 
-void onTiltRight(MicroBitEvent event) {
-    (void) event;
+void onTiltRight(MicroBitEvent)
+{
     uBit.display.print("R");
 }
 
-void testBoard() {
-    KeyValuePair *firstTime = uBit.storage.get("initial");
+void tests_run()
+{
+    uBit.serial.setTxBufferSize(MICROBIT_SERIAL_DEFAULT_BUFFER_SIZE);
 
-    if (firstTime != NULL) return;
-    uint8_t done = 1;
-    uBit.storage.put("initial", &done, sizeof(int));
+    uBit.sleep(200);
 
     uBit.serial.send("sound\r\n");
     uBit.soundmotor.setSoundSilentMode(true);
@@ -100,7 +101,7 @@ void testBoard() {
 
     uBit.serial.send("display\r\n");
     uBit.display.clear();
-    uBit.display.print(Full);
+    uBit.display.print(ImageFull);
     for (int i = 255; i > 0; i -= 2) {
         uBit.display.setBrightness(i);
         uBit.sleep(3);
@@ -129,9 +130,8 @@ void testBoard() {
         uBit.accelerometer.getY();
         uBit.accelerometer.getZ();
     }
-    uBit.display.print(Tick);
+    uBit.display.print(ImageTick);
 
-    // we need to trigger touch sensing
     uBit.io.P12.isTouched();
     uBit.io.P0.isTouched();
     uBit.io.P1.isTouched();
@@ -153,7 +153,7 @@ void testBoard() {
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT, onTiltLeft);
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT, onTiltRight);
 
-    while (1) {
+    while (true) {
         int mic = uBit.io.P21.getAnalogValue();
         // ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         if (mic > 512) {

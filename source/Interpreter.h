@@ -11,7 +11,13 @@
 #define REGISTER_COUNT 5
 #define CHARACTERISTICS_BUFFER_LEN 40
 
-//#define LOG
+//#define DEBUG
+
+#ifdef DEBUG
+#define LOG(format, ...) uBit.serial.printf(format, ##__VA_ARGS__)
+#else
+#define LOG(format, ...) ;
+#endif
 
 typedef enum {
     INTERPRETER_OK = 0x00,
@@ -124,7 +130,7 @@ typedef enum {
 
 } InterpreterInstruction;
 
-
+void interpreter_run();
 void interpreter_start();
 void interpreter_reset();
 uint16_t interpreter_calculate_hash();

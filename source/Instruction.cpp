@@ -133,70 +133,30 @@ void instruction_bra(Slice &code, Interpreter &interpreter, RunState &state)
 
 void instruction_beq(Slice &code, Interpreter &interpreter, RunState &state)
 {
-    // #ifdef LOG
-    // switch(state.cs) {
-    //     case COMPARED_EQ: uBit.serial.printf("CS=EQ\n\r"); break;
-    //     case COMPARED_LT: uBit.serial.printf("CS=LT\n\r"); break;
-    //     case COMPARED_GT: uBit.serial.printf("CS=GT\n\r"); break;
-    // }
-    // #endif
-
     bra(code, interpreter, state,
         state.cs == COMPARED_EQ);
 }
 
 void instruction_bne(Slice &code, Interpreter &interpreter, RunState &state)
 {
-    // #ifdef LOG
-    // switch(state.cs) {
-    //     case COMPARED_EQ: uBit.serial.printf("CS=EQ\n\r"); break;
-    //     case COMPARED_LT: uBit.serial.printf("CS=LT\n\r"); break;
-    //     case COMPARED_GT: uBit.serial.printf("CS=GT\n\r"); break;
-    // }
-    // #endif
-
     bra(code, interpreter, state,
         state.cs != COMPARED_EQ);
 }
 
 void instruction_bgt(Slice &code, Interpreter &interpreter, RunState &state)
 {
-    // #ifdef LOG
-    // switch(state.cs) {
-    //     case COMPARED_EQ: uBit.serial.printf("CS=EQ\n\r"); break;
-    //     case COMPARED_LT: uBit.serial.printf("CS=LT\n\r"); break;
-    //     case COMPARED_GT: uBit.serial.printf("CS=GT\n\r"); break;
-    // }
-    // #endif
-
     bra(code, interpreter, state,
         state.cs == COMPARED_GT);
 }
 
 void instruction_blt(Slice &code, Interpreter &interpreter, RunState &state)
 {
-    // #ifdef LOG
-    // switch(state.cs) {
-    //     case COMPARED_EQ: uBit.serial.printf("CS=EQ\n\r"); break;
-    //     case COMPARED_LT: uBit.serial.printf("CS=LT\n\r"); break;
-    //     case COMPARED_GT: uBit.serial.printf("CS=GT\n\r"); break;
-    // }
-    // #endif
-
     bra(code, interpreter, state,
         state.cs == COMPARED_LT);
 }
 
 void instruction_bge(Slice &code, Interpreter &interpreter, RunState &state)
 {
-    // #ifdef LOG
-    // switch(state.cs) {
-    //     case COMPARED_EQ: uBit.serial.printf("CS=EQ\n\r"); break;
-    //     case COMPARED_LT: uBit.serial.printf("CS=LT\n\r"); break;
-    //     case COMPARED_GT: uBit.serial.printf("CS=GT\n\r"); break;
-    // }
-    // #endif
-
     bra(code, interpreter, state,
         state.cs == COMPARED_GT ||
         state.cs == COMPARED_EQ);
@@ -204,14 +164,6 @@ void instruction_bge(Slice &code, Interpreter &interpreter, RunState &state)
 
 void instruction_ble(Slice &code, Interpreter &interpreter, RunState &state)
 {
-    // #ifdef LOG
-    // switch(state.cs) {
-    //     case COMPARED_EQ: uBit.serial.printf("CS=EQ\n\r"); break;
-    //     case COMPARED_LT: uBit.serial.printf("CS=LT\n\r"); break;
-    //     case COMPARED_GT: uBit.serial.printf("CS=GT\n\r"); break;
-    // }
-    // #endif
-
     bra(code, interpreter, state,
         state.cs == COMPARED_LT ||
         state.cs == COMPARED_EQ);
@@ -246,8 +198,6 @@ void instruction_cmp(Slice &code, Interpreter &interpreter, RunState &state)
         interpreter.status = rb.error;
         return;
     }
-
-    // uBit.serial.printf("cmp 0x%x vs 0x%x\n\r", *ra.value, *rb.value);
 
     compare(*ra.value, *rb.value, state);
 
@@ -611,12 +561,12 @@ void instruction_display_show_image(Slice &code, Interpreter &interpreter, RunSt
     }
 
     const uint16_t i = *image.value;
-    if (i >= sizeof(images)) {
+    if (i >= (sizeof(images)/sizeof(images[0]))) {
         interpreter.status = INTERPRETER_KO_INSTRUCTION_INVALID;
         return;
     }
 
-    uBit.display.print(images[i]);
+    uBit.display.print(*images[i]);
 
     state.pc = code.position;
 }
@@ -679,6 +629,7 @@ void instruction_display_show_text(Slice &code, Interpreter &interpreter, RunSta
 
 void instruction_rgb_off(Slice &code, Interpreter &interpreter UNUSED, RunState &state)
 {
+    // if the rg.off is called to frequently it begins to flicker
     if (uBit.rgb.isOn()) {
         uBit.rgb.off();
     }
