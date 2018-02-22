@@ -42,23 +42,34 @@ static void menuAnimateLeave() {
 int main()
 {
     uBit.init();
+    uBit.accelerometer.updateSample();
 
     uBit.serial.send("Calliope Demo v1.1\r\n");
 
-    // mimimize serial buffer
-    uBit.serial.setTxBufferSize(0);
+    if (hasStorageKey(KEY_INTERPRETER)) {
+        removeStorageKey(KEY_INTERPRETER);
 
-    uBit.accelerometer.updateSample();
+        // mimimize serial buffer
+        uBit.serial.setTxBufferSize(0);
+
+        interpreter_run();
+
+        // not required - just to make it obvious this does not return
+        waitForever();
+    }
 
     if (!hasStorageKey(KEY_TEST)) {
         setStorageKey(KEY_TEST);
+
         tests_run();
+
         // not required - just to make it obvious this does not return
         waitForever();
     }
 
     if (!hasStorageKey(KEY_DEMO)) {
         setStorageKey(KEY_DEMO);
+
         demo_run();
     }
 
@@ -94,9 +105,8 @@ int main()
             break;
         // 5
         case MenuStateInterpreter:
-            interpreter_run();
-            // not required - just to make it obvious this does not return
-            waitForever();
+            setStorageKey(KEY_INTERPRETER);
+            uBit.reset();
             break;
         }
     }

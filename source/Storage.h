@@ -2,6 +2,7 @@
 
 #define KEY_TEST "initial"
 #define KEY_DEMO "demo"
+#define KEY_INTERPRETER "interpreter"
 
 extern MicroBit uBit;
 
@@ -16,12 +17,12 @@ inline bool hasStorageKey(const char* name)
     }
 }
 
-inline void setStorageKey(const char* name, bool state = true)
+inline void setStorageKey(const char* name, uint8_t value = 1)
 {
-    if (state) {
-        uint8_t done = 1;
-        uBit.storage.put(name, &done, sizeof(uint8_t));
-    } else {
-        uBit.storage.remove(name);
-    }
+    uBit.storage.put(name, &value, sizeof(uint8_t));
+}
+
+inline void removeStorageKey(const char* name)
+{
+    uBit.storage.remove(name);
 }
