@@ -253,11 +253,19 @@ static void interpreter_startup_sound()
 
 static void interpreter_on_button(MicroBitEvent event)
 {
-    LOG("button 0x%x 0x%x start\n\r", event.source, event.value);
+    uint8_t source;
+    switch(event.source) {
+        case MICROBIT_ID_BUTTON_A:  source = 1; break;
+        case MICROBIT_ID_BUTTON_B:  source = 2; break;
+        case MICROBIT_ID_BUTTON_AB: source = 3; break;
+        default: return;
+    }
 
-    interpreter_run_method(METHOD_ON_BUTTON, event.source, event.value);
+    LOG("button 0x%x 0x%x start\n\r", source, event.value);
 
-    LOG("button 0x%x 0x%x stop\n\r", event.source, event.value);
+    interpreter_run_method(METHOD_ON_BUTTON, source, event.value);
+
+    LOG("button 0x%x 0x%x stop\n\r", source, event.value);
 }
 
 static void interpreter_on_pin(MicroBitEvent event)
