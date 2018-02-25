@@ -2,7 +2,7 @@
 
 Slice slice_create(uint8_t *buffer, uint16_t start, uint16_t stop)
 {
-    Slice slice;
+    Slice slice = {};
     slice.buffer = buffer;
     slice.start = start;
     slice.position = start;

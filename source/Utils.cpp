@@ -1,6 +1,6 @@
 #include "Utils.h"
-#include "MicroBit.h"
-#include "MicroBitImage.h"
+//#include "MicroBit.h"
+//#include "MicroBitImage.h"
 
 extern MicroBit uBit;
 
@@ -26,7 +26,7 @@ void blinkImage(
 
     uBit.display.print(image, pos);
 
-    for (int t = 0, i = 10; t < delay && !leave && !event; t += i) {
+    for (uint32_t t = 0, i = 10; t < delay && !leave && !event; t += i) {
         uBit.sleep(i);
     }
 
@@ -36,7 +36,7 @@ void blinkImage(
 
     uBit.display.clear();
 
-    for (int t = 0, i = 10; t < delay && !leave && !event; t += i) {
+    for (uint32_t t = 0, i = 10; t < delay && !leave && !event; t += i) {
         uBit.sleep(i);
     }
 }

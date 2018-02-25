@@ -1,8 +1,9 @@
+#include <cmath>
 #include "RunTests.h"
 #include "MicroBit.h"
-#include "MicroBitSerial.h"
+//#include "MicroBitSerial.h"
 #include "Images.h"
-#include "Utils.h"
+//#include "Utils.h"
 
 extern MicroBit uBit;
 
@@ -157,10 +158,13 @@ void tests_run()
         int mic = uBit.io.P21.getAnalogValue();
         // ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         if (mic > 512) {
-            const int gauge = ((log2(mic - 511) * 4) / 9);
+	    const int gauge = static_cast<const int>((log2(mic - 511) * 4) / 9);
 
-            for (int i = 0; i <= 4; i++) {
-                uBit.display.image.setPixelValue(4, 4 - i, i > gauge ? 0 : 255);
+            for (uint8_t i = 0; i <= 4; i++) {
+                const int16_t x = static_cast<uint16_t>(4);
+                const int16_t y = static_cast<uint16_t>(4 - i);
+                const uint8_t t = static_cast<uint8_t>(i > gauge ? 0 : 255);
+		        uBit.display.image.setPixelValue(x, y, t);
             }
             uBit.sleep(10);
 

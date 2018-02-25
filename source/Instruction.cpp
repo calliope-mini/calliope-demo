@@ -1,3 +1,4 @@
+#include <tgmath.h>
 #include "Instruction.h"
 #include "MicroBit.h"
 #include "Images.h"
@@ -10,12 +11,12 @@ extern BluetoothServiceNotify *notify;
 
 typedef struct {
     InterpreterStatus error;
-    uint16_t *value;
+    int32_t *value;
 } Register;
 
 static Register register_read(Slice &code, RunState &state)
 {
-    Register result;
+    Register result = {};
 
     if (slice_available(code) < 1) {
         result.error = INTERPRETER_KO_INSTRUCTION_INVALID;
@@ -35,7 +36,7 @@ static Register register_read(Slice &code, RunState &state)
     return result;
 }
 
-static void compare(uint16_t a, uint16_t b, RunState &state)
+static void compare(int32_t a, int32_t b, RunState &state)
 {
     state.cs =
         (a == b) ? COMPARED_EQ :
@@ -176,10 +177,9 @@ void instruction_bra16(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = slice_read16(code);
-    const int16_t offset = value;
+    const int16_t value = slice_read16(code);
 
-    state.pc = code.position + offset;
+    state.pc = code.position + value;
 }
 
 
@@ -211,7 +211,7 @@ void instruction_cmpi(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t a = slice_read16(code);
+    const int32_t a = slice_read16(code);
 
     Register rb = register_read(code, state);
     if (rb.error) {
@@ -238,7 +238,7 @@ void instruction_mov(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = *src.value;
+    const int32_t value = *src.value;
 
     *dst.value = value;
 
@@ -254,7 +254,7 @@ void instruction_movi(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = slice_read16(code);
+    const int32_t value = slice_read16(code);
 
     Register dst = register_read(code, state);
     if (dst.error) {
@@ -284,7 +284,7 @@ void instruction_add(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = *dst.value + *src.value;
+    const int32_t value = *dst.value + *src.value;
 
     *dst.value = value;
 
@@ -307,7 +307,7 @@ void instruction_sub(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = *dst.value - *src.value;
+    const int32_t value = *dst.value - *src.value;
 
     *dst.value = value;
 
@@ -330,7 +330,7 @@ void instruction_mul(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = *dst.value * *src.value;
+    const int32_t value = *dst.value * *src.value;
 
     *dst.value = value;
 
@@ -358,7 +358,7 @@ void instruction_div(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = *dst.value / *src.value;
+    const int32_t value = *dst.value / *src.value;
 
     *dst.value = value;
 
@@ -376,7 +376,7 @@ void instruction_sleep(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    uBit.sleep(*time.value);
+    uBit.sleep(static_cast<uint32_t>(*time.value));
 
     state.pc = code.position;
 }
@@ -389,7 +389,7 @@ void instruction_random(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = uBit.random(*r.value);
+    const int32_t value = uBit.random(*r.value);
 
     *r.value = value;
 
@@ -406,7 +406,7 @@ void instruction_time(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = uBit.systemTime();
+    const int32_t value = uBit.systemTime();
 
     *r.value = value;
 
@@ -424,7 +424,7 @@ void instruction_temperature(Slice &code, Interpreter &interpreter, RunState &st
         return;
     }
 
-    const uint16_t value = uBit.thermometer.getTemperature();
+    const int32_t value = uBit.thermometer.getTemperature();
 
     *r.value = value;
 
@@ -444,7 +444,8 @@ void instruction_noise(Slice &code, Interpreter &interpreter, RunState &state)
     const int value = uBit.io.P21.getAnalogValue();
 
     if (value > 512) {
-        const int gauge = ((log2(value - 511) * 4) / 9);
+        // we do not support double and int32 should be enough
+        const int32_t gauge = static_cast<const int32_t>((log2(value - 511) * 4) / 9);
 
         *r.value = gauge;
     } else {
@@ -464,7 +465,7 @@ void instruction_brightness(Slice &code, Interpreter &interpreter, RunState &sta
         return;
     }
 
-    const uint16_t value = uBit.display.readLightLevel();
+    const int32_t value = uBit.display.readLightLevel();
 
     *r.value = value;
 
@@ -482,7 +483,7 @@ void instruction_button(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    uint16_t value;
+    int32_t value;
 
     switch(*r.value) {
         case 0x01:
@@ -516,13 +517,13 @@ void instruction_pin(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t i = *r.value;
-    if (i >= sizeof(pins)) {
+    const int32_t i = *r.value;
+    if (i < 0 || static_cast<uint32_t>(i) >= sizeof(pins)) {
         interpreter.status = INTERPRETER_KO_INSTRUCTION_INVALID;
         return;
     }
 
-    const uint16_t value = uBit.io.pin[pins[i]].isTouched();
+    const int32_t value = uBit.io.pin[pins[i]].isTouched();
 
     *r.value = value;
 
@@ -547,7 +548,9 @@ void instruction_display_show_number(Slice &code, Interpreter &interpreter, RunS
         return;
     }
 
-    uBit.display.print(ManagedString(*number.value));
+    const int value = *number.value;
+
+    uBit.display.print(ManagedString(value));
 
     state.pc = code.position;
 }
@@ -560,7 +563,7 @@ void instruction_display_show_image(Slice &code, Interpreter &interpreter, RunSt
         return;
     }
 
-    const uint16_t i = *image.value;
+    const int32_t i = *image.value;
     if (i >= (sizeof(images)/sizeof(images[0]))) {
         interpreter.status = INTERPRETER_KO_INSTRUCTION_INVALID;
         return;
@@ -670,7 +673,7 @@ void instruction_sound_on(Slice &code, Interpreter &interpreter, RunState &state
         return;
     }
 
-    uBit.soundmotor.soundOn(*freq.value);
+    uBit.soundmotor.soundOn(static_cast<uint16_t>(*freq.value));
 
     state.pc = code.position;
 }
@@ -701,7 +704,7 @@ void instruction_pitch(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = uBit.accelerometer.getPitch();
+    const int32_t value = uBit.accelerometer.getPitch();
 
     *r.value = value;
 
@@ -718,7 +721,7 @@ void instruction_roll(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    const uint16_t value = uBit.accelerometer.getRoll();
+    const int32_t value = uBit.accelerometer.getRoll();
 
     *r.value = value;
 
@@ -767,8 +770,9 @@ void instruction_notify(Slice &code, Interpreter &interpreter, RunState &state)
         return;
     }
 
-    if (notify != NULL) {
-        notify->send(*address.value, *value.value);
+    if (notify != nullptr) {
+        // the protocol is allows only for the lower 16 bit
+        notify->send(static_cast<uint16_t>(*address.value), static_cast<uint16_t>(*value.value));
     }
 
     state.pc = code.position;

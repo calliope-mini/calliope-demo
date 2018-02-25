@@ -26,7 +26,7 @@ void oracle_run()
 
             uBit.display.print(ImageArrowLeft);
 
-            for(int t=0, i=10; t<400 && !leave && !event; t+=i) {
+            for(uint32_t t=0, i=10; t<400 && !leave && !event; t+=i) {
                 uBit.sleep(i);
             }
 
@@ -37,7 +37,7 @@ void oracle_run()
             uBit.sleep(10);
             uBit.display.clear();
 
-            for(int t=0, i=10; t<400 && !leave && !event; t+=i) {
+            for(uint32_t t=0, i=10; t<400 && !leave && !event; t+=i) {
                 uBit.sleep(i);
             }
         }

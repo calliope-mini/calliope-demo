@@ -1,8 +1,8 @@
 #include "RunDemo.h"
 #include "Images.h"
+#include "Localization.h"
 #include "MicroBit.h"
 #include "Utils.h"
-#include "Localization.h"
 
 extern MicroBit uBit;
 

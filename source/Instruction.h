@@ -1,5 +1,4 @@
-#ifndef INSTRUCTION_H
-#define INSTRUCTION_H
+#pragma once
 
 #include "Slice.h"
 #include "Interpreter.h"
@@ -52,6 +51,3 @@ void instruction_roll(Slice &code, Interpreter &interpreter, RunState &state);
 void instruction_position(Slice &code, Interpreter &interpreter, RunState &state);
 void instruction_notify(Slice &code, Interpreter &interpreter, RunState &state);
 void instruction_debug(Slice &code, Interpreter &interpreter, RunState &state);
-
-
-#endif

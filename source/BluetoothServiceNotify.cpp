@@ -1,6 +1,6 @@
 #include "BluetoothServiceNotify.h"
 #include "MicroBit.h"
-#include "ble/UUID.h"
+//#include "ble/UUID.h"
 #include "Bytes.h"
 
 extern MicroBit uBit;
@@ -22,7 +22,8 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
         (uint8_t *)&characteristicsBuffer, 0, sizeof(characteristicsBuffer),
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ |
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_NOTIFY
-    )
+    ),
+    characteristicsBuffer()
 {
     characteristic.requireSecurity(SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);
     characteristic.setReadAuthorizationCallback(this, &BluetoothServiceNotify::onDataRead);

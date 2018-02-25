@@ -1,6 +1,6 @@
 #include "RunSnake.h"
 #include "MicroBit.h"
-#include "Images.h"
+//#include "Images.h"
 #include "Utils.h"
 
 extern MicroBit uBit;

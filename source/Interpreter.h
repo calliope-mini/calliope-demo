@@ -1,13 +1,11 @@
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
-
+#pragma once
 #include <stdint.h>
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 0
 
 #define METHODS_COUNT 5
-#define CODE_LEN 180
+#define CODE_LEN 200
 #define REGISTER_COUNT 5
 #define CHARACTERISTICS_BUFFER_LEN 40
 
@@ -52,8 +50,8 @@ typedef enum {
 
 typedef struct {
     uint16_t pc;
-    uint16_t reg[REGISTER_COUNT];
     uint16_t stack; // this should be a stack, for now one address is enough
+    int32_t reg[REGISTER_COUNT];
     CompareState cs;
 } RunState;
 
@@ -134,5 +132,3 @@ void interpreter_run();
 void interpreter_start();
 void interpreter_reset();
 uint16_t interpreter_calculate_hash();
-
-#endif

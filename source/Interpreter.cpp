@@ -1,6 +1,6 @@
 #include "Interpreter.h"
 #include "MicroBit.h"
-#include "BluetoothServiceDebug.h"
+//#include "BluetoothServiceDebug.h"
 #include "BluetoothServiceProgram.h"
 #include "BluetoothServiceNotify.h"
 #include "Instruction.h"
@@ -25,7 +25,7 @@ static uint16_t find_stop(InterpreterMethod method)
 #ifdef DEBUG
 static uint8_t running = 0;
 #endif
-static void interpreter_run_method(InterpreterMethod method, uint16_t r0 = 0, uint16_t r1 = 0, uint16_t r2 = 0)
+static void interpreter_run_method(InterpreterMethod method, int32_t r0 = 0, int32_t r1 = 0, int32_t r2 = 0)
 {
     //microbit_heap_print();
 
@@ -43,7 +43,7 @@ static void interpreter_run_method(InterpreterMethod method, uint16_t r0 = 0, ui
     #endif
 
     // initialize interpreter state
-    RunState state;
+    RunState state = {};
     state.pc = start;
     state.cs = COMPARED_EQ;
     state.stack = stop;
@@ -421,7 +421,7 @@ static void interpreter_init()
     new BluetoothServiceProgram(interpreter);
     notify = new BluetoothServiceNotify(interpreter);
 
-    uBit.sleep(100);
+    uBit.sleep(200);
 }
 
 void interpreter_run()

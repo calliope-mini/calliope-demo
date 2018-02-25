@@ -1,5 +1,4 @@
 #pragma once
-
 #include "MicroBitImage.h"
 
 extern const MicroBitImage *images[17];

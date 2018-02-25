@@ -10,11 +10,11 @@ menustate_t menuWaitForChoice(menustate_t start)
         if (state == MenuStateInterpreter) {
 
             static const uint8_t pixels[25] = {
-              0, 0, 1, 1, 1,
-              0, 0, 0, 1, 1,
-              0, 0, 1, 0, 1,
-              0, 1, 0, 0, 0,
-              1, 0, 0, 0, 0
+                0, 0, 1, 1, 1,
+                0, 0, 0, 1, 1,
+                0, 0, 1, 0, 1,
+                0, 1, 0, 0, 0,
+                1, 0, 0, 0, 0
             };
             const MicroBitImage Image(5, 5, pixels);
 
@@ -23,7 +23,6 @@ menustate_t menuWaitForChoice(menustate_t start)
         } else {
 
             uBit.display.print(ManagedString(state));
-
         }
 
         // event loop

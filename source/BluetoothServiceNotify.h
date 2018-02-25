@@ -1,6 +1,4 @@
-#ifndef INTERPRETER_BLUETOOTH_NOTIFY_H
-#define INTERPRETER_BLUETOOTH_NOTIFY_H
-
+#pragma once
 #include "ble/BLE.h"
 #include "Interpreter.h"
 
@@ -22,5 +20,3 @@ class BluetoothServiceNotify
         GattCharacteristic characteristic;
         uint8_t characteristicsBuffer[CHARACTERISTICS_BUFFER_LEN];
 };
-
-#endif

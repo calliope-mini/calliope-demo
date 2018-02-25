@@ -1,6 +1,6 @@
 #include "BluetoothServiceProgram.h"
 #include "MicroBit.h"
-#include "ble/UUID.h"
+//#include "ble/UUID.h"
 #include "Bytes.h"
 
 extern MicroBit uBit;
@@ -22,7 +22,8 @@ BluetoothServiceProgram::BluetoothServiceProgram(Interpreter &_interpreter) :
         (uint8_t *)&characteristicsBuffer, 0, sizeof(characteristicsBuffer),
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_WRITE |
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ
-    )
+    ),
+    characteristicsBuffer()
 {
     characteristic.requireSecurity(SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);
     characteristic.setReadAuthorizationCallback(this, &BluetoothServiceProgram::onDataRead);
@@ -48,7 +49,7 @@ void BluetoothServiceProgram::onDataWritten(const GattWriteCallbackParams *param
     if (params->handle == characteristicsHandle) {
 
         const uint8_t *data = params->data;
-        const uint8_t len = params->len;
+        const uint16_t len = params->len;
 
         if (len < 2*2) {
             interpreter.status = INTERPRETER_KO_LEN_TOO_SHORT;

@@ -1,14 +1,14 @@
+#include "Images.h"
+#include "Interpreter.h"
 #include "Menu.h"
 #include "MicroBit.h"
-#include "Images.h"
-#include "Storage.h"
-#include "RunTests.h"
 #include "RunDemo.h"
+#include "RunLoveMeter.h"
 #include "RunOracle.h"
 #include "RunRockPaperScissors.h"
-#include "RunLoveMeter.h"
 #include "RunSnake.h"
-#include "Interpreter.h"
+#include "RunTests.h"
+#include "Storage.h"
 
 MicroBit uBit;
 
@@ -19,7 +19,8 @@ static inline void waitForever()
     }
 }
 
-static void menuAnimateEnter() {
+static void menuAnimateEnter()
+{
     uBit.display.print(ImageDot);
     uBit.sleep(200);
     uBit.display.print(ImageSmallRect);
@@ -29,7 +30,8 @@ static void menuAnimateEnter() {
     uBit.display.clear();
 }
 
-static void menuAnimateLeave() {
+static void menuAnimateLeave()
+{
     uBit.display.print(ImageLargeRect);
     uBit.sleep(200);
     uBit.display.print(ImageSmallRect);
@@ -49,7 +51,7 @@ int main()
     if (hasStorageKey(KEY_INTERPRETER)) {
         removeStorageKey(KEY_INTERPRETER);
 
-        // mimimize serial buffer
+        // minimize serial buffer
         uBit.serial.setTxBufferSize(0);
 
         interpreter_run();
