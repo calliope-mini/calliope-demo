@@ -69,7 +69,7 @@ void demo_run()
     uBit.display.clear();
 
     // shake
-    uBit.display.scroll(LS_DEMO_SHAKE);
+    //uBit.display.scroll(LS_DEMO_SHAKE);
     blinkImageUntilEvent(
         MICROBIT_ID_GESTURE,
         MICROBIT_ACCELEROMETER_EVT_SHAKE,
