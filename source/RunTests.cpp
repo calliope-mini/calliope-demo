@@ -154,17 +154,21 @@ void tests_run()
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT, onTiltLeft);
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT, onTiltRight);
 
+    uBit.sleep(500);
+    uBit.serial.send("microphone\r\n");
+    uBit.display.clear();
+
     while (true) {
         int mic = uBit.io.P21.getAnalogValue();
         // ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         if (mic > 512) {
-	    const int gauge = static_cast<const int>((log2(mic - 511) * 4) / 9);
+        const int gauge = static_cast<const int>((log2(mic - 511) * 4) / 9);
 
             for (uint8_t i = 0; i <= 4; i++) {
                 const int16_t x = static_cast<uint16_t>(4);
                 const int16_t y = static_cast<uint16_t>(4 - i);
                 const uint8_t t = static_cast<uint8_t>(i > gauge ? 0 : 255);
-		        uBit.display.image.setPixelValue(x, y, t);
+                uBit.display.image.setPixelValue(x, y, t);
             }
             uBit.sleep(10);
 
