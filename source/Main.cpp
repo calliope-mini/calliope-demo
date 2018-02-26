@@ -1,14 +1,14 @@
-#include "Images.h"
-#include "Interpreter.h"
-#include "Menu.h"
 #include "MicroBit.h"
+#include "Storage.h"
+#include "Images.h"
+#include "RunTests.h"
 #include "RunDemo.h"
-#include "RunLoveMeter.h"
+#include "Menu.h"
 #include "RunOracle.h"
 #include "RunRockPaperScissors.h"
-#include "RunSnake.h"
-#include "RunTests.h"
-#include "Storage.h"
+#include "RunMultiplication.h"
+#include "RunVolumeMeter.h"
+#include "Interpreter.h"
 
 MicroBit uBit;
 
@@ -94,15 +94,15 @@ int main()
             menuAnimateLeave();
             break;
         // 3
-        case MenuStateLoveMeter:
+        case MenuStateMultiplication:
             menuAnimateEnter();
-            lovemeter_run();
+            multiplication_run();
             menuAnimateLeave();
             break;
         // 4
-        case MenuStateSnake:
+        case MenuStateVolumeMeter:
             menuAnimateEnter();
-            snake_run();
+            volumemeter_run();
             menuAnimateLeave();
             break;
         // 5

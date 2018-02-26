@@ -3,8 +3,8 @@
 typedef enum MenuState {
     MenuStateOracle = 1,
     MenuStateRockPaperScissors,
-    MenuStateLoveMeter,
-    MenuStateSnake,
+    MenuStateMultiplication,
+    MenuStateVolumeMeter,
     MenuStateInterpreter,
     MenuStateMin = MenuStateOracle,
     MenuStateMax = MenuStateInterpreter
