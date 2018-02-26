@@ -564,7 +564,7 @@ void instruction_display_show_image(Slice &code, Interpreter &interpreter, RunSt
     }
 
     const int32_t i = *image.value;
-    if (i >= (sizeof(images)/sizeof(images[0]))) {
+    if (static_cast<uint32_t>(i) >= sizeof(images)/sizeof(images[0])) {
         interpreter.status = INTERPRETER_KO_INSTRUCTION_INVALID;
         return;
     }
