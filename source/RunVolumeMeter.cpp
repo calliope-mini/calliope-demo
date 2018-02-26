@@ -71,11 +71,13 @@ void volumemeter_run()
         if (sum > 5*2.5) {
             uBit.rgb.setColour(0xFF, 0x00, 0x00, 0x00);
         } else {
-            uBit.rgb.off();
+            uBit.rgb.setColour(0x00, 0xFF, 0x00, 0x00);
         }
 
         uBit.sleep(100);
     }
+
+    uBit.rgb.off();
 
     uBit.messageBus.ignore(
         MICROBIT_ID_BUTTON_AB,
