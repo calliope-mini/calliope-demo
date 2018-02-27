@@ -325,12 +325,26 @@ static void interpreter_on_gesture(MicroBitEvent event)
 //     }
 // }
 
+static bool nothingToRun()
+{
+    for(uint8_t i = 0; i < METHODS_COUNT; i++) {
+      uint16_t method = interpreter.methods[i];
+      if (method != METHOD_UNUSED) {
+          return false;
+      }
+    }
+    return true;
+}
+
 static void interpreter_fiber()
 {
     LOG("interpreter\n\r");
 
+    while(nothingToRun()) {
+        uBit.sleep(100);
+    }
+
     while(true) {
-        interpreter_startup_sound();
         interpreter_reset_hardware();
 
         LOG("start\n\r");
@@ -353,6 +367,8 @@ static void interpreter_fiber()
         interpreter.status = INTERPRETER_OK;
 
         LOG("reset\n\r");
+
+        interpreter_startup_sound();
     }
 }
 

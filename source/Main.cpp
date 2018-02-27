@@ -9,8 +9,34 @@
 #include "RunMultiplication.h"
 #include "RunVolumeMeter.h"
 #include "Interpreter.h"
+#include "nrf.h"
 
 MicroBit uBit;
+
+static void showNameHistogram(MicroBitDisplay &display)
+{
+    NRF_FICR_Type *ficr = NRF_FICR;
+    uint32_t n = ficr->DEVICEID[1];
+    uint32_t ld = 1;
+    uint32_t d = MICROBIT_DFU_HISTOGRAM_HEIGHT;
+    uint32_t h;
+
+    display.clear();
+    for (uint32_t i = 0; i < MICROBIT_DFU_HISTOGRAM_WIDTH; i++)
+    {
+        h = (n % d) / ld;
+
+        n -= h;
+        d *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
+        ld *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
+
+        for (uint32_t j = 0; j < h + 1; j++)
+            display.image.setPixelValue(
+                static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_WIDTH - i - 1),
+                static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_HEIGHT - j - 1),
+                255);
+    }
+}
 
 static inline void waitForever()
 {
@@ -54,6 +80,7 @@ int main()
         // minimize serial buffer
         uBit.serial.setTxBufferSize(0);
 
+        showNameHistogram(uBit.display);
         interpreter_run();
 
         // not required - just to make it obvious this does not return
