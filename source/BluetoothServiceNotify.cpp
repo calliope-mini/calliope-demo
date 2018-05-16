@@ -1,6 +1,5 @@
 #include "BluetoothServiceNotify.h"
 #include "MicroBit.h"
-//#include "ble/UUID.h"
 #include "Bytes.h"
 
 extern MicroBit uBit;

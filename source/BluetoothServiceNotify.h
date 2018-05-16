@@ -1,22 +1,44 @@
-#pragma once
+
+#ifndef BLUETOOTH_SERVICE_NOTIFY_H
+#define BLUETOOTH_SERVICE_NOTIFY_H
+
 #include "ble/BLE.h"
 #include "Interpreter.h"
 
+/*!
+ * @class BluetoothServiceNotify
+ */
 class BluetoothServiceNotify
 {
-    public:
+public:
 
-        BluetoothServiceNotify(Interpreter &interpreter);
+    /*!
+     * Constructor.
+     * Create a representation of BluetoothServiceNotify
+     * @param interpreter Reference to an Interpreter instance
+     */
+    BluetoothServiceNotify(Interpreter &interpreter);
 
-        void onDataRead(GattReadAuthCallbackParams *params);
-        void send(uint16_t address, uint16_t value);
+    /*!
+     * Callback. Invoked when any of our attributes are read via BLE.
+     */
+    void onDataRead(GattReadAuthCallbackParams *params);
 
-    private:
+    /*!
+     * Send data via BLE.
+     * @param address
+     * @param value
+     */
+    void send(uint16_t address, uint16_t value);
 
-        Interpreter &interpreter;
-        BLEDevice &ble;
+private:
 
-        GattAttribute::Handle_t characteristicsHandle;
-        GattCharacteristic characteristic;
-        uint8_t characteristicsBuffer[CHARACTERISTICS_BUFFER_LEN];
+    Interpreter &interpreter;
+    BLEDevice &ble;
+
+    GattAttribute::Handle_t characteristicsHandle;
+    GattCharacteristic characteristic;
+    uint8_t characteristicsBuffer[CHARACTERISTICS_BUFFER_LEN];
 };
+
+#endif // BLUETOOTH_SERVICE_NOTIFY_H

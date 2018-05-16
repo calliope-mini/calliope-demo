@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MENU_H
+#define MENU_H
 
 typedef enum MenuState {
     MenuStateOracle = 1,
@@ -11,3 +12,5 @@ typedef enum MenuState {
 } menustate_t;
 
 menustate_t menuWaitForChoice(menustate_t start);
+
+#endif // MENU_H

@@ -4,7 +4,7 @@
   "description": "Calliope mini Demo",
   "license": "Apache 2.0",
   "dependencies": {
-    "microbit": "calliope-mini/microbit#v2.0.0-rc8-calliope-1.0.2"
+    "microbit": "calliope-mini/microbit#v2.0.0-calliope-1.0.5"
   },
   "targetDependencies": {},
   "bin": "./source"
