@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STORAGE_H
+#define STORAGE_H
 
 #define KEY_TEST "initial"
 #define KEY_DEMO "demo"
@@ -26,3 +27,5 @@ inline void removeStorageKey(const char* name)
 {
     uBit.storage.remove(name);
 }
+
+#endif // STORAGE_H

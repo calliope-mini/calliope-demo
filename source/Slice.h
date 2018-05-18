@@ -15,4 +15,4 @@ uint16_t slice_available(Slice &slice);
 uint8_t slice_read8(Slice &slice);
 uint16_t slice_read16(Slice &slice);
 
-#endif
+#endif // SLICE_H

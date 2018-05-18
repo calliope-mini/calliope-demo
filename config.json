@@ -15,11 +15,11 @@
     },
     "gatt_table_size": "0x600",
     "debug": 0,
-    "reuse_sd": 0,
     "heap_debug": 0,
+    "reuse_sd": 0,
     "default_pullmode": "PullDown",
     "heap_allocator": 1,
-    "nested_heap_proportion": 0.75,
+    "nested_heap_proportion": 0.6,
     "system_tick_period": 6,
     "system_components": 10,
     "idle_components": 6,
@@ -29,10 +29,10 @@
     "display_scroll_speed": 120,
     "display_scroll_stride": -1,
     "display_print_speed": 400,
-    "panic_on_heap_full": 1,
-    "stack_size": 3072,
+    "panic_on_heap_full": 0,
+    "stack_size": 2632,
     "sram_base": "0x20000008",
     "sram_end": "0x20004000",
-    "sd_limit": "0x20002800"
+    "sd_limit": "0x20002000"
   }
 }
