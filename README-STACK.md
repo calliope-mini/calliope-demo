@@ -9,10 +9,23 @@ which should not be modified, if you do not exactly know what to do.
 However in this file there are two defines, `__STACK_SIZE` and `__HEAP_SIZE` 
 which can be used to modify the stack and the heap from outside this function.
 
-To do so, the file [toolchain.cmake](yotta_targets/calliope-mini-classic-gcc/CMake/toolchain.cmake)
-can be extended. Add `-D__STACK_SIZE=2632 -D__HEAP_SIZE=1464` at the end of `add_definitions("...` 
+### 1.1: Modifying toolchain.cmake
+One option to do so, is to extend the file [toolchain.cmake](yotta_targets/calliope-mini-classic-gcc/CMake/toolchain.cmake). Add `-D__STACK_SIZE=2632 -D__HEAP_SIZE=1464` at the end of `add_definitions("...` 
 and the stack will have the size of 2632 Bytes and the heap will have the size of 1464 Bytes.
-**note: The size of Stack + Heap has to be 4096 Bytes or less**
+
+### 1.2: Adding defines.json
+The alternative option is to add a [defines.json](defines.json) file to the same directory, where [module.json](module.json) is located.
+Therein macro definitions can be added for the application. In this case the file would look like this:
+```[bash]
+{
+  "__STACK_SIZE": 2632,
+  "__HEAP_SIZE": 1464
+}
+```
+The advantage of this option is, that you do not have to modify any dependencies, but can add extra definitions to the application.
+The disadvantage is, that these definitions will apply to all application code, which can lead multiple definitions.
+
+**NOTE: The size of Stack + Heap has to be 4096 Bytes or less**
 
 ## 2: MicroBit custom heap configuration
 Since the [microbit-dal](yotta_modules/microbit-dal) 
