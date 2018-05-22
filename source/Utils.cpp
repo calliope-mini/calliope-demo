@@ -1,6 +1,6 @@
 #include "Utils.h"
-//#include "MicroBit.h"
-//#include "MicroBitImage.h"
+#include "MicroBit.h"
+#include "MicroBitImage.h"
 
 extern MicroBit uBit;
 

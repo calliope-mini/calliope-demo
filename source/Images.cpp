@@ -1,5 +1,4 @@
 #include "Images.h"
-#include <stdint.h>
 
 static const uint8_t pixel_full[25] = {
     1, 1, 1, 1, 1,

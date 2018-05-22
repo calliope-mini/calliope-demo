@@ -1,4 +1,6 @@
-#pragma once
+#ifndef INTERPRETER_H
+#define INTERPRETER_H
+
 #include <stdint.h>
 
 #define VERSION_MAJOR 0
@@ -132,3 +134,5 @@ void interpreter_run();
 void interpreter_start();
 void interpreter_reset();
 uint16_t interpreter_calculate_hash();
+
+#endif // INTERPRETER_H

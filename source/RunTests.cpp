@@ -1,9 +1,9 @@
 #include <cmath>
 #include "RunTests.h"
 #include "MicroBit.h"
-//#include "MicroBitSerial.h"
+#include "MicroBitSerial.h"
 #include "Images.h"
-//#include "Utils.h"
+#include "Utils.h"
 
 extern MicroBit uBit;
 

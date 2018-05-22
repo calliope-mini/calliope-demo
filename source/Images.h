@@ -1,4 +1,6 @@
-#pragma once
+#ifndef IMAGES_H
+#define IMAGES_H
+
 #include "MicroBitImage.h"
 
 extern const MicroBitImage *images[17];
@@ -20,3 +22,5 @@ extern const MicroBitImage ImageScissors;
 extern const MicroBitImage ImageWell;
 extern const MicroBitImage ImageFlash;
 extern const MicroBitImage ImageWave;
+
+#endif // IMAGES_H

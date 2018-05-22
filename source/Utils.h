@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTILS_H
+#define UTILS_H
 
 #include "MicroBit.h"
 
@@ -21,3 +22,4 @@ void blinkImageUntilEvent(
     const int pos2 = 0,
     const uint16_t delay = 200);
 
+#endif // UTILS_H
