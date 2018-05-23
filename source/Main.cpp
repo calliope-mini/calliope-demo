@@ -110,27 +110,27 @@ int main()
         switch (state) {
         // 1
         case MenuStateOracle:
-//            menuAnimateEnter();
-//            oracle_run();
-//            menuAnimateLeave();
+            menuAnimateEnter();
+                oracle_run();
+                menuAnimateLeave();
             break;
         // 2
         case MenuStateRockPaperScissors:
-//            menuAnimateEnter();
-//            rockpaperscissors_run();
-//            menuAnimateLeave();
+            menuAnimateEnter();
+                rockpaperscissors_run();
+                menuAnimateLeave();
             break;
         // 3
         case MenuStateMultiplication:
-//            menuAnimateEnter();
-//            multiplication_run();
-//            menuAnimateLeave();
+            menuAnimateEnter();
+                multiplication_run();
+                menuAnimateLeave();
             break;
         // 4
         case MenuStateVolumeMeter:
-//            menuAnimateEnter();
-//            volumemeter_run();
-//            menuAnimateLeave();
+            menuAnimateEnter();
+                volumemeter_run();
+                menuAnimateLeave();
             break;
         // 5
         case MenuStateInterpreter:

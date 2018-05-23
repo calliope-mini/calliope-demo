@@ -24,7 +24,7 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
     ),
     characteristicsBuffer()
 {
-    characteristic.requireSecurity(SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);
+    characteristic.requireSecurity(SecurityManager::SECURITY_MODE_ENCRYPTION_OPEN_LINK);//MICROBIT_BLE_SECURITY_LEVEL);
     characteristic.setReadAuthorizationCallback(this, &BluetoothServiceNotify::onDataRead);
 
     GattCharacteristic *characteristics[] = {
