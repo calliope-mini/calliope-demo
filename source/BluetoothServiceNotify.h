@@ -2,6 +2,7 @@
 #ifndef BLUETOOTH_SERVICE_NOTIFY_H
 #define BLUETOOTH_SERVICE_NOTIFY_H
 
+//#include "ManagedString.h"
 #include "ble/BLE.h"
 #include "Interpreter.h"
 
@@ -38,7 +39,7 @@ private:
 
     GattAttribute::Handle_t characteristicsHandle;
     GattCharacteristic characteristic;
-    uint8_t characteristicsBuffer[CHARACTERISTICS_BUFFER_LEN];
+    uint8_t characteristicsBuffer[16];
 };
 
 #endif // BLUETOOTH_SERVICE_NOTIFY_H

@@ -1,6 +1,8 @@
 #include "BluetoothServiceNotify.h"
 #include "MicroBit.h"
 #include "Bytes.h"
+#include "BluetoothServiceProgram.h"
+
 
 extern MicroBit uBit;
 
@@ -11,7 +13,7 @@ static const uint8_t  BluetoothServiceNotifyUUID[] = {
     0xa0,0x62,
     0xfa,0x19,0x22,0xdf,0xa9,0xa8
 };
-
+extern const uint8_t BluetoothServiceProgramUUID[];
 
 BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
     interpreter(_interpreter),
@@ -37,6 +39,37 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
         sizeof(characteristics) / sizeof(GattCharacteristic *));
 
     ble.addService(service);
+
+    // TODO make this configuration dependent
+#ifdef TARGET_NRF51_CALLIOPE
+    ManagedString namePrefix("Calliope mini [");
+#else
+    ManagedString namePrefix("BBC micro:bit [");
+#endif
+    ManagedString namePostfix("]");
+
+//    this->deviceName = microbit_friendly_name();
+    ManagedString BLEName = namePrefix + microbit_friendly_name() + namePostfix;
+
+
+//    // Update the advertised name of this micro:bit to include the device name
+    ble.clearAdvertisingPayload();
+
+    ble.accumulateAdvertisingPayload(
+            GapAdvertisingData::BREDR_NOT_SUPPORTED | GapAdvertisingData::LE_GENERAL_DISCOVERABLE);
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LOCAL_NAME, (uint8_t *) BLEName.toCharArray(),
+                                     BLEName.length());
+
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS, BluetoothServiceNotifyUUID,
+                                     16);
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS, BluetoothServiceProgramUUID,
+                                     16);
+
+    ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
+    ble.setAdvertisingInterval(200);
+
+    ble.setAdvertisingTimeout(0);
+    ble.startAdvertising();
 
     characteristicsHandle = characteristic.getValueHandle();
 }

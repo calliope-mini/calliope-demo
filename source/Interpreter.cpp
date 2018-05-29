@@ -6,7 +6,7 @@
 
 extern MicroBit uBit;
 
-static Interpreter interpreter;
+Interpreter interpreter;
 BluetoothServiceNotify *notify;
 
 static uint16_t find_stop(InterpreterMethod method)

@@ -78,7 +78,7 @@ int main()
         removeStorageKey(KEY_INTERPRETER);
 
         // minimize serial buffer
-        uBit.serial.setTxBufferSize(0);
+//        uBit.serial.setTxBufferSize(0);
 
         showNameHistogram(uBit.display);
         interpreter_run();
