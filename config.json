@@ -13,7 +13,7 @@
       "event_service": 0,
       "device_info_service": 1
     },
-    "gatt_table_size": "0x300",
+    "gatt_table_size": "0x600",
     "debug": 0,
     "heap_debug": 0,
     "reuse_sd": 0,
@@ -30,7 +30,7 @@
     "display_scroll_stride": -1,
     "display_print_speed": 400,
     "panic_on_heap_full": 0,
-    "stack_size": 2672,
+    "stack_size": 2560,
     "sram_base": "0x20000008",
     "sram_end": "0x20004000",
     "sd_limit": "0x20002000"
