@@ -1,6 +1,6 @@
 {
   "name": "calliope-demo",
-  "version": "1.0.3",
+  "version": "3.0.0",
   "description": "Calliope mini Demo",
   "license": "Apache 2.0",
   "dependencies": {
