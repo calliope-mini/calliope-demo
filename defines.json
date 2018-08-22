@@ -1,4 +1,5 @@
 {
   "__STACK_SIZE": 2560,
-  "__HEAP_SIZE": 2764
+  "__HEAP_SIZE": 2928,
+  "DEBUG_ISR_STACK_USAGE": 1
 }

@@ -102,7 +102,7 @@ void tests_run()
 
     uBit.serial.send("display\r\n");
     uBit.display.clear();
-    uBit.display.print(ImageFull);
+    uBit.display.print(*images(ImageFull));
     for (int i = 255; i > 0; i -= 2) {
         uBit.display.setBrightness(i);
         uBit.sleep(3);
@@ -131,7 +131,7 @@ void tests_run()
         uBit.accelerometer.getY();
         uBit.accelerometer.getZ();
     }
-    uBit.display.print(ImageTick);
+    uBit.display.print(*images(ImageTick));
 
     uBit.io.P12.isTouched();
     uBit.io.P0.isTouched();

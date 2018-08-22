@@ -24,7 +24,7 @@ void oracle_run()
         leave = false;
         while(!leave) {
 
-            uBit.display.print(ImageArrowLeft);
+            uBit.display.print(*images(ImageArrowLeft));
 
             for(uint32_t t=0, i=10; t<400 && !leave && !event; t+=i) {
                 uBit.sleep(i);
@@ -47,7 +47,7 @@ void oracle_run()
         }
 
         for (int i = 0; i < 5; i++) {
-            uBit.display.print(ImageDot);
+            uBit.display.print(*images(ImageDot));
             uBit.sleep(200);
             uBit.display.clear();
             uBit.sleep(50);
@@ -55,8 +55,8 @@ void oracle_run()
 
         int r = uBit.random(100);
         uBit.display.print((r < 50)
-            ? ImageSmiley
-            : ImageSadly
+            ? *images(ImageSmiley)
+            : *images(ImageSadly)
         );
 
         uBit.sleep(3000);

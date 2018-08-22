@@ -119,41 +119,95 @@ static const uint8_t pixel_wave[7 * 5] = {
     0, 0, 0, 0, 1, 1, 0,
     0, 0, 0, 0, 0, 0, 0
 };
-
-const MicroBitImage ImageSmiley(5, 5, pixel_smiley);
-const MicroBitImage ImageSadly(5, 5, pixel_sadly);
-const MicroBitImage ImageHeart(5, 5, pixel_heart);
-const MicroBitImage ImageArrowLeft(5, 5, pixel_arrow_left);
-const MicroBitImage ImageArrowRight(5, 5, pixel_arrow_right);
-const MicroBitImage ImageArrowLeftRight(5, 5, pixel_arrow_leftright);
-const MicroBitImage ImageFull(5, 5, pixel_full);
-const MicroBitImage ImageDot(5, 5, pixel_dot);
-const MicroBitImage ImageSmallRect(5, 5, pixel_small);
-const MicroBitImage ImageLargeRect(5, 5, pixel_large);
-const MicroBitImage ImageDoubleRow(5, 5, pixel_double_row);
-const MicroBitImage ImageTick(5, 5, pixel_tick);
-const MicroBitImage ImageRock(5, 5, pixel_rock);
-const MicroBitImage ImageScissors(5, 5, pixel_scissors);
-const MicroBitImage ImageWell(5, 5, pixel_well);
-const MicroBitImage ImageFlash(5, 5, pixel_flash);
-const MicroBitImage ImageWave(7, 5, pixel_wave);
-
-const MicroBitImage *images[17] = {
-    &ImageSmiley,
-    &ImageSadly,
-    &ImageHeart,
-    &ImageArrowLeft,
-    &ImageArrowRight,
-    &ImageArrowLeftRight,
-    &ImageFull,
-    &ImageDot,
-    &ImageSmallRect,
-    &ImageLargeRect,
-    &ImageDoubleRow,
-    &ImageTick,
-    &ImageRock,
-    &ImageScissors,
-    &ImageWell,
-    &ImageFlash,
-    &ImageWave,
+static const uint8_t pixel_multiplier[25] = {
+        0, 0, 0, 0, 0,
+        0, 1, 0, 1, 0,
+        0, 0, 1, 0, 0,
+        0, 1, 0, 1, 0,
+        0, 0, 0, 0, 0
 };
+
+
+
+MicroBitImage *images(Image_t index){
+    static MicroBitImage returnImage;
+    switch(index){
+        case ImageSmiley: {
+            returnImage = MicroBitImage(5, 5, pixel_smiley);
+            break;
+        }
+        case ImageSadly: {
+            returnImage = MicroBitImage(5, 5, pixel_sadly);
+            break;
+        }
+        case ImageHeart: {
+            returnImage = MicroBitImage(5, 5, pixel_heart);
+            break;
+        }
+        case ImageArrowLeft: {
+            returnImage = MicroBitImage(5, 5, pixel_arrow_left);
+            break;
+        }
+        case ImageArrowRight: {
+            returnImage = MicroBitImage(5, 5, pixel_arrow_right);
+            break;
+        }
+        case ImageArrowLeftRight: {
+            returnImage = MicroBitImage(5, 5, pixel_arrow_leftright);
+            break;
+        }
+        case ImageFull: {
+            returnImage = MicroBitImage(5, 5, pixel_full);
+            break;
+        }
+        case ImageDot: {
+            returnImage = MicroBitImage(5, 5, pixel_dot);
+            break;
+        }
+        case ImageSmallRect: {
+            returnImage = MicroBitImage (5, 5, pixel_small);
+            break;
+        }
+        case ImageLargeRect: {
+            returnImage = MicroBitImage (5, 5, pixel_large);
+            break;
+        }
+        case ImageDoubleRow: {
+            returnImage = MicroBitImage(5, 5, pixel_double_row);
+            break;
+        }
+        case ImageTick: {
+            returnImage = MicroBitImage(5, 5, pixel_tick);
+            break;
+        }
+        case ImageRock: {
+            returnImage = MicroBitImage(5, 5, pixel_rock);
+            break;
+        }
+        case ImageScissors: {
+            returnImage = MicroBitImage(5, 5, pixel_scissors);
+            break;
+        }
+        case ImageWell: {
+
+            returnImage = MicroBitImage(5, 5, pixel_well);
+            break;
+        }
+        case ImageFlash: {
+            returnImage = MicroBitImage(5, 5, pixel_flash);
+            break;
+        }
+        case ImageWave: {
+            returnImage = MicroBitImage(7, 5, pixel_wave);
+            break;
+        }
+        case ImageMultiplier:
+            returnImage = MicroBitImage(5, 5, pixel_multiplier);
+            break;
+        default:
+            returnImage = MicroBitImage(5, 5, pixel_sadly);
+
+            break;
+    }
+    return &returnImage;
+}

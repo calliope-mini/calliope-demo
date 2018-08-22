@@ -47,22 +47,22 @@ static inline void waitForever()
 
 static void menuAnimateEnter()
 {
-    uBit.display.print(ImageDot);
+    uBit.display.print(*images(ImageDot));
     uBit.sleep(200);
-    uBit.display.print(ImageSmallRect);
+    uBit.display.print(*images(ImageSmallRect));
     uBit.sleep(200);
-    uBit.display.print(ImageLargeRect);
+    uBit.display.print(*images(ImageLargeRect));
     uBit.sleep(200);
     uBit.display.clear();
 }
 
 static void menuAnimateLeave()
 {
-    uBit.display.print(ImageLargeRect);
+    uBit.display.print(*images(ImageLargeRect));
     uBit.sleep(200);
-    uBit.display.print(ImageSmallRect);
+    uBit.display.print(*images(ImageSmallRect));
     uBit.sleep(200);
-    uBit.display.print(ImageDot);
+    uBit.display.print(*images(ImageDot));
     uBit.sleep(200);
     uBit.display.clear();
 }
@@ -72,7 +72,7 @@ int main()
     uBit.init();
     uBit.accelerometer.updateSample();
 
-    uBit.serial.send("Calliope Demo v1.1\r\n");
+    uBit.serial.send("Calliope Demo v1.3\r\n");
 
     if (hasStorageKey(KEY_INTERPRETER)) {
         removeStorageKey(KEY_INTERPRETER);

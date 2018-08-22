@@ -35,7 +35,7 @@ void lovemeter_run()
     uBit.io.P1.isTouched();
     uBit.io.P2.isTouched();
 
-    uBit.display.print(ImageHeart);
+    uBit.display.print(*images(ImageHeart));
 
     invoke(lovemeter_fiber);
 
@@ -44,7 +44,7 @@ void lovemeter_run()
 
         event = false;
         for (uint8_t i = 0; !leave && !event; i++) {
-            blinkImage(ImageWave, (i % 2) == 0 ? -1 : -2, 200);
+            blinkImage(*images(ImageWave), (i % 2) == 0 ? -1 : -2, 200);
         }
 
         if (leave) {
@@ -61,7 +61,7 @@ void lovemeter_run()
         uBit.sleep(1000);
 
         if (v3 > 6) {
-            uBit.display.print(ImageHeart);
+            uBit.display.print(*images(ImageHeart));
             uBit.soundmotor.soundOn(1000);
             uBit.sleep(100);
             uBit.soundmotor.soundOn(2000);
@@ -71,7 +71,7 @@ void lovemeter_run()
             uBit.soundmotor.soundOff();
             uBit.sleep(4000);
         } else {
-            uBit.display.print(ImageFlash);
+            uBit.display.print(*images(ImageFlash));
             uBit.soundmotor.soundOn(1000);
             uBit.sleep(100);
             uBit.soundmotor.soundOn(500);

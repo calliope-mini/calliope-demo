@@ -59,7 +59,7 @@ static void interpreter_run_method(InterpreterMethod method, int32_t r0 = 0, int
 
         uint8_t instruction = slice_read8(code);
 
-        // LOG("%d: @0x%x ins 0x%x\n\r", id, code.position-1, instruction);
+//         LOG("%d: @0x%x ins 0x%x\n\r", id, code.position-1, instruction);
 
         switch(instruction) {
             case INS_RET:

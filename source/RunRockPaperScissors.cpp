@@ -14,10 +14,10 @@ void rockpaperscissors_run()
         MICROBIT_BUTTON_EVT_CLICK,
         leaveHandler);
 
-    uBit.display.print(ImageRock, 0, 0, 0, pause * 2);
-    uBit.display.print(ImageFull, 0, 0, 0, pause * 2);
-    uBit.display.print(ImageScissors, 0, 0, 0, pause * 2);
-    uBit.display.print(ImageWell, 0, 0, 0, pause * 2);
+    uBit.display.print(*images(ImageRock), 0, 0, 0, pause * 2);
+    uBit.display.print(*images(ImageFull), 0, 0, 0, pause * 2);
+    uBit.display.print(*images(ImageScissors), 0, 0, 0, pause * 2);
+    uBit.display.print(*images(ImageWell), 0, 0, 0, pause * 2);
     uBit.display.clear();
     uBit.sleep(pause);
 
@@ -27,7 +27,7 @@ void rockpaperscissors_run()
         blinkImageUntilEvent(
             MICROBIT_ID_GESTURE,
             MICROBIT_ACCELEROMETER_EVT_SHAKE,
-            ImageDoubleRow,
+            *images(ImageDoubleRow),
             -1,
             2,
             100);
@@ -38,13 +38,13 @@ void rockpaperscissors_run()
 
         int r = uBit.random(400);
         if (r < 100) {
-            uBit.display.print(ImageRock);
+            uBit.display.print(*images(ImageRock));
         } else if (r < 200) {
-            uBit.display.print(ImageFull);
+            uBit.display.print(*images(ImageFull));
         } else if (r < 300) {
-            uBit.display.print(ImageScissors);
+            uBit.display.print(*images(ImageScissors));
         } else {
-            uBit.display.print(ImageWell);
+            uBit.display.print(*images(ImageWell));
         }
 
         uBit.sleep(3000);

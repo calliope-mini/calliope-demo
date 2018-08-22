@@ -40,8 +40,8 @@ void demo_run()
     blinkImageUntilEvent(
         MICROBIT_ID_BUTTON_A,
         MICROBIT_BUTTON_EVT_CLICK,
-        ImageArrowLeft);
-    uBit.display.print(ImageTick);
+        *images(ImageArrowLeft));
+    uBit.display.print(*images(ImageTick));
     uBit.sleep(pause);
     uBit.display.clear();
 
@@ -51,8 +51,8 @@ void demo_run()
     blinkImageUntilEvent(
         MICROBIT_ID_BUTTON_B,
         MICROBIT_BUTTON_EVT_CLICK,
-        ImageArrowRight);
-    uBit.display.print(ImageTick);
+        *images(ImageArrowRight));
+    uBit.display.print(*images(ImageTick));
     uBit.sleep(pause);
     uBit.display.clear();
 
@@ -62,9 +62,9 @@ void demo_run()
     blinkImageUntilEvent(
         MICROBIT_ID_BUTTON_AB,
         MICROBIT_BUTTON_EVT_CLICK,
-        ImageArrowLeftRight);
+        *images(ImageArrowLeftRight));
     beep();
-    uBit.display.print(ImageTick);
+    uBit.display.print(*images(ImageTick));
     uBit.sleep(pause);
     uBit.display.clear();
 
@@ -73,11 +73,11 @@ void demo_run()
     blinkImageUntilEvent(
         MICROBIT_ID_GESTURE,
         MICROBIT_ACCELEROMETER_EVT_SHAKE,
-        ImageDoubleRow,
+        *images(ImageDoubleRow),
         -1,
         2,
         100);
-    uBit.display.print(ImageTick);
+    uBit.display.print(*images(ImageTick));
     uBit.sleep(pause);
     uBit.display.clear();
 
@@ -103,7 +103,7 @@ void demo_run()
             uBit.rgb.setColour(0x00, 0xA5, 0xFF, 0x00);
         }
 
-        blinkImage(ImageHeart, 0, 200);
+        blinkImage(*images(ImageHeart), 0, 200);
     }
 
     uBit.messageBus.ignore(
@@ -118,6 +118,6 @@ void demo_run()
     uBit.rgb.off();
     uBit.display.clear();
 
-    uBit.display.print(ImageSmiley);
+    uBit.display.print(*images(ImageSmiley));
     uBit.sleep(1000);
 }

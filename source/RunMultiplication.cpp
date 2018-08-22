@@ -5,16 +5,6 @@
 
 extern MicroBit uBit;
 
-static const uint8_t pixel_multiplier[25] = {
-    0, 0, 0, 0, 0,
-    0, 1, 0, 1, 0,
-    0, 0, 1, 0, 0,
-    0, 1, 0, 1, 0,
-    0, 0, 0, 0, 0
-};
-static const MicroBitImage ImageMultiplier(5, 5, pixel_multiplier);
-
-
 static int factor1 = 0;
 static int factor2 = 0;
 static bool ready = false;
@@ -29,7 +19,7 @@ static void factor1Handler(MicroBitEvent)
 
 static void factor2Handler(MicroBitEvent)
 {
-    uBit.display.print(ImageMultiplier);
+    uBit.display.print(*images(ImageMultiplier));
     uBit.sleep(300);
 
     factor2 = uBit.random(10);
@@ -48,7 +38,7 @@ static void helpHandler(MicroBitEvent)
     uBit.display.scroll(result);
     uBit.sleep(300);
 
-    uBit.display.print(ImageArrowLeft);
+    uBit.display.print(*images(ImageArrowLeft));
 }
 
 void multiplication_run() {
@@ -73,7 +63,7 @@ void multiplication_run() {
         MICROBIT_ACCELEROMETER_EVT_SHAKE,
         helpHandler);
 
-    uBit.display.print(ImageArrowLeft);
+    uBit.display.print(*images(ImageArrowLeft));
 
     leave = false;
     while(!leave) {

@@ -564,12 +564,12 @@ void instruction_display_show_image(Slice &code, Interpreter &interpreter, RunSt
     }
 
     const int32_t i = *image.value;
-    if (static_cast<uint32_t>(i) >= sizeof(images)/sizeof(images[0])) {
+    if (static_cast<uint32_t>(i) >= sizeof(Image_t)) {
         interpreter.status = INTERPRETER_KO_INSTRUCTION_INVALID;
         return;
     }
 
-    uBit.display.print(*images[i]);
+    uBit.display.print(*images((Image_t)i));
 
     state.pc = code.position;
 }
