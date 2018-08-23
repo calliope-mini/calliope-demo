@@ -117,3 +117,8 @@ Key to Flags:
 
 The `.heap` and `.stack_dummy` will tell you the address range.
  
+ 
+## More sophisticated Approach, but for MBED 5
+
+The following git repo will give you more information:
+[mbed-memory-status](https://github.com/nuket/mbed-memory-status) 
