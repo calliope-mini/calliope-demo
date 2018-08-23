@@ -22,7 +22,8 @@ enum Image_t{
     ImageWell,
     ImageFlash,
     ImageWave,
-    ImageMultiplier
+    ImageMultiplier,
+    ImageCOUNTER
 };
 
 MicroBitImage *images(Image_t index);

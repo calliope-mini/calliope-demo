@@ -564,12 +564,16 @@ void instruction_display_show_image(Slice &code, Interpreter &interpreter, RunSt
     }
 
     const int32_t i = *image.value;
-    if (static_cast<uint32_t>(i) >= sizeof(Image_t)) {
+    if (static_cast<uint32_t>(i) > ImageCOUNTER) {
+
         interpreter.status = INTERPRETER_KO_INSTRUCTION_INVALID;
         return;
     }
-
-    uBit.display.print(*images((Image_t)i));
+    if (i == ImageWave){
+        uBit.display.scroll(*images((Image_t)(i)));
+    }
+    else
+        uBit.display.print(*images((Image_t)(i)));
 
     state.pc = code.position;
 }
