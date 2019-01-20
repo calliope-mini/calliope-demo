@@ -70,7 +70,6 @@ static void menuAnimateLeave()
 int main()
 {
     uBit.init();
-    uBit.accelerometer.updateSample();
 
     uBit.serial.send("Calliope Demo v1.3\r\n");
 

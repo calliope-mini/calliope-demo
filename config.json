@@ -1,5 +1,8 @@
 {
   "microbit-dal": {
+    "accelerometer": {
+      "bmx055": 1
+    },
     "bluetooth": {
       "enabled": 1,
       "pairing_mode": 1,

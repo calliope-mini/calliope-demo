@@ -28,68 +28,58 @@ void onButtonAB(MicroBitEvent)
     uBit.rgb.setColour(0, 255, 0, 0);
 }
 
-void onButton0(MicroBitEvent)
-{
-    uBit.display.print("0");
+void onTouch(MicroBitEvent e) {
+    if(e.value == MICROBIT_PIN_EVENT_ON_TOUCH) {
+        switch(e.source) {
+            case MICROBIT_ID_IO_P12:
+                uBit.display.print("0");
+                return;
+            case MICROBIT_ID_IO_P0:
+                uBit.display.print("1");
+                return;
+            case MICROBIT_ID_IO_P1:
+                uBit.display.print("2");
+                return;
+            case MICROBIT_ID_IO_P16:
+                uBit.display.print("3");
+                return;
+            default:
+                return;
+        }
+    }
 }
 
-void onButton1(MicroBitEvent)
+void onGesture(MicroBitEvent e)
 {
-    uBit.display.print("1");
-}
-
-void onButton2(MicroBitEvent)
-{
-    uBit.display.print("2");
-}
-
-void onButton3(MicroBitEvent)
-{
-    uBit.display.print("3");
-}
-
-void onShake(MicroBitEvent)
-{
-    uBit.display.print("S");
-}
-
-void onFaceUp(MicroBitEvent)
-{
-    uBit.display.print("+");
-}
-
-void onFaceDown(MicroBitEvent)
-{
-    uBit.display.print("-");
-}
-
-void onTiltUp(MicroBitEvent)
-{
-    uBit.display.print("U");
-}
-
-void onTiltDown(MicroBitEvent)
-{
-    uBit.display.print("D");
-}
-
-void onTiltLeft(MicroBitEvent)
-{
-    uBit.display.print("L");
-}
-
-void onTiltRight(MicroBitEvent)
-{
-    uBit.display.print("R");
+    switch(e.value) {
+        case MICROBIT_ACCELEROMETER_EVT_SHAKE:
+            uBit.display.print("S");
+            break;
+        case MICROBIT_ACCELEROMETER_EVT_FACE_UP:
+            uBit.display.print("+");
+            break;
+        case MICROBIT_ACCELEROMETER_EVT_FACE_DOWN:
+            uBit.display.print("-");
+            break;
+        case MICROBIT_ACCELEROMETER_EVT_TILT_UP:
+            uBit.display.print("U");
+            break;
+        case MICROBIT_ACCELEROMETER_EVT_TILT_DOWN:
+            uBit.display.print("D");
+            break;
+        case MICROBIT_ACCELEROMETER_EVT_TILT_LEFT:
+            uBit.display.print("L");
+            break;
+        case MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT:
+            uBit.display.print("R");
+            break;
+        default:
+            return;
+    }
 }
 
 void tests_run()
 {
-    uBit.serial.setTxBufferSize(MICROBIT_SERIAL_DEFAULT_BUFFER_SIZE);
-
-    uBit.sleep(200);
-
-    uBit.serial.send("sound\r\n");
     uBit.soundmotor.setSoundSilentMode(true);
     uBit.soundmotor.soundOn(500);
     uBit.sleep(100);
@@ -100,7 +90,6 @@ void tests_run()
     uBit.soundmotor.soundOff();
     uBit.sleep(500);
 
-    uBit.serial.send("display\r\n");
     uBit.display.clear();
     uBit.display.print(*images(ImageFull));
     for (int i = 255; i > 0; i -= 2) {
@@ -113,7 +102,6 @@ void tests_run()
         uBit.sleep(3);
     }
 
-    uBit.serial.send("RGB led\r\n");
     uBit.rgb.off();
     uBit.rgb.setColour(255, 0, 0, 0);
     uBit.sleep(200);
@@ -125,13 +113,13 @@ void tests_run()
     uBit.sleep(200);
     uBit.rgb.off();
 
-    uBit.serial.send("accelerometer\r\n");
     for (int i = 0; i < 10; i++) {
         uBit.accelerometer.getX();
         uBit.accelerometer.getY();
         uBit.accelerometer.getZ();
     }
     uBit.display.print(*images(ImageTick));
+    uBit.sleep(500);
 
     uBit.io.P12.isTouched();
     uBit.io.P0.isTouched();
@@ -141,21 +129,10 @@ void tests_run()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, onButtonAB);
-    uBit.messageBus.listen(MICROBIT_ID_IO_P12, MICROBIT_EVT_ANY, onButton0);
-    uBit.messageBus.listen(MICROBIT_ID_IO_P0, MICROBIT_EVT_ANY, onButton1);
-    uBit.messageBus.listen(MICROBIT_ID_IO_P1, MICROBIT_EVT_ANY, onButton2);
-    uBit.messageBus.listen(MICROBIT_ID_IO_P16, MICROBIT_EVT_ANY, onButton3);
+    uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_PIN_EVENT_ON_TOUCH, onTouch);
 
-    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_SHAKE, onShake);
-    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_FACE_UP, onFaceUp);
-    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_FACE_DOWN, onFaceDown);
-    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_UP, onTiltUp);
-    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_DOWN, onTiltDown);
-    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT, onTiltLeft);
-    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT, onTiltRight);
+    uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_EVT_ANY, onGesture);
 
-    uBit.sleep(500);
-    uBit.serial.send("microphone\r\n");
     uBit.display.clear();
 
     while (true) {
@@ -170,9 +147,9 @@ void tests_run()
                 const uint8_t t = static_cast<uint8_t>(i > gauge ? 0 : 255);
                 uBit.display.image.setPixelValue(x, y, t);
             }
-            uBit.sleep(10);
+            uBit.sleep(100);
 
-            uBit.serial.printf("mic: %d -> %d\r\n", mic, gauge);
+//            uBit.serial.printf("mic: %d -> %d\r", mic, gauge, ASYNC);
         }
     }
 }

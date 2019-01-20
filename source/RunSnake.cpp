@@ -22,7 +22,7 @@ struct Point {
 static Point head;
 static Point tail;
 static Point food;
-static MicroBitImage map(5, 5);
+static MicroBitImage *map;
 
 static void placeFood()
 {
@@ -35,7 +35,7 @@ static void placeFood()
         if (x == 0)
             y = (y + 1) % 5;
 
-        if (map.getPixelValue(x, y) == SNAKE_EMPTY)
+        if (map->getPixelValue(x, y) == SNAKE_EMPTY)
             r--;
     }
 
@@ -88,7 +88,8 @@ void snake_run()
     snakeLength = 1;
     growing = 0;
     score = 0;
-    map.clear();
+    map = new MicroBitImage(5, 5);
+    map->clear();
 
     uBit.messageBus.listen(
         MICROBIT_ID_BUTTON_A,
@@ -183,7 +184,7 @@ void snake_run()
             a_pressed = false;
             b_pressed = false;
 
-            int status = map.getPixelValue(newHead.x, newHead.y);
+            int status = map->getPixelValue(newHead.x, newHead.y);
             if (status == SNAKE_UP || status == SNAKE_DOWN || status == SNAKE_LEFT || status == SNAKE_RIGHT) {
                 uBit.display.scroll("The End");
                 uBit.display.scroll(score);
@@ -191,7 +192,7 @@ void snake_run()
             }
 
             // move the head.
-            map.setPixelValue(head.x, head.y, hdirection);
+            map->setPixelValue(head.x, head.y, hdirection);
             uBit.display.image.setPixelValue(newHead.x, newHead.y, 255);
 
             if (growing == GROWTH_SPEED) {
@@ -199,8 +200,8 @@ void snake_run()
                 snakeLength++;
             } else {
                 // move the tail.
-                tdirection = map.getPixelValue(tail.x, tail.y);
-                map.setPixelValue(tail.x, tail.y, SNAKE_EMPTY);
+                tdirection = map->getPixelValue(tail.x, tail.y);
+                map->setPixelValue(tail.x, tail.y, SNAKE_EMPTY);
                 uBit.display.image.setPixelValue(tail.x, tail.y, 0);
 
                 // Move our record of the tail's location.
@@ -252,4 +253,6 @@ void snake_run()
         MICROBIT_ID_BUTTON_AB,
         MICROBIT_BUTTON_EVT_CLICK,
         leaveHandler);
+    
+    delete map;
 }
