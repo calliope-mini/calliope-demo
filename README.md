@@ -8,7 +8,7 @@ flashing the device. Any subsequent reset or power cycle will not show it again.
 ## Compiling
 
 - `yt build` (add `--config config_en.json` to compile with English localization, default is German)
-- copy the `calliope-demo-combined.hex` on the board
+- copy the `calliope-firmware-v3.1.0.hex` on the board
 
 
 ## Test Code 
