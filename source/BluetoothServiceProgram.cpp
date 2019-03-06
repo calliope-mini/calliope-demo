@@ -8,13 +8,13 @@ extern MicroBit uBit;
 BluetoothServiceProgram::BluetoothServiceProgram(Interpreter &_interpreter) :
     interpreter(_interpreter),
     ble(*uBit.ble),
+    characteristicsBuffer(),
     characteristic(
         BluetoothServiceProgramUUID,
         (uint8_t *)&characteristicsBuffer, 0, sizeof(characteristicsBuffer),
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_WRITE |
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ
-    ),
-    characteristicsBuffer()
+    )
 {
     characteristic.requireSecurity(SecurityManager::SECURITY_MODE_ENCRYPTION_OPEN_LINK);//MICROBIT_BLE_SECURITY_LEVEL);
     characteristic.setReadAuthorizationCallback(this, &BluetoothServiceProgram::onDataRead);
@@ -120,7 +120,7 @@ void BluetoothServiceProgram::onDataRead(GattReadAuthCallbackParams *params)
             LO16(CODE_LEN),
             HI16(hash_is),
             LO16(hash_is),
-            interpreter.status
+            (uint8_t)(interpreter.status)
         };
 
         ble.gattServer().write(

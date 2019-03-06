@@ -38,8 +38,8 @@ private:
     BLEDevice &ble;
 
     GattAttribute::Handle_t characteristicsHandle;
+    uint8_t characteristicsBuffer[4];
     GattCharacteristic characteristic;
-    uint8_t characteristicsBuffer[16];
 };
 
 #endif // BLUETOOTH_SERVICE_NOTIFY_H

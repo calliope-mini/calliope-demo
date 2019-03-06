@@ -7,6 +7,7 @@ extern MicroBit uBit;
 menustate_t menuWaitForChoice(menustate_t start)
 {
     menustate_t state = start;
+
     while (true) {
 
         // if (state == MenuStateInterpreter) {

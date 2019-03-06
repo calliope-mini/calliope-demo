@@ -70,8 +70,9 @@ static void menuAnimateLeave()
 int main()
 {
     uBit.init();
+    uBit.accelerometer.updateSample();
 
-    uBit.serial.send("Calliope Demo v1.3\r\n");
+    uBit.serial.send("Calliope Demo v2.1\r\n");
 
     if (hasStorageKey(KEY_INTERPRETER)) {
         removeStorageKey(KEY_INTERPRETER);
@@ -79,8 +80,8 @@ int main()
         // minimize serial buffer
 //        uBit.serial.setTxBufferSize(0);
 
-        showNameHistogram(uBit.display);
-        interpreter_run();
+        showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
+        interpreter_start();
 
         // not required - just to make it obvious this does not return
         waitForever();

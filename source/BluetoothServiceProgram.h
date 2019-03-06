@@ -34,8 +34,8 @@ private:
     BLEDevice &ble;
 
     GattAttribute::Handle_t characteristicsHandle;
-    GattCharacteristic characteristic;
     uint8_t characteristicsBuffer[CHARACTERISTICS_BUFFER_LEN];
+    GattCharacteristic characteristic;
 };
 
 

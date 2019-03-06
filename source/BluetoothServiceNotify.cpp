@@ -2,6 +2,7 @@
 #include "MicroBit.h"
 #include "Bytes.h"
 #include "BluetoothServiceProgram.h"
+#include "Images.h"
 
 
 extern MicroBit uBit;
@@ -14,19 +15,28 @@ static const uint8_t  BluetoothServiceNotifyUUID[] = {
     0xfa,0x19,0x22,0xdf,0xa9,0xa8
 };
 
+/**
+  * Callback when a BLE connection is established.
+  */
+static void bleConnectionCallback(const Gap::ConnectionCallbackParams_t *)
+{
+    LOG("CONNECTED\r\n");
+    uBit.display.print(*images(ImageTick));
+}
+
+
 BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
     interpreter(_interpreter),
     ble(*uBit.ble),
+    characteristicsBuffer(),
     characteristic(
         BluetoothServiceNotifyUUID,
         (uint8_t *)&characteristicsBuffer, 0, sizeof(characteristicsBuffer),
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ |
         GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_NOTIFY
-    ),
-    characteristicsBuffer()
+    )
 {
     characteristic.requireSecurity(SecurityManager::SECURITY_MODE_ENCRYPTION_OPEN_LINK);
-    characteristic.setReadAuthorizationCallback(this, &BluetoothServiceNotify::onDataRead);
 
     GattCharacteristic *characteristics[] = {
         &characteristic
@@ -36,6 +46,8 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
         BluetoothServiceNotifyUUID,
         characteristics,
         sizeof(characteristics) / sizeof(GattCharacteristic *));
+
+    ble.gap().onConnection(bleConnectionCallback);
 
     ble.addService(service);
 
@@ -70,24 +82,22 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
     characteristicsHandle = characteristic.getValueHandle();
 }
 
-void BluetoothServiceNotify::onDataRead(GattReadAuthCallbackParams *params)
-{
-    if (params->handle == characteristicsHandle) {
-    }
-}
 
 void BluetoothServiceNotify::send(uint16_t address, uint16_t value)
 {
     if (ble.getGapState().connected) {
 
-        uint8_t buffer[4];
-        buffer[0] = HI16(address);
-        buffer[1] = LO16(address);
-        buffer[2] = HI16(value);
-        buffer[3] = LO16(value);
+        LOG("send addr:%d, val:%d\r\n", address, value);
 
-        ble.gattServer().notify(
+        //uint8_t buffer[4];
+        characteristicsBuffer[0] = HI16(address);
+        characteristicsBuffer[1] = LO16(address);
+        characteristicsBuffer[2] = HI16(value);
+        characteristicsBuffer[3] = LO16(value);
+
+        ble.gattServer().write(
             characteristicsHandle,
-            (uint8_t *)buffer, sizeof(buffer));
+            (uint8_t *)characteristicsBuffer, sizeof(characteristicsBuffer));
     }
 }
+

@@ -626,9 +626,7 @@ void instruction_display_show_text(Slice &code, Interpreter &interpreter, RunSta
     // So make sure to also send the 0 byte. For security reasons we force it.
     code.buffer[code.position+len-1] = 0;
 
-    const ManagedString text = ManagedString((char*)&code.buffer[code.position]);
-
-    uBit.display.scroll(ManagedString(text));
+    uBit.display.scroll(ManagedString((char*)&code.buffer[code.position]));
 
     state.pc = code.position + len;
 }
