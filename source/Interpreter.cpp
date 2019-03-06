@@ -3,6 +3,7 @@
 #include "BluetoothServiceProgram.h"
 #include "BluetoothServiceNotify.h"
 #include "Instruction.h"
+#include "CalliopeServiceRGB.h"
 
 extern MicroBit uBit;
 
@@ -522,6 +523,7 @@ static void interpreter_init()
     interpreter_reset();
 
     // new BluetoothServiceDebug(interpreter);
+    new CalliopeRGBService(*uBit.ble, uBit.display, uBit.rgb);
     new BluetoothServiceProgram(interpreter);
     notify = new BluetoothServiceNotify(interpreter);
 

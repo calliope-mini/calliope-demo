@@ -3,6 +3,7 @@
 #include "Bytes.h"
 #include "BluetoothServiceProgram.h"
 #include "Images.h"
+#include "CalliopeServiceRGB.h"
 
 
 extern MicroBit uBit;
@@ -73,6 +74,9 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
                                      16);
     ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
                                      BluetoothServiceProgramUUID,
+                                     16);
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+                                     CalliopeRGBServiceUUID,
                                      16);
     ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
     ble.setAdvertisingInterval(200);

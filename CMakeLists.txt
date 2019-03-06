@@ -175,6 +175,7 @@ add_executable(calliope-demo
         source/Slice.h
         source/Storage.h
         source/Utils.cpp
+        source/CalliopeServiceRGB.cpp
 )
 #else()
 #   add_executable(calliope-demo
