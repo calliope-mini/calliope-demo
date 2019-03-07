@@ -4,6 +4,8 @@
 #include "BluetoothServiceNotify.h"
 #include "Instruction.h"
 #include "CalliopeServiceRGB.h"
+#include "CalliopeServiceLightSensor.h"
+#include "CalliopeServiceMicrophone.h"
 
 extern MicroBit uBit;
 
@@ -523,7 +525,14 @@ static void interpreter_init()
     interpreter_reset();
 
     // new BluetoothServiceDebug(interpreter);
-    new CalliopeRGBService(*uBit.ble, uBit.display, uBit.rgb);
+    new CalliopeRGBService(*uBit.ble, uBit.rgb);
+    new CalliopeLightSensorService(*uBit.ble, uBit.display);
+    new CalliopeMicrophoneService(*uBit.ble, uBit.io);
+
+//    new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
+//    new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
+//    new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
+//
     new BluetoothServiceProgram(interpreter);
     notify = new BluetoothServiceNotify(interpreter);
 

@@ -4,6 +4,8 @@
 #include "BluetoothServiceProgram.h"
 #include "Images.h"
 #include "CalliopeServiceRGB.h"
+#include "CalliopeServiceLightSensor.h"
+#include "CalliopeServiceMicrophone.h"
 
 
 extern MicroBit uBit;
@@ -54,7 +56,7 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
 
     // TODO make this configuration dependent
 #ifdef TARGET_NRF51_CALLIOPE
-    ManagedString namePrefix("Calliope mini [");
+    ManagedString namePrefix("micro:bit [");//"Calliope mini [");
 #else
     ManagedString namePrefix("BBC micro:bit [");
 #endif
@@ -77,6 +79,12 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
                                      16);
     ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
                                      CalliopeRGBServiceUUID,
+                                     16);
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+                                     CalliopeLightSensorServiceUUID,
+                                     16);
+    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+                                     CalliopeMicrophoneServiceUUID,
                                      16);
     ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
     ble.setAdvertisingInterval(200);

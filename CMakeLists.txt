@@ -176,6 +176,8 @@ add_executable(calliope-demo
         source/Storage.h
         source/Utils.cpp
         source/CalliopeServiceRGB.cpp
+        source/CalliopeServiceLightSensor.cpp
+        source/CalliopeServiceMicrophone.cpp
 )
 #else()
 #   add_executable(calliope-demo

@@ -1,7 +1,9 @@
 //
-// Created by wowa on 06.03.19.
+// Created by wowa on 07.03.19.
 //
 
+#ifndef CALLIOPE_DEMO_CALLIOPESERVICELIGHTSENSOR_H
+#define CALLIOPE_DEMO_CALLIOPESERVICELIGHTSENSOR_H
 /*
 The MIT License (MIT)
 
@@ -27,54 +29,51 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef CALLIOPE_DEMO_CALLIOPESERVICERGB_H
-#define CALLIOPE_DEMO_CALLIOPESERVICERGB_H
-
+//#include <MicroBitDisplay.h>
+//#include <MicroBitSerial.h>
 #include "MicroBit.h"
 #include "MicroBitConfig.h"
 #include "ble/BLE.h"
 
 // UUIDs for our service and characteristics
-extern const uint8_t  CalliopeRGBServiceUUID[];
-extern const uint8_t  CalliopeRGBServiceColorCharacteristicUUID[];
-extern const uint8_t  CalliopeRGBServiceOffCharacteristicUUID[];
-
+extern const uint8_t  CalliopeLightSensorServiceUUID[];
+extern const uint8_t  CalliopeLightSensorServiceDataUUID[];
 
 /**
-  * Class definition for the custom MicroBit LED Service.
-  * Provides a BLE service to remotely read and write the state of the LED display.
+  * Class definition for the custom MicroBit light Service.
+  * Provides a BLE service to remotely read the silicon light of the nRF51822.
   */
-class CalliopeRGBService
+class CalliopeLightSensorService
 {
 public:
 
     /**
       * Constructor.
-      * Create a representation of the LEDService
+      * Create a representation of the lightService
       * @param _ble The instance of a BLE device that we're running on.
-      * @param _rgb An instance of CalliopeRGB to interface with.
+      * @param _display An instance of MicroBitDisplay to use as our light source.
       */
-    CalliopeRGBService(BLEDevice &_ble, CalliopeRGB &_rgb);
+    CalliopeLightSensorService(BLEDevice &_ble, MicroBitDisplay &_display);
 
-    /**
-      * Callback. Invoked when any of our attributes are written via BLE.
-      */
-    void onDataWritten(const GattWriteCallbackParams *params);
+    /*!
+     * Callback. Invoked when any of our attributes are read via BLE.
+     */
+    void onDataRead(GattReadAuthCallbackParams *params);
 
 private:
 
     // Bluetooth stack we're running on.
-    BLEDevice           &ble;
-    CalliopeRGB         &rgb;
+    BLEDevice           	&ble;
+    MicroBitDisplay         &display;
 
-    // memory for our 8 bit control characteristics.
-    uint8_t             rgbOffCharacteristicBuffer;
-    uint8_t             rgbColorCharacteristicBuffer[4];
+    // memory for our 8 bit light characteristic.
+    uint16_t           lightDataCharacteristicBuffer;
+    GattCharacteristic  characteristic;
 
     // Handles to access each characteristic when they are held by Soft Device.
-    GattAttribute::Handle_t rgbColorCharacteristicHandle;
-    GattAttribute::Handle_t rgbOffCharacteristicHandle;
+    GattAttribute::Handle_t characteristicHandle;
 };
 
 
-#endif //CALLIOPE_DEMO_CALLIOPESERVICERGB_H
+
+#endif //CALLIOPE_DEMO_CALLIOPESERVICELIGHTSENSOR_H

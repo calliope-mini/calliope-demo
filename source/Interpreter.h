@@ -11,7 +11,7 @@
 #define REGISTER_COUNT 5
 #define CHARACTERISTICS_BUFFER_LEN 20
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define LOG(format, ...) uBit.serial.printf(format, ##__VA_ARGS__)

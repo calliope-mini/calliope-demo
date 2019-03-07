@@ -74,8 +74,8 @@ int main()
 
     uBit.serial.send("Calliope Demo v2.1\r\n");
 
-    if (hasStorageKey(KEY_INTERPRETER)) {
-        removeStorageKey(KEY_INTERPRETER);
+//    if (hasStorageKey(KEY_INTERPRETER)) {
+//        removeStorageKey(KEY_INTERPRETER);
 
         // minimize serial buffer
 //        uBit.serial.setTxBufferSize(0);
@@ -85,22 +85,22 @@ int main()
 
         // not required - just to make it obvious this does not return
         waitForever();
-    }
-
-    if (!hasStorageKey(KEY_TEST)) {
-        setStorageKey(KEY_TEST);
-
-        tests_run();
-
-        // not required - just to make it obvious this does not return
-        waitForever();
-    }
-
-    if (!hasStorageKey(KEY_DEMO)) {
-        setStorageKey(KEY_DEMO);
-
-        demo_run();
-    }
+//    }
+//
+//    if (!hasStorageKey(KEY_TEST)) {
+//        setStorageKey(KEY_TEST);
+//
+//        tests_run();
+//
+//        // not required - just to make it obvious this does not return
+//        waitForever();
+//    }
+//
+//    if (!hasStorageKey(KEY_DEMO)) {
+//        setStorageKey(KEY_DEMO);
+//
+//        demo_run();
+//    }
 
     // start state
     menustate_t state = MenuStateOracle;
