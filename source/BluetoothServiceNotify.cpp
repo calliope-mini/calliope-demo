@@ -74,18 +74,22 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
     ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
                                      BluetoothServiceNotifyUUID,
                                      16);
+//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+//                                     BluetoothServiceProgramUUID,
+//                                     16);
+//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+//                                     CalliopeRGBServiceUUID,
+//                                     16);
+//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+//                                     CalliopeLightSensorServiceUUID,
+//                                     16);
+//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+//                                     CalliopeMicrophoneServiceUUID,
+//                                     16);
     ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                                     BluetoothServiceProgramUUID,
+                                     MicroBitAccelerometerServiceUUID,
                                      16);
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                                     CalliopeRGBServiceUUID,
-                                     16);
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                                     CalliopeLightSensorServiceUUID,
-                                     16);
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                                     CalliopeMicrophoneServiceUUID,
-                                     16);
+
     ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
     ble.setAdvertisingInterval(200);
     ble.setAdvertisingTimeout(0);

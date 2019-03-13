@@ -1,3 +1,4 @@
+#include <BMX055Accelerometer.h>
 #include "MicroBit.h"
 #include "Storage.h"
 #include "Images.h"
@@ -10,6 +11,7 @@
 #include "RunVolumeMeter.h"
 #include "Interpreter.h"
 #include "nrf.h"
+#include "PlaygroundFree.h"
 
 MicroBit uBit;
 
@@ -70,9 +72,13 @@ static void menuAnimateLeave()
 int main()
 {
     uBit.init();
-    uBit.accelerometer.updateSample();
+    if (BMX055Accelerometer::isDetected(uBit.i2c)) {
+        uBit.serial.printf("x = %d\r\n", uBit.accelerometer.getX());
 
-    uBit.serial.send("Calliope Demo v2.1\r\n");
+    }
+//    uBit.accelerometer.updateSample();
+
+    uBit.serial.send("Calliope Demo v2.5\r\n");
 
 //    if (hasStorageKey(KEY_INTERPRETER)) {
 //        removeStorageKey(KEY_INTERPRETER);
@@ -81,7 +87,9 @@ int main()
 //        uBit.serial.setTxBufferSize(0);
 
         showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
-        interpreter_start();
+
+        PlaygroundFreeInit(uBit);
+//        interpreter_start();
 
         // not required - just to make it obvious this does not return
         waitForever();
