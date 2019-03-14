@@ -16,7 +16,7 @@
       "event_service": 0,
       "device_info_service": 0
     },
-    "gatt_table_size": "0x900",
+    "gatt_table_size": "0x700",
     "debug": 1,
     "heap_debug": 0,
     "reuse_sd": 0,

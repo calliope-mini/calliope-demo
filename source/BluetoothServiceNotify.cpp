@@ -35,11 +35,11 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
     characteristic(
         BluetoothServiceNotifyUUID,
         (uint8_t *)&characteristicsBuffer, 0, sizeof(characteristicsBuffer),
-        GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ |
-        GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_NOTIFY
+        GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ /* |
+        GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_NOTIFY*/
     )
 {
-    characteristic.requireSecurity(SecurityManager::SECURITY_MODE_ENCRYPTION_OPEN_LINK);
+    characteristic.requireSecurity(SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);
 
     GattCharacteristic *characteristics[] = {
         &characteristic
@@ -89,6 +89,9 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
     ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
                                      MicroBitAccelerometerServiceUUID,
                                      16);
+//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+//            MicroBitMagnetometerServiceUUID,
+//            16);
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
     ble.setAdvertisingInterval(200);
