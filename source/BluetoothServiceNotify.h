@@ -6,6 +6,8 @@
 #include "ble/BLE.h"
 #include "Interpreter.h"
 
+extern const uint8_t  BluetoothServiceNotifyUUID[];
+
 /*!
  * @class BluetoothServiceNotify
  */
@@ -41,5 +43,7 @@ private:
     uint8_t characteristicsBuffer[4];
     GattCharacteristic characteristic;
 };
+
+
 
 #endif // BLUETOOTH_SERVICE_NOTIFY_H

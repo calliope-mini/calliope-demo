@@ -9,11 +9,14 @@
 #include "RunRockPaperScissors.h"
 #include "RunMultiplication.h"
 #include "RunVolumeMeter.h"
-#include "Interpreter.h"
+//#include "Interpreter.h"
 #include "nrf.h"
 #include "PlaygroundFree.h"
+#include "CalliopeServiceMaster.h"
 
 MicroBit uBit;
+
+CalliopeServiceMaster *masterService;
 
 static void showNameHistogram(MicroBitDisplay &display)
 {
@@ -44,6 +47,14 @@ static inline void waitForever()
 {
     while (true) {
         uBit.sleep(1000);
+        uint8_t buffer[4];
+        if(masterService->getStatus(buffer)){
+            LOG("status changed\r\n");
+            uBit.storage.put("MasterStatus",buffer, 4);
+            LOG("storing ok\r\n");
+        }
+        else
+            LOG("status ok\r\n");
     }
 }
 
@@ -88,7 +99,9 @@ int main()
 
         showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
 
-        PlaygroundFreeInit(uBit);
+
+
+    PlaygroundFreeInit(uBit);
 //        interpreter_start();
 
         // not required - just to make it obvious this does not return

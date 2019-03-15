@@ -179,6 +179,7 @@ add_executable(calliope-demo
         source/CalliopeServiceLightSensor.cpp
         source/CalliopeServiceMicrophone.cpp
         source/PlaygroundFree.cpp
+        source/CalliopeServiceMaster.cpp
 )
 #else()
 #   add_executable(calliope-demo

@@ -24,7 +24,7 @@ static uint16_t find_stop(InterpreterMethod method)
 }
 
 //extern void microbit_heap_print();
-#ifdef DEBUG
+#ifdef DEBUG_MASTER
 static uint8_t running = 0;
 #endif
 static void interpreter_run_method(InterpreterMethod method, int32_t r0 = 0, int32_t r1 = 0, int32_t r2 = 0)
@@ -39,7 +39,7 @@ static void interpreter_run_method(InterpreterMethod method, int32_t r0 = 0, int
 
     uint16_t stop = find_stop(method);
 
-    #ifdef DEBUG
+    #ifdef DEBUG_MASTER
     running += 1;
     uint8_t id = running;
     #endif
@@ -343,62 +343,6 @@ static void interpreter_on_button(MicroBitEvent event)
     LOG("int 0x%x 0x%x stop\n\r", source, event.value);
 }
 
-//static void interpreter_on_pin(MicroBitEvent event)
-//{
-//    uint8_t source;
-//    switch(event.source) {
-//        case MICROBIT_ID_IO_P12: source = 0; break;
-//        case MICROBIT_ID_IO_P0:  source = 1; break;
-//        case MICROBIT_ID_IO_P1:  source = 2; break;
-//        case MICROBIT_ID_IO_P16: source = 3; break;
-//        default: return;
-//    }
-//
-//    LOG("pin 0x%x 0x%x start\n\r", source, event.value);
-//
-//    interpreter_run_method(METHOD_ON_PIN, source, event.value);
-//
-//    LOG("pin 0x%x 0x%x stop\n\r", source, event.value);
-//}
-//
-//static void interpreter_on_gesture(MicroBitEvent event)
-//{
-//    LOG("gesture 0x%x 0x%x start\n\r", event.source, event.value);
-//
-//    interpreter_run_method(METHOD_ON_GESTURE, event.source, event.value);
-//
-//    LOG("gesture 0x%x 0x%x stop\n\r", event.source, event.value);
-// }
-
-// static void interpreter_event(MicroBitEvent event)
-// {
-//     if (event.source == MICROBIT_ID_GESTURE && event.value == MICROBIT_ACCELEROMETER_EVT_SHAKE) {
-//         interpreter_on_gesture(event);
-//     } else
-
-//     if (event.source == MICROBIT_ID_BUTTON_A && event.value == MICROBIT_BUTTON_EVT_CLICK) {
-//         interpreter_on_button(event);
-//     } else
-//     if (event.source == MICROBIT_ID_BUTTON_B && event.value == MICROBIT_BUTTON_EVT_CLICK) {
-//         interpreter_on_button(event);
-//     } else
-//     if (event.source == MICROBIT_ID_BUTTON_AB && event.value == MICROBIT_BUTTON_EVT_CLICK) {
-//         interpreter_on_button(event);
-//     } else
-
-//     if (event.source == MICROBIT_ID_IO_P12 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) { // P0
-//         interpreter_on_pin(event);
-//     } else
-//     if (event.source == MICROBIT_ID_IO_P0 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) {  // P1
-//         interpreter_on_pin(event);
-//     } else
-//     if (event.source == MICROBIT_ID_IO_P1 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) {  // P2
-//         interpreter_on_pin(event);
-//     } else
-//     if (event.source == MICROBIT_ID_IO_P16 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) { // P3
-//         interpreter_on_pin(event);
-//     }
-// }
 
 static bool nothingToRun()
 {
@@ -462,79 +406,9 @@ static void interpreter_init()
     uBit.io.P1.isTouched();
     uBit.io.P16.isTouched();
 
-    // uBit.messageBus.listen(
-    //     MICROBIT_ID_ANY,
-    //     MICROBIT_EVT_ANY,
-    //     interpreter_event);
-
-
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_BUTTON_A,
-//        MICROBIT_BUTTON_EVT_CLICK,
-//        interpreter_on_button);
-//
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_BUTTON_B,
-//        MICROBIT_BUTTON_EVT_CLICK,
-//        interpreter_on_button);
-//
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_BUTTON_AB,
-//        MICROBIT_BUTTON_EVT_CLICK,
-//        interpreter_on_button);
-
- //   uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_BUTTON_EVT_CLICK, interpreter_on_button);
-
     uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_EVT_ANY, interpreter_on_button);
 
-
-
-//    // Pin 0
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P12,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-//    // Pin 1
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P0,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-//    // Pin 2
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P1,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-//    // Pin 3
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P16,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-////    uBit.messageBus.listen(MICROBIT_ID_ANY, 1, interpreter_on_pin);
-//
-//    uBit.messageBus.listen(MICROBIT_ID_IO_P0, MICROBIT_BUTTON_EVT_CLICK, someFunction);
-
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_GESTURE,
-//        MICROBIT_ACCELEROMETER_EVT_SHAKE,
-//        interpreter_on_gesture);
-
     interpreter_reset();
-
-    // new BluetoothServiceDebug(interpreter);
-    new CalliopeRGBService(*uBit.ble, uBit.rgb);
-    new CalliopeLightSensorService(*uBit.ble, uBit.display);
-    new CalliopeMicrophoneService(*uBit.ble, uBit.io);
-
-//    new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
-//    new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
-//    new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
-//
-    new BluetoothServiceProgram(interpreter);
-    notify = new BluetoothServiceNotify(interpreter);
 
     uBit.sleep(200);
 }

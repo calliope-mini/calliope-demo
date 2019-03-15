@@ -10,22 +10,15 @@
 
 extern MicroBit uBit;
 
-static const uint8_t  BluetoothServiceNotifyUUID[] = {
-    0xff,0x55,0xdd,0xee,
-    0x25,0x1d,
-    0x47,0x0a,
-    0xa0,0x62,
-    0xfa,0x19,0x22,0xdf,0xa9,0xa8
-};
 
 /**
   * Callback when a BLE connection is established.
   */
-static void bleConnectionCallback(const Gap::ConnectionCallbackParams_t *)
-{
-    LOG("CONNECTED\r\n");
-    uBit.display.print(*images(ImageTick));
-}
+//static void bleConnectionCallback(const Gap::ConnectionCallbackParams_t *)
+//{
+//    LOG("CONNECTED\r\n");
+//    uBit.display.print(*images(ImageTick));
+//}
 
 
 BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
@@ -50,53 +43,9 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
         characteristics,
         sizeof(characteristics) / sizeof(GattCharacteristic *));
 
-    ble.gap().onConnection(bleConnectionCallback);
+//    ble.gap().onConnection(bleConnectionCallback);
 
     ble.addService(service);
-
-    // TODO make this configuration dependent
-#ifdef TARGET_NRF51_CALLIOPE
-    ManagedString namePrefix("micro:bit [");//"Calliope mini [");
-#else
-    ManagedString namePrefix("BBC micro:bit [");
-#endif
-    ManagedString namePostfix("]");
-    ManagedString BLEName = namePrefix + microbit_friendly_name() + namePostfix;
-
-
-    // Update the advertised name of this micro:bit to include the device name
-    ble.clearAdvertisingPayload();
-
-    ble.accumulateAdvertisingPayload(
-            GapAdvertisingData::BREDR_NOT_SUPPORTED | GapAdvertisingData::LE_GENERAL_DISCOVERABLE);
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LOCAL_NAME, (uint8_t *) BLEName.toCharArray(),
-                                     BLEName.length());
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                                     BluetoothServiceNotifyUUID,
-                                     16);
-//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-//                                     BluetoothServiceProgramUUID,
-//                                     16);
-//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-//                                     CalliopeRGBServiceUUID,
-//                                     16);
-//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-//                                     CalliopeLightSensorServiceUUID,
-//                                     16);
-//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-//                                     CalliopeMicrophoneServiceUUID,
-//                                     16);
-    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                                     MicroBitAccelerometerServiceUUID,
-                                     16);
-//    ble.accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-//            MicroBitMagnetometerServiceUUID,
-//            16);
-
-    ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
-    ble.setAdvertisingInterval(200);
-    ble.setAdvertisingTimeout(0);
-    ble.startAdvertising();
 
     characteristicsHandle = characteristic.getValueHandle();
 }
@@ -119,4 +68,13 @@ void BluetoothServiceNotify::send(uint16_t address, uint16_t value)
             (uint8_t *)characteristicsBuffer, sizeof(characteristicsBuffer));
     }
 }
+
+const uint8_t  BluetoothServiceNotifyUUID[] = {
+        0xff,0x55,0xdd,0xee,
+        0x25,0x1d,
+        0x47,0x0a,
+        0xa0,0x62,
+        0xfa,0x19,0x22,0xdf,0xa9,0xa8
+};
+
 

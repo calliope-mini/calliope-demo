@@ -72,7 +72,7 @@ CalliopeRGBService::CalliopeRGBService(BLEDevice &_ble, CalliopeRGB &_rgb) :
                                 characteristics,
                                 sizeof(characteristics) / sizeof(GattCharacteristic *));
 
-    ble.addService(service);
+    ble.gattServer().addService(service);
 
     rgbColorCharacteristicHandle = rgbColorCharacteristic.getValueHandle();
     rgbOffCharacteristicHandle = rgbOffCharacteristic.getValueHandle();
