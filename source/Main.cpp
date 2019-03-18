@@ -52,6 +52,10 @@ static inline void waitForever()
             LOG("status changed\r\n");
             uBit.storage.put("MasterStatus",buffer, 4);
             LOG("storing ok\r\n");
+            if((uint32_t)(buffer[3] << 24) & CALLIOPE_SERVICE_FLAG_RESET){
+                LOG("resetting\r\n");
+                uBit.reset();
+            }
         }
         else
             LOG("status ok\r\n");
@@ -129,35 +133,35 @@ int main()
     while (true) {
         state = menuWaitForChoice(state);
         switch (state) {
-        // 1
-        case MenuStateOracle:
-            menuAnimateEnter();
+            // 1
+            case MenuStateOracle:
+                menuAnimateEnter();
                 oracle_run();
                 menuAnimateLeave();
-            break;
-        // 2
-        case MenuStateRockPaperScissors:
-            menuAnimateEnter();
+                break;
+                // 2
+            case MenuStateRockPaperScissors:
+                menuAnimateEnter();
                 rockpaperscissors_run();
                 menuAnimateLeave();
-            break;
-        // 3
-        case MenuStateMultiplication:
-            menuAnimateEnter();
+                break;
+                // 3
+            case MenuStateMultiplication:
+                menuAnimateEnter();
                 multiplication_run();
                 menuAnimateLeave();
-            break;
-        // 4
-        case MenuStateVolumeMeter:
-            menuAnimateEnter();
+                break;
+                // 4
+            case MenuStateVolumeMeter:
+                menuAnimateEnter();
                 volumemeter_run();
                 menuAnimateLeave();
-            break;
-        // 5
-        case MenuStateInterpreter:
-            setStorageKey(KEY_INTERPRETER);
-            uBit.reset();
-            break;
+                break;
+                // 5
+            case MenuStateInterpreter:
+                setStorageKey(KEY_INTERPRETER);
+                uBit.reset();
+                break;
         }
     }
 }

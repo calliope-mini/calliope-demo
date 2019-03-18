@@ -6,19 +6,17 @@
 #include "CalliopeServiceRGB.h"
 #include "CalliopeServiceLightSensor.h"
 #include "CalliopeServiceMicrophone.h"
-
+#include "CalliopeServiceMaster.h"
 
 extern MicroBit uBit;
 
-
-/**
-  * Callback when a BLE connection is established.
-  */
-//static void bleConnectionCallback(const Gap::ConnectionCallbackParams_t *)
-//{
-//    LOG("CONNECTED\r\n");
-//    uBit.display.print(*images(ImageTick));
-//}
+const uint8_t  BluetoothServiceNotifyUUID[] = {
+    0xff,0x55,0xdd,0xee,
+    0x25,0x1d,
+    0x47,0x0a,
+    0xa0,0x62,
+    0xfa,0x19,0x22,0xdf,0xa9,0xa8
+};
 
 
 BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
@@ -43,8 +41,6 @@ BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
         characteristics,
         sizeof(characteristics) / sizeof(GattCharacteristic *));
 
-//    ble.gap().onConnection(bleConnectionCallback);
-
     ble.addService(service);
 
     characteristicsHandle = characteristic.getValueHandle();
@@ -68,13 +64,4 @@ void BluetoothServiceNotify::send(uint16_t address, uint16_t value)
             (uint8_t *)characteristicsBuffer, sizeof(characteristicsBuffer));
     }
 }
-
-const uint8_t  BluetoothServiceNotifyUUID[] = {
-        0xff,0x55,0xdd,0xee,
-        0x25,0x1d,
-        0x47,0x0a,
-        0xa0,0x62,
-        0xfa,0x19,0x22,0xdf,0xa9,0xa8
-};
-
 

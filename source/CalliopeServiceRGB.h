@@ -37,7 +37,6 @@ DEALINGS IN THE SOFTWARE.
 // UUIDs for our service and characteristics
 extern const uint8_t  CalliopeRGBServiceUUID[];
 extern const uint8_t  CalliopeRGBServiceColorCharacteristicUUID[];
-extern const uint8_t  CalliopeRGBServiceOffCharacteristicUUID[];
 
 
 /**
@@ -68,12 +67,10 @@ private:
     CalliopeRGB         &rgb;
 
     // memory for our 8 bit control characteristics.
-    uint8_t             rgbOffCharacteristicBuffer;
     uint8_t             rgbColorCharacteristicBuffer[4];
 
     // Handles to access each characteristic when they are held by Soft Device.
     GattAttribute::Handle_t rgbColorCharacteristicHandle;
-    GattAttribute::Handle_t rgbOffCharacteristicHandle;
 };
 
 

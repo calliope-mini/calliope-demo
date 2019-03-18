@@ -5,15 +5,6 @@
 
 extern MicroBit uBit;
 
-const uint8_t BluetoothServiceProgramUUID[] = {
-        0xff, 0x66, 0xdd, 0xee,
-        0x25, 0x1d,
-        0x47, 0x0a,
-        0xa0, 0x62,
-        0xfa, 0x19, 0x22, 0xdf, 0xa9, 0xa8
-};
-
-
 BluetoothServiceProgram::BluetoothServiceProgram(Interpreter &_interpreter) :
     interpreter(_interpreter),
     ble(*uBit.ble),
@@ -38,10 +29,6 @@ BluetoothServiceProgram::BluetoothServiceProgram(Interpreter &_interpreter) :
         sizeof(characteristics) / sizeof(GattCharacteristic *));
 
     ble.addService(service);
-
-//    ble.gap().accumulateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS, BluetoothServiceProgramUUID, 16);
-//    ble.gap().updateAdvertisingPayload(GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS, BluetoothServiceProgramUUID,16);
-
 
     characteristicsHandle = characteristic.getValueHandle();
 
@@ -138,3 +125,11 @@ void BluetoothServiceProgram::onDataRead(GattReadAuthCallbackParams *params)
 
     }
 }
+
+const uint8_t BluetoothServiceProgramUUID[] = {
+        0xff, 0x66, 0xdd, 0xee,
+        0x25, 0x1d,
+        0x47, 0x0a,
+        0xa0, 0x62,
+        0xfa, 0x19, 0x22, 0xdf, 0xa9, 0xa8
+};

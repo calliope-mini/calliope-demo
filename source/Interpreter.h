@@ -13,11 +13,11 @@
 
 //#define DEBUG
 
-#ifdef DEBUG
-#define LOG(format, ...) uBit.serial.printf(format, ##__VA_ARGS__)
-#else
-#define LOG(format, ...) ;
-#endif
+//#ifdef DEBUG
+//#define LOG(format, ...) uBit.serial.printf(format, ##__VA_ARGS__)
+//#else
+//#define LOG(format, ...) ;
+//#endif
 
 typedef enum {
     INTERPRETER_OK = 0x00,

@@ -44,6 +44,4 @@ private:
     GattCharacteristic characteristic;
 };
 
-
-
 #endif // BLUETOOTH_SERVICE_NOTIFY_H
