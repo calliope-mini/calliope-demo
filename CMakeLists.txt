@@ -180,6 +180,7 @@ add_executable(calliope-demo
         source/CalliopeServiceMicrophone.cpp
         source/PlaygroundFree.cpp
         source/CalliopeServiceMaster.cpp
+        source/CalliopeServiceSpeaker.cpp
 )
 #else()
 #   add_executable(calliope-demo

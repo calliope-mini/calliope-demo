@@ -78,7 +78,7 @@ void CalliopeLightSensorService::onDataRead(GattReadAuthCallbackParams *params) 
         ble.gattServer().write(
                 characteristicHandle,
                 (const uint8_t *)&lightDataCharacteristicBuffer,
-                sizeof(lightDataCharacteristicBuffer));
+                sizeof(uint8_t));
     }
 }
 

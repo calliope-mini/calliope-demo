@@ -16,17 +16,19 @@
 #include "BluetoothServiceProgram.h"
 #include "BluetoothServiceNotify.h"
 
+// Flags for new implemented Calliope Services
 #define CALLIOPE_SERVICE_FLAG_RGB           (uint32_t)0x00000001
 #define CALLIOPE_SERVICE_FLAG_MICROPHONE    (uint32_t)0x00000002
-#define CALLIOPE_SERVICE_FLAG_LIGHT         (uint32_t)0x00000004
-#define CALLIOPE_SERVICE_FLAG_RES_04        (uint32_t)0x00000008
+#define CALLIOPE_SERVICE_FLAG_BRIGHTNESS    (uint32_t)0x00000004
+#define CALLIOPE_SERVICE_FLAG_SPEAKER       (uint32_t)0x00000008
 
-#define CALLIOPE_SERVICE_FLAG_RES_05        (uint32_t)0x00000010
-#define CALLIOPE_SERVICE_FLAG_RES_06        (uint32_t)0x00000020
-#define CALLIOPE_SERVICE_FLAG_RES_07        (uint32_t)0x00000040
-#define CALLIOPE_SERVICE_FLAG_RES_08        (uint32_t)0x00000080
+// Flags for already implemented Microbit Services
+#define CALLIOPE_SERVICE_FLAG_LED           (uint32_t)0x00000010
+#define CALLIOPE_SERVICE_FLAG_TEMPERATURE   (uint32_t)0x00000020
+#define CALLIOPE_SERVICE_FLAG_BUTTON        (uint32_t)0x00000040
+#define CALLIOPE_SERVICE_FLAG_MAGNETOMETER  (uint32_t)0x00000080
 
-#define CALLIOPE_SERVICE_FLAG_RES_09        (uint32_t)0x00000100
+#define CALLIOPE_SERVICE_FLAG_ACCELEROMETER (uint32_t)0x00000100
 #define CALLIOPE_SERVICE_FLAG_RES_10        (uint32_t)0x00000200
 #define CALLIOPE_SERVICE_FLAG_RES_11        (uint32_t)0x00000400
 #define CALLIOPE_SERVICE_FLAG_RES_12        (uint32_t)0x00000800
@@ -46,7 +48,7 @@
 #define CALLIOPE_SERVICE_FLAG_RES_23        (uint32_t)0x00400000
 #define CALLIOPE_SERVICE_FLAG_RES_24        (uint32_t)0x00800000
 
-#define CALLIOPE_SERVICE_FLAG_RES_25        (uint32_t)0x01000000
+#define CALLIOPE_SERVICE_FLAG_EVENT         (uint32_t)0x01000000
 #define CALLIOPE_SERVICE_FLAG_RES_26        (uint32_t)0x02000000
 #define CALLIOPE_SERVICE_FLAG_RES_27        (uint32_t)0x04000000
 #define CALLIOPE_SERVICE_FLAG_RES_28        (uint32_t)0x08000000

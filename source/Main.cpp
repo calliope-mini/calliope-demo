@@ -103,6 +103,13 @@ int main()
 
         showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
 
+    uBit.soundmotor.soundOn(1000);
+    uBit.sleep(100);
+    uBit.soundmotor.soundOn(2000);
+    uBit.sleep(100);
+    uBit.soundmotor.soundOn(3000);
+    uBit.sleep(300);
+    uBit.soundmotor.soundOff();
 
 
     PlaygroundFreeInit(uBit);
