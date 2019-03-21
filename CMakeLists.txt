@@ -181,7 +181,7 @@ add_executable(calliope-demo
         source/PlaygroundFree.cpp
         source/CalliopeServiceMaster.cpp
         source/CalliopeServiceSpeaker.cpp
-)
+        source/CalliopeServiceInterpreter.cpp)
 #else()
 #   add_executable(calliope-demo
 #          source/CalliopeTestBoard.cpp

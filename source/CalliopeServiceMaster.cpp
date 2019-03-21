@@ -14,6 +14,7 @@
 #include "CalliopeServiceMicrophone.h"
 #include "Storage.h"
 #include "CalliopeServiceSpeaker.h"
+#include "CalliopeServiceInterpreter.h"
 
 Interpreter *interpreter;
 
@@ -267,7 +268,21 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
                 16);
         LOG("M_new MicroBitEventService\r\n");
     }
-    // CALLIOPE_SERVICE_FLAG_PROGRAM   (uint32_t)0x20000000
+    // CALLIOPE_SERVICE_FLAG_INTERPRETER   (uint32_t)0x10000000
+    // Interpreter Program Service
+    if (requestedStatus & CALLIOPE_SERVICE_FLAG_INTERPRETER) {
+        if (interpreter == NULL) {
+            interpreter = new Interpreter;
+            LOG("M_new interpreter\r\n");
+        }
+        new CalliopeServiceInterpreter(*uBit.ble, *interpreter);
+        tempStatus |= CALLIOPE_SERVICE_FLAG_INTERPRETER;    //>! set the corresponding flag
+        ble.accumulateAdvertisingPayload(
+                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+                CalliopeServiceInterpreterUUID,
+                16);
+        LOG("M_new CalliopeServiceInterpreter\r\n");
+    }// CALLIOPE_SERVICE_FLAG_PROGRAM   (uint32_t)0x20000000
     // Interpreter Program Service
     if (requestedStatus & CALLIOPE_SERVICE_FLAG_PROGRAM){
         if(interpreter == NULL){
