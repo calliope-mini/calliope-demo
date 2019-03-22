@@ -1,12 +1,10 @@
-#include "BluetoothServiceNotify.h"
-#include "MicroBit.h"
+//TODO add header
+
+#include <inc/MicroBit.h>
 #include "Bytes.h"
-#include "BluetoothServiceProgram.h"
-#include "Images.h"
-#include "CalliopeServiceRGB.h"
-#include "CalliopeServiceLightSensor.h"
-#include "CalliopeServiceMicrophone.h"
 #include "CalliopeServiceMaster.h"
+#include "Interpreter.h"
+#include "BluetoothServiceNotify.h"
 
 extern MicroBit uBit;
 

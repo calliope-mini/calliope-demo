@@ -1,3 +1,4 @@
+//TODO add header
 //
 // Created by wowa on 19.03.19.
 //
@@ -34,7 +35,6 @@ DEALINGS IN THE SOFTWARE.
 #include "MicroBitConfig.h"
 #include "ble/UUID.h"
 
-#include "CalliopeServiceMaster.h"
 #include "CalliopeServiceSpeaker.h"
 
 extern MicroBit uBit;
@@ -64,10 +64,10 @@ CalliopeSpeakerService::CalliopeSpeakerService(BLEDevice &_ble) :
 
     // Create the data structures that represent each of our characteristics in Soft Device.
     GattCharacteristic speakerCharacteristic(CalliopeSpeakerCharacteristicUUID,
-                                              (uint8_t *) speakerCharacteristicBuffer,
-                                              0,
-                                              sizeof(speakerCharacteristicBuffer),
-                                              GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_WRITE);
+                                             (uint8_t *) speakerCharacteristicBuffer,
+                                             0,
+                                             sizeof(speakerCharacteristicBuffer),
+                                             GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_WRITE);
 
     // Initialise our characteristic values.
     speakerCharacteristicBuffer[0] = 0;

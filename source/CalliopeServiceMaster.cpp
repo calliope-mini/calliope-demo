@@ -1,21 +1,25 @@
-//
+//TODO add header
 // Created by wowa on 13.03.19.
 //
 
-#include "CalliopeServiceMaster.h"
-
-#include "BluetoothServiceNotify.h"
-#include "MicroBit.h"
-#include "Bytes.h"
-#include "BluetoothServiceProgram.h"
+#include "MicroBitEventService.h"
+#include "MicroBitAccelerometerService.h"
+#include "MicroBitMagnetometerService.h"
+#include "MicroBitButtonService.h"
+#include "MicroBitTemperatureService.h"
+#include "MicroBitLEDService.h"
 #include "Images.h"
-#include "CalliopeServiceRGB.h"
+#include "BluetoothServiceNotify.h"
+#include "BluetoothServiceProgram.h"
+#include "CalliopeServiceInterpreter.h"
+#include "CalliopeServiceSpeaker.h"
 #include "CalliopeServiceLightSensor.h"
 #include "CalliopeServiceMicrophone.h"
-#include "Storage.h"
-#include "CalliopeServiceSpeaker.h"
-#include "CalliopeServiceInterpreter.h"
+#include "CalliopeServiceRGB.h"
+#include "CalliopeServiceMaster.h"
 
+
+extern MicroBit uBit;
 Interpreter *interpreter;
 
 /**

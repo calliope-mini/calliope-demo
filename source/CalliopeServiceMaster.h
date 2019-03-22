@@ -1,3 +1,5 @@
+
+//TODO add header
 //
 // Created by wowa on 13.03.19.
 //
@@ -7,16 +9,19 @@
 
 
 //#include "ManagedString.h"
-#include "CalliopeRGB.h"
-#include "ble/BLE.h"
-#include "Interpreter.h"
-#include "CalliopeServiceRGB.h"
-#include "CalliopeServiceMicrophone.h"
-#include "CalliopeServiceLightSensor.h"
-#include "BluetoothServiceProgram.h"
-#include "BluetoothServiceNotify.h"
+//#include "CalliopeRGB.h"
+//#include "ble/BLE.h"
+//#include "Interpreter.h"
+//#include "CalliopeServiceRGB.h"
+//#include "CalliopeServiceMicrophone.h"
+//#include "CalliopeServiceLightSensor.h"
+//#include "BluetoothServiceProgram.h"
+//#include "BluetoothServiceNotify.h"
 
 // Flags for new implemented Calliope Services
+#include <stdint-gcc.h>
+#include <ble/BLE.h>
+
 #define CALLIOPE_SERVICE_FLAG_RGB           (uint32_t)0x00000001
 #define CALLIOPE_SERVICE_FLAG_MICROPHONE    (uint32_t)0x00000002
 #define CALLIOPE_SERVICE_FLAG_BRIGHTNESS    (uint32_t)0x00000004
@@ -67,8 +72,6 @@
 #endif
 
 
-
-
 extern const uint8_t  CalliopeMasterServiceUUID[];
 extern const uint8_t CalliopeMasterServiceCharacteristicUUID[];
 
@@ -110,11 +113,10 @@ public:
     uint8_t getStatus(uint8_t *status);
 
 
-
-        /*!
-         * Send data via BLE.
-         * @param reply
-         */
+    /*!
+     * Send data via BLE.
+     * @param reply
+     */
     void send(const uint8_t *reply);
 
 private:

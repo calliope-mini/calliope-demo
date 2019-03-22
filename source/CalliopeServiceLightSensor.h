@@ -1,3 +1,4 @@
+//TODO add header
 //
 // Created by wowa on 07.03.19.
 //
@@ -73,7 +74,6 @@ private:
     // Handles to access each characteristic when they are held by Soft Device.
     GattAttribute::Handle_t characteristicHandle;
 };
-
 
 
 #endif //CALLIOPE_DEMO_CALLIOPESERVICELIGHTSENSOR_H

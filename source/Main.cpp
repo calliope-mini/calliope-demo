@@ -1,3 +1,4 @@
+//todo bring it back together to work
 #include <BMX055Accelerometer.h>
 #include "MicroBit.h"
 #include "Storage.h"
@@ -27,8 +28,7 @@ static void showNameHistogram(MicroBitDisplay &display)
     uint32_t h;
 
     display.clear();
-    for (uint32_t i = 0; i < MICROBIT_DFU_HISTOGRAM_WIDTH; i++)
-    {
+    for (uint32_t i = 0; i < MICROBIT_DFU_HISTOGRAM_WIDTH; i++) {
         h = (n % d) / ld;
 
         n -= h;
@@ -37,9 +37,9 @@ static void showNameHistogram(MicroBitDisplay &display)
 
         for (uint32_t j = 0; j < h + 1; j++)
             display.image.setPixelValue(
-                static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_WIDTH - i - 1),
-                static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_HEIGHT - j - 1),
-                255);
+                    static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_WIDTH - i - 1),
+                    static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_HEIGHT - j - 1),
+                    255);
     }
 }
 
@@ -56,8 +56,7 @@ static inline void waitForever()
                 LOG("resetting\r\n");
                 uBit.reset();
             }
-        }
-        else
+        } else
             LOG("status ok\r\n");
     }
 }
@@ -98,10 +97,10 @@ int main()
 //    if (hasStorageKey(KEY_INTERPRETER)) {
 //        removeStorageKey(KEY_INTERPRETER);
 
-        // minimize serial buffer
+    // minimize serial buffer
 //        uBit.serial.setTxBufferSize(0);
 
-        showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
+    showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
 
     uBit.soundmotor.soundOn(1000);
     uBit.sleep(100);
@@ -115,8 +114,8 @@ int main()
     PlaygroundFreeInit(uBit);
 //        interpreter_start();
 
-        // not required - just to make it obvious this does not return
-        waitForever();
+    // not required - just to make it obvious this does not return
+    waitForever();
 //    }
 //
 //    if (!hasStorageKey(KEY_TEST)) {

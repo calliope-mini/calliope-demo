@@ -1,3 +1,5 @@
+//TODO mod header
+
 //
 // Created by wowa on 07.03.19.
 //
@@ -43,14 +45,14 @@ DEALINGS IN THE SOFTWARE.
   * @param _thermometer An instance of MicroBitThermometer to use as our light source.
   */
 CalliopeLightSensorService::CalliopeLightSensorService(BLEDevice &_ble, MicroBitDisplay &_display) :
-    ble(_ble),
-    display(_display),
-    lightDataCharacteristicBuffer(),
-    characteristic(
-            CalliopeLightSensorServiceDataUUID,
-            (uint8_t *)&lightDataCharacteristicBuffer, 0, sizeof(lightDataCharacteristicBuffer),
-            GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ
-    )
+        ble(_ble),
+        display(_display),
+        lightDataCharacteristicBuffer(),
+        characteristic(
+                CalliopeLightSensorServiceDataUUID,
+                (uint8_t *)&lightDataCharacteristicBuffer, 0, sizeof(lightDataCharacteristicBuffer),
+                GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ
+        )
 {
     characteristic.requireSecurity(SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);
     characteristic.setReadAuthorizationCallback(this, &CalliopeLightSensorService::onDataRead);
@@ -83,10 +85,10 @@ void CalliopeLightSensorService::onDataRead(GattReadAuthCallbackParams *params) 
 }
 
 const uint8_t  CalliopeLightSensorServiceUUID[] = {
-        0xca,0x11,0x03,0x01,0x25,0x1d,0x47,0x0a,0xa0,0x62,0xfa,0x19,0x22,0xdf,0xa9,0xa8
+        0xca, 0x11, 0x03, 0x01, 0x25, 0x1d, 0x47, 0x0a, 0xa0, 0x62, 0xfa, 0x19, 0x22, 0xdf, 0xa9, 0xa8
 };
 
 const uint8_t  CalliopeLightSensorServiceDataUUID[] = {
-        0xca,0x11,0x03,0x03,0x25,0x1d,0x47,0x0a,0xa0,0x62,0xfa,0x19,0x22,0xdf,0xa9,0xa8
+        0xca, 0x11, 0x03, 0x03, 0x25, 0x1d, 0x47, 0x0a, 0xa0, 0x62, 0xfa, 0x19, 0x22, 0xdf, 0xa9, 0xa8
 };
 

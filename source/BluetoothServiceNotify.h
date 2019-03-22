@@ -2,7 +2,6 @@
 #ifndef BLUETOOTH_SERVICE_NOTIFY_H
 #define BLUETOOTH_SERVICE_NOTIFY_H
 
-//#include "ManagedString.h"
 #include "ble/BLE.h"
 #include "Interpreter.h"
 
