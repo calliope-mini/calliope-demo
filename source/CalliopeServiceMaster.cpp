@@ -17,6 +17,7 @@
 #include "CalliopeServiceMicrophone.h"
 #include "CalliopeServiceRGB.h"
 #include "CalliopeServiceMaster.h"
+#include "CalliopeServiceTouchpin.h"
 
 
 extern MicroBit uBit;
@@ -148,7 +149,7 @@ void CalliopeServiceMaster::onDataWritten(const GattWriteCallbackParams *params)
     LOG("master onDataWritten data: %08x, len:%d\r\n", *(uint32_t*)params->data, params->len);
     if (params->handle == characteristicsHandle && params->len == sizeof(characteristicBitfield)) {
         LOG("M_onDataWritten data: %08x, len:%d\r\n", *(uint32_t*)params->data, params->len);
-        uBit.display.print(*images(ImageSmiley), 1000);
+	    //uBit.display.print(*images(ImageSmiley), 1000);
         if((uint32_t)*serviceStatus != *(uint32_t*)params->data) {
             send(params->data);
             setStatus(params->data);
@@ -250,17 +251,28 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
                 16);
         LOG("M_new MicroBitMagnetometerService\r\n");
     }
-    // CALLIOPE_SERVICE_FLAG_ACCELEROMETER (uint32_t)0x00000100
-    // Accelerometer Service
-    if (requestedStatus & CALLIOPE_SERVICE_FLAG_ACCELEROMETER){
-        new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
-        tempStatus |= CALLIOPE_SERVICE_FLAG_ACCELEROMETER;    //>! set the corresponding flag
-        ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                MicroBitAccelerometerServiceUUID,
-                16);
-        LOG("M_new MicroBitAccelerometerService\r\n");
-    }
+	// CALLIOPE_SERVICE_FLAG_ACCELEROMETER (uint32_t)0x00000100
+	// Accelerometer Service
+	if (requestedStatus & CALLIOPE_SERVICE_FLAG_ACCELEROMETER) {
+		new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
+		tempStatus |= CALLIOPE_SERVICE_FLAG_ACCELEROMETER;    //>! set the corresponding flag
+		ble.accumulateAdvertisingPayload(
+				GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+				MicroBitAccelerometerServiceUUID,
+				16);
+		LOG("M_new MicroBitAccelerometerService\r\n");
+	}
+	// CALLIOPE_SERVICE_FLAG_ACCELEROMETER (uint32_t)0x00000100
+	// Accelerometer Service
+	if (requestedStatus & CALLIOPE_SERVICE_FLAG_TOUCHPIN) {
+		new CalliopeTouchpinService(*uBit.ble, uBit.io);
+		tempStatus |= CALLIOPE_SERVICE_FLAG_TOUCHPIN;    //>! set the corresponding flag
+		ble.accumulateAdvertisingPayload(
+				GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+				CalliopeTouchpinServiceUUID,
+				16);
+		LOG("M_new CalliopeTouchpinService\r\n");
+	}
     // CALLIOPE_SERVICE_FLAG_EVENT         (uint32_t)0x01000000
     // Event Service
     if (requestedStatus & CALLIOPE_SERVICE_FLAG_EVENT){

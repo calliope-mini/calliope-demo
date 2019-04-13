@@ -83,13 +83,28 @@ static void menuAnimateLeave()
     uBit.display.clear();
 }
 
+static void onReset(void /*MicroBitEvent event*/) {
+	uint32_t buffer = 0;
+	uBit.storage.put("MasterStatus", (uint8_t *) &buffer, 4);
+}
+
+void checkReset(void) {
+	MicroBitPin P0(MICROBIT_ID_IO_P0, MICROBIT_PIN_P0, PIN_CAPABILITY_ANALOG_IN);
+	int value = P0.getAnalogValue(); // P0 is a value in the range of 0 - 1024
+
+	if (value > 400) {
+		uBit.serial.printf("RESET ALL SERVICES : %d\r\n", value);
+		onReset();
+	}
+}
+
 int main()
 {
     uBit.init();
-    if (BMX055Accelerometer::isDetected(uBit.i2c)) {
-        uBit.serial.printf("x = %d\r\n", uBit.accelerometer.getX());
-
-    }
+//    if (BMX055Accelerometer::isDetected(uBit.i2c)) {
+//        uBit.serial.printf("x = %d\r\n", uBit.accelerometer.getX());
+//
+//    }
 //    uBit.accelerometer.updateSample();
 
     uBit.serial.send("Calliope Demo v2.5\r\n");
@@ -109,6 +124,8 @@ int main()
     uBit.soundmotor.soundOn(3000);
     uBit.sleep(300);
     uBit.soundmotor.soundOff();
+
+	checkReset();
 
 
     PlaygroundFreeInit(uBit);
