@@ -54,6 +54,7 @@ static inline void waitForever()
             LOG("storing ok\r\n");
             if((uint32_t)(buffer[3] << 24) & CALLIOPE_SERVICE_FLAG_RESET){
                 LOG("resetting\r\n");
+	            //uBit.sleep(500);
                 uBit.reset();
             }
         } else
@@ -89,13 +90,16 @@ static void onReset(void /*MicroBitEvent event*/) {
 }
 
 void checkReset(void) {
-	MicroBitPin P0(MICROBIT_ID_IO_P0, MICROBIT_PIN_P0, PIN_CAPABILITY_ANALOG_IN);
+	MicroBitPin P0(MICROBIT_ID_IO_P0, MICROBIT_PIN_P0, PIN_CAPABILITY_ALL);
+	MicroBitPin P16(MICROBIT_ID_IO_P16, MICROBIT_PIN_P16, PIN_CAPABILITY_ALL);
 	int value = P0.getAnalogValue(); // P0 is a value in the range of 0 - 1024
 
 	if (value > 400) {
 		uBit.serial.printf("RESET ALL SERVICES : %d\r\n", value);
 		onReset();
 	}
+	P0.isTouched();
+
 }
 
 int main()
@@ -119,10 +123,10 @@ int main()
 
     uBit.soundmotor.soundOn(1000);
     uBit.sleep(100);
-    uBit.soundmotor.soundOn(2000);
-    uBit.sleep(100);
-    uBit.soundmotor.soundOn(3000);
-    uBit.sleep(300);
+//    uBit.soundmotor.soundOn(2000);
+//    uBit.sleep(100);
+//    uBit.soundmotor.soundOn(3000);
+//    uBit.sleep(300);
     uBit.soundmotor.soundOff();
 
 	checkReset();

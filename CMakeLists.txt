@@ -183,7 +183,7 @@ add_executable(calliope-demo
         source/CalliopeServiceSpeaker.cpp
         source/CalliopeServiceInterpreter.cpp
         source/CalliopeServiceTouchpin.cpp
-        )
+        source/CalliopeServiceGesture.cpp source/CalliopeServiceGesture.h)
 #else()
 #   add_executable(calliope-demo
 #          source/CalliopeTestBoard.cpp

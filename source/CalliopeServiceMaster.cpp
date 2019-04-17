@@ -18,6 +18,7 @@
 #include "CalliopeServiceRGB.h"
 #include "CalliopeServiceMaster.h"
 #include "CalliopeServiceTouchpin.h"
+#include "CalliopeServiceGesture.h"
 
 
 extern MicroBit uBit;
@@ -75,7 +76,7 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
     ble.gap().onConnection(bleConnectionCallback);
     ble.gap().onDisconnection(bleDisconnectionCallback);
 
-    ble.addService(service);
+	ble.gattServer().addService(service);
 
     characteristicsHandle = characteristic.getValueHandle();
 
@@ -125,7 +126,7 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
 
     if(tempStatus == (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM)){
         LOG("M_starting interpreter\r\n");
-        interpreter_start();
+	    interpreter_run();
     }
 }
 
@@ -262,8 +263,8 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
 				16);
 		LOG("M_new MicroBitAccelerometerService\r\n");
 	}
-	// CALLIOPE_SERVICE_FLAG_ACCELEROMETER (uint32_t)0x00000100
-	// Accelerometer Service
+	// CALLIOPE_SERVICE_FLAG_TOUCHPIN (uint32_t)0x00000200
+	// Touchpin Service
 	if (requestedStatus & CALLIOPE_SERVICE_FLAG_TOUCHPIN) {
 		new CalliopeTouchpinService(*uBit.ble, uBit.io);
 		tempStatus |= CALLIOPE_SERVICE_FLAG_TOUCHPIN;    //>! set the corresponding flag
@@ -272,6 +273,17 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
 				CalliopeTouchpinServiceUUID,
 				16);
 		LOG("M_new CalliopeTouchpinService\r\n");
+	}
+	// CALLIOPE_SERVICE_FLAG_GESTURE        (uint32_t)0x00000400
+	// Touchpin Service
+	if (requestedStatus & CALLIOPE_SERVICE_FLAG_GESTURE) {
+		new CalliopeGestureService(*uBit.ble);
+		tempStatus |= CALLIOPE_SERVICE_FLAG_GESTURE;    //>! set the corresponding flag
+		ble.accumulateAdvertisingPayload(
+				GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+				CalliopeGestureServiceUUID,
+				16);
+		LOG("M_new CalliopeGestureService\r\n");
 	}
     // CALLIOPE_SERVICE_FLAG_EVENT         (uint32_t)0x01000000
     // Event Service

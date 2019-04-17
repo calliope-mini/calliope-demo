@@ -29,7 +29,7 @@ void onButtonAB(MicroBitEvent)
 }
 
 void onTouch(MicroBitEvent e) {
-    if(e.value == MICROBIT_PIN_EVENT_ON_TOUCH) {
+	if ((e.value == MICROBIT_BUTTON_EVT_DOWN) || (e.value == MICROBIT_BUTTON_EVT_HOLD)) {
         switch(e.source) {
             case MICROBIT_ID_IO_P12:
                 uBit.display.print("0");
@@ -129,7 +129,11 @@ void tests_run()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, onButtonAB);
-    uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_PIN_EVENT_ON_TOUCH, onTouch);
+//    uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_PIN_EVENT_ON_TOUCH, onTouch);
+	uBit.messageBus.listen(MICROBIT_ID_IO_P12, MICROBIT_EVT_ANY, onTouch);
+	uBit.messageBus.listen(MICROBIT_ID_IO_P0, MICROBIT_EVT_ANY, onTouch);
+	uBit.messageBus.listen(MICROBIT_ID_IO_P1, MICROBIT_EVT_ANY, onTouch);
+	uBit.messageBus.listen(MICROBIT_ID_IO_P16, MICROBIT_EVT_ANY, onTouch);
 
     uBit.messageBus.listen(MICROBIT_ID_GESTURE, MICROBIT_EVT_ANY, onGesture);
 

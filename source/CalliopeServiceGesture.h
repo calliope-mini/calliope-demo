@@ -1,9 +1,9 @@
 // TODO header
-// Created by wowa on 13.04.19.
+// Created by wowa on 16.04.19.
 //
 
-#ifndef CALLIOPE_DEMO_CALLIOPESERVICETOUCHPIN_H
-#define CALLIOPE_DEMO_CALLIOPESERVICETOUCHPIN_H
+#ifndef CALLIOPE_DEMO_CALLIOPESERVICEMOVE_H
+#define CALLIOPE_DEMO_CALLIOPESERVICEMOVE_H
 /*
 The MIT License (MIT)
 
@@ -36,14 +36,14 @@ DEALINGS IN THE SOFTWARE.
 #include "ble/BLE.h"
 
 // UUIDs for our service and characteristics
-extern const uint8_t CalliopeTouchpinServiceUUID[];
-extern const uint8_t CalliopeTouchpinServiceDataUUID[];
+extern const uint8_t CalliopeGestureServiceUUID[];
+extern const uint8_t CalliopeGestureServiceDataUUID[];
 
 /**
   * Class definition for the custom MicroBit light Service.
   * Provides a BLE service to remotely read the silicon light of the nRF51822.
   */
-class CalliopeTouchpinService {
+class CalliopeGestureService {
 public:
 
 	/**
@@ -52,24 +52,23 @@ public:
 	  * @param _ble The instance of a BLE device that we're running on.
 	  * @param _display An instance of MicroBitDisplay to use as our light source.
 	  */
-	CalliopeTouchpinService(BLEDevice &_ble, MicroBitIO &_io);
+	CalliopeGestureService(BLEDevice &_ble);
 
 private:
 
 	/*!
-	 * Touchpin update callback
-	 * @param event
+	 * Gesture update callback
+	 * @param e
 	 */
-	void touchpinUpdate(MicroBitEvent event);
+	void gestureUpdate(MicroBitEvent e);
 
 
 	// Bluetooth stack we're running on.
 	BLEDevice &ble;
-	MicroBitIO &io;
 //	MicroBitSerial &serial;
 
 	// memory for our 8 bit light characteristic.
-	uint16_t TouchpinDataCharacteristicBuffer;
+	uint8_t GestureDataCharacteristicBuffer;
 	GattCharacteristic characteristic;
 
 	// Handles to access each characteristic when they are held by Soft Device.
@@ -77,4 +76,4 @@ private:
 };
 
 
-#endif //CALLIOPE_DEMO_CALLIOPESERVICETOUCHPIN_H
+#endif //CALLIOPE_DEMO_CALLIOPESERVICEMOVE_H

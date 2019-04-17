@@ -73,7 +73,16 @@ CalliopeMicrophoneService::CalliopeMicrophoneService(BLEDevice &_ble, MicroBitIO
 void CalliopeMicrophoneService::onDataRead(GattReadAuthCallbackParams *params) {
     if (params->handle == characteristicHandle) {
 
-        microphoneDataCharacteristicBuffer = io.P21.getAnalogValue();
+	    uint16_t tempAnalogValue = 0;
+	    microphoneDataCharacteristicBuffer = 0;
+	    for (uint8_t i = 0; i < 16; ++i) {
+		    tempAnalogValue = io.P21.getAnalogValue();
+		    if (tempAnalogValue > microphoneDataCharacteristicBuffer) {
+			    microphoneDataCharacteristicBuffer = tempAnalogValue;
+		    }
+	    }
+
+	    //microphoneDataCharacteristicBuffer = io.P21.getAnalogValue();
 
 //        if (microphoneDataCharacteristicBuffer > 512) {
 //            // we do not support double and int32 should be enough

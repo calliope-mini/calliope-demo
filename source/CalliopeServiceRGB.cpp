@@ -46,11 +46,11 @@ DEALINGS IN THE SOFTWARE.
 CalliopeRGBService::CalliopeRGBService(BLEDevice &_ble, CalliopeRGB &_rgb) :
         ble(_ble), rgb(_rgb) {
     // Create the data structures that represent each of our characteristics in Soft Device.
-    GattCharacteristic rgbColorCharacteristic(CalliopeRGBServiceColorCharacteristicUUID,
-                                              (uint8_t *) rgbColorCharacteristicBuffer,
-                                              0,
-                                              sizeof(rgbColorCharacteristicBuffer),
-                                              GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_WRITE);
+	GattCharacteristic rgbColorCharacteristic(
+			CalliopeRGBServiceColorCharacteristicUUID,
+			(uint8_t *) rgbColorCharacteristicBuffer, 0, sizeof(rgbColorCharacteristicBuffer),
+			GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_WRITE
+	);
 
     // Initialise our characteristic values.
     rgbColorCharacteristicBuffer[0] = 0;
