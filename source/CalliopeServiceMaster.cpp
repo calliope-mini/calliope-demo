@@ -114,7 +114,7 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
     LOG("M_status = 0x%08x, %s\r\n", *(uint32_t*)status->value, status->key);
     if (status != NULL){
         tempStatus = updateServices(*(uint32_t*)status->value);
-        memcpy(serviceStatus,status->value, 4);
+	    memcpy(&serviceStatus, status->value, 4);
         free(status);
         LOG("M_tempStatus: 0x%08x\r\n", tempStatus);
     }
@@ -126,7 +126,7 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
 
     if(tempStatus == (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM)){
         LOG("M_starting interpreter\r\n");
-	    interpreter_run();
+	    interpreter_start();
     }
 }
 
@@ -151,9 +151,13 @@ void CalliopeServiceMaster::onDataWritten(const GattWriteCallbackParams *params)
     if (params->handle == characteristicsHandle && params->len == sizeof(characteristicBitfield)) {
         LOG("M_onDataWritten data: %08x, len:%d\r\n", *(uint32_t*)params->data, params->len);
 	    //uBit.display.print(*images(ImageSmiley), 1000);
-        if((uint32_t)*serviceStatus != *(uint32_t*)params->data) {
+	    if (serviceStatus != *(uint32_t *) params->data) {
             send(params->data);
             setStatus(params->data);
+		    if (!(serviceStatus & CALLIOPE_SERVICE_FLAG_RESET)) {
+			    updateServices(serviceStatus);
+			    LOG("M_update on the fly\r\n");
+		    }
         }
     }
 }
@@ -349,14 +353,14 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
 
 
 void CalliopeServiceMaster::setStatus(const uint8_t *status){
-    memcpy(serviceStatus,status, 4);
+	memcpy(&serviceStatus, status, 4);
     statusChanged = 1;
 }
 
 
 uint8_t CalliopeServiceMaster::getStatus(uint8_t *status){
     if(statusChanged) {
-        memcpy(status, serviceStatus, 4);
+	    memcpy(status, &serviceStatus, 4);
         statusChanged = 0;
         return 1;
     }

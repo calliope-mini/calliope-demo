@@ -340,23 +340,31 @@ static void interpreter_on_button(MicroBitEvent event)
     LOG("int 0x%x 0x%x stop\n\r", source, event.value);
 }
 
-//static void interpreter_on_pin(MicroBitEvent event)
-//{
-//    uint8_t source;
-//    switch(event.source) {
-//        case MICROBIT_ID_IO_P12: source = 0; break;
-//        case MICROBIT_ID_IO_P0:  source = 1; break;
-//        case MICROBIT_ID_IO_P1:  source = 2; break;
-//        case MICROBIT_ID_IO_P16: source = 3; break;
-//        default: return;
-//    }
-//
-//    LOG("pin 0x%x 0x%x start\n\r", source, event.value);
-//
-//    interpreter_run_method(METHOD_ON_PIN, source, event.value);
-//
-//    LOG("pin 0x%x 0x%x stop\n\r", source, event.value);
-//}
+static void interpreter_on_pin(MicroBitEvent event) {
+	uint8_t source;
+	switch (event.source) {
+		case MICROBIT_ID_IO_P12:
+			source = 0;
+			break;
+		case MICROBIT_ID_IO_P0:
+			source = 1;
+			break;
+		case MICROBIT_ID_IO_P1:
+			source = 2;
+			break;
+		case MICROBIT_ID_IO_P16:
+			source = 3;
+			break;
+		default:
+			return;
+	}
+
+	LOG("PPpin 0x%x 0x%x start\n\r", source, event.value);
+
+	interpreter_run_method(METHOD_ON_PIN, source, event.value);
+
+	LOG("PPpin 0x%x 0x%x stop\n\r", source, event.value);
+}
 //
 //static void interpreter_on_gesture(MicroBitEvent event)
 //{
@@ -521,17 +529,6 @@ static void interpreter_init()
 
     interpreter_reset();
 
-    // new BluetoothServiceDebug(interpreter);
-//    new CalliopeRGBService(*uBit.ble, uBit.rgb);
-//    new CalliopeLightSensorService(*uBit.ble, uBit.display);
-//    new CalliopeMicrophoneService(*uBit.ble, uBit.io);
-
-//    new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
-//    new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
-//    new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
-//
-//    new BluetoothServiceProgram(interpreter);
-//    notify = new BluetoothServiceNotify(interpreter);
 
     uBit.sleep(200);
 }

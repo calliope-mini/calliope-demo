@@ -130,7 +130,7 @@ private:
     GattAttribute::Handle_t characteristicsHandle;
     uint8_t characteristicBitfield[4];
 
-    uint8_t serviceStatus[4];
+	uint32_t serviceStatus;
 
     uint8_t statusChanged;
 };

@@ -29,6 +29,7 @@ void onButtonAB(MicroBitEvent)
 }
 
 void onTouch(MicroBitEvent e) {
+	uBit.serial.printf("EVENT: s= %d, e=%d\r\n", e.source, e.value);
 	if ((e.value == MICROBIT_BUTTON_EVT_DOWN) || (e.value == MICROBIT_BUTTON_EVT_HOLD)) {
         switch(e.source) {
             case MICROBIT_ID_IO_P12:

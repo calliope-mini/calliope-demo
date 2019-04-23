@@ -47,8 +47,9 @@ extern MicroBit uBit;
 static void  playSound(void *buffer) {
     uint8_t *speakerBuffer = (uint8_t*)buffer;
     //todo make this independent of uBit
-	if ((uint16_t) (speakerBuffer[2] + (speakerBuffer[3] << 8)) ==
-	    0) {    //!< if a 0 is transmitted, just turn the sound off.
+	if (((uint16_t) (speakerBuffer[2] + (speakerBuffer[3] << 8)) == 0) ||
+	    ((uint16_t) (speakerBuffer[0] + (speakerBuffer[1] << 8)) ==
+	     0)) {    //!< if a 0 is transmitted, just turn the sound off.
 		uBit.soundmotor.soundOff();
 	} else { //!< if the length of the tone is bigger then 0
 		uBit.soundmotor.soundOn((uint16_t) (speakerBuffer[0] + (speakerBuffer[1] << 8)));

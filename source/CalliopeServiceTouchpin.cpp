@@ -79,6 +79,9 @@ CalliopeTouchpinService::CalliopeTouchpinService(BLEDevice &_ble, MicroBitIO &_i
 	io.P12.isTouched();
 	io.P0.isTouched();
 	io.P1.isTouched();
+//	MicroBitPin P16(MICROBIT_ID_IO_P16, MICROBIT_PIN_P16, PIN_CAPABILITY_DIGITAL_IN);
+//	P16.isTouched();
+
 	io.P16.isTouched();
 
 

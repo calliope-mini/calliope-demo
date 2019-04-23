@@ -91,7 +91,7 @@ static void onReset(void /*MicroBitEvent event*/) {
 
 void checkReset(void) {
 	MicroBitPin P0(MICROBIT_ID_IO_P0, MICROBIT_PIN_P0, PIN_CAPABILITY_ALL);
-	MicroBitPin P16(MICROBIT_ID_IO_P16, MICROBIT_PIN_P16, PIN_CAPABILITY_ALL);
+//	MicroBitPin P16(MICROBIT_ID_IO_P16, MICROBIT_PIN_P16, PIN_CAPABILITY_ALL);
 	int value = P0.getAnalogValue(); // P0 is a value in the range of 0 - 1024
 
 	if (value > 400) {
@@ -141,18 +141,18 @@ int main()
 //
 //    if (!hasStorageKey(KEY_TEST)) {
 //        setStorageKey(KEY_TEST);
-//
-//        tests_run();
-//
-//        // not required - just to make it obvious this does not return
-//        waitForever();
+
+	tests_run();
+
+	// not required - just to make it obvious this does not return
+	waitForever();
 //    }
-//
-//    if (!hasStorageKey(KEY_DEMO)) {
-//        setStorageKey(KEY_DEMO);
-//
-//        demo_run();
-//    }
+
+	if (!hasStorageKey(KEY_DEMO)) {
+		setStorageKey(KEY_DEMO);
+
+		demo_run();
+	}
 
     // start state
     menustate_t state = MenuStateOracle;
