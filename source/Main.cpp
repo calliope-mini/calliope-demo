@@ -90,63 +90,54 @@ static void onReset(void /*MicroBitEvent event*/) {
 }
 
 void checkReset(void) {
-	MicroBitPin P0(MICROBIT_ID_IO_P0, MICROBIT_PIN_P0, PIN_CAPABILITY_ALL);
-//	MicroBitPin P16(MICROBIT_ID_IO_P16, MICROBIT_PIN_P16, PIN_CAPABILITY_ALL);
-	int value = P0.getAnalogValue(); // P0 is a value in the range of 0 - 1024
+	int value = uBit.io.P0.getAnalogValue(); // P0 is a value in the range of 0 - 1024
 
 	if (value > 400) {
 		uBit.serial.printf("RESET ALL SERVICES : %d\r\n", value);
 		onReset();
 	}
-	P0.isTouched();
-
+	uBit.io.P0.isTouched();
 }
 
 int main()
 {
     uBit.init();
-//    if (BMX055Accelerometer::isDetected(uBit.i2c)) {
-//        uBit.serial.printf("x = %d\r\n", uBit.accelerometer.getX());
-//
-//    }
-//    uBit.accelerometer.updateSample();
+	// check the accelerometer
+	if (BMX055Accelerometer::isDetected(uBit.i2c)) {
+		uBit.accelerometer.updateSample();
+	} else {
+		uBit.serial.send("Accelerometer not available\r\n");
+	}
 
     uBit.serial.send("Calliope Demo v2.5\r\n");
 
-//    if (hasStorageKey(KEY_INTERPRETER)) {
-//        removeStorageKey(KEY_INTERPRETER);
+	if (hasStorageKey(KEY_INTERPRETER)) {
+		removeStorageKey(KEY_INTERPRETER);
 
-    // minimize serial buffer
-//        uBit.serial.setTxBufferSize(0);
+		//minimize serial buffer
+		uBit.serial.setTxBufferSize(0);
 
-    showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
-
-    uBit.soundmotor.soundOn(1000);
-    uBit.sleep(100);
-//    uBit.soundmotor.soundOn(2000);
-//    uBit.sleep(100);
-//    uBit.soundmotor.soundOn(3000);
-//    uBit.sleep(300);
-    uBit.soundmotor.soundOff();
-
-	checkReset();
+		showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
 
 
-    PlaygroundFreeInit(uBit);
+		checkReset();
+
+
+		PlaygroundFreeInit(uBit);
 //        interpreter_start();
 
-    // not required - just to make it obvious this does not return
-    waitForever();
-//    }
-//
-//    if (!hasStorageKey(KEY_TEST)) {
-//        setStorageKey(KEY_TEST);
+		// not required - just to make it obvious this does not return
+		waitForever();
+	}
 
-	tests_run();
+	if (!hasStorageKey(KEY_TEST)) {
+		setStorageKey(KEY_TEST);
 
-	// not required - just to make it obvious this does not return
-	waitForever();
-//    }
+		tests_run();
+
+		// not required - just to make it obvious this does not return
+		waitForever();
+	}
 
 	if (!hasStorageKey(KEY_DEMO)) {
 		setStorageKey(KEY_DEMO);
@@ -160,35 +151,35 @@ int main()
     while (true) {
         state = menuWaitForChoice(state);
         switch (state) {
-            // 1
-            case MenuStateOracle:
-                menuAnimateEnter();
+	        // 1
+	        case MenuStateOracle:
+		        menuAnimateEnter();
                 oracle_run();
                 menuAnimateLeave();
-                break;
-                // 2
-            case MenuStateRockPaperScissors:
-                menuAnimateEnter();
+		        break;
+		        // 2
+	        case MenuStateRockPaperScissors:
+		        menuAnimateEnter();
                 rockpaperscissors_run();
                 menuAnimateLeave();
-                break;
-                // 3
-            case MenuStateMultiplication:
-                menuAnimateEnter();
+		        break;
+		        // 3
+	        case MenuStateMultiplication:
+		        menuAnimateEnter();
                 multiplication_run();
                 menuAnimateLeave();
-                break;
-                // 4
-            case MenuStateVolumeMeter:
-                menuAnimateEnter();
+		        break;
+		        // 4
+	        case MenuStateVolumeMeter:
+		        menuAnimateEnter();
                 volumemeter_run();
                 menuAnimateLeave();
-                break;
-                // 5
-            case MenuStateInterpreter:
-                setStorageKey(KEY_INTERPRETER);
-                uBit.reset();
-                break;
+		        break;
+		        // 5
+	        case MenuStateInterpreter:
+		        setStorageKey(KEY_INTERPRETER);
+		        uBit.reset();
+		        break;
         }
     }
 }

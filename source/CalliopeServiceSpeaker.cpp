@@ -53,8 +53,9 @@ static void  playSound(void *buffer) {
 		uBit.soundmotor.soundOff();
 	} else { //!< if the length of the tone is bigger then 0
 		uBit.soundmotor.soundOn((uint16_t) (speakerBuffer[0] + (speakerBuffer[1] << 8)));
-		fiber_sleep((uint16_t) (speakerBuffer[2] + (speakerBuffer[3] << 8)));
-		uBit.soundmotor.soundOff();
+		// TODO the next two lines create a memory overflow
+//		fiber_sleep((uint16_t) (speakerBuffer[2] + (speakerBuffer[3] << 8)));
+//		uBit.soundmotor.soundOff();
 	}
 }
 

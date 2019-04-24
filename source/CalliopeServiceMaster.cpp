@@ -126,7 +126,7 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
 
     if(tempStatus == (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM)){
         LOG("M_starting interpreter\r\n");
-	    interpreter_start();
+	    interpreter_run();
     }
 }
 

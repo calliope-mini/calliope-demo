@@ -130,7 +130,7 @@ void tests_run()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, onButtonAB);
-//    uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_PIN_EVENT_ON_TOUCH, onTouch);
+////    uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_PIN_EVENT_ON_TOUCH, onTouch);
 	uBit.messageBus.listen(MICROBIT_ID_IO_P12, MICROBIT_EVT_ANY, onTouch);
 	uBit.messageBus.listen(MICROBIT_ID_IO_P0, MICROBIT_EVT_ANY, onTouch);
 	uBit.messageBus.listen(MICROBIT_ID_IO_P1, MICROBIT_EVT_ANY, onTouch);
@@ -154,7 +154,7 @@ void tests_run()
             }
             uBit.sleep(100);
 
-//            uBit.serial.printf("mic: %d -> %d\r", mic, gauge, ASYNC);
+	        uBit.serial.printf("mic: %d -> %d\r", mic, gauge, ASYNC);
         }
     }
 }

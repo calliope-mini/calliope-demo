@@ -250,7 +250,7 @@ static void interpreter_startup_sound()
     uBit.soundmotor.soundOff();
 }
 
-static void interpreter_on_button(MicroBitEvent event)
+static void interpreter_on_event(MicroBitEvent event)
 {
     uint16_t source;
     uint16_t value;
@@ -334,9 +334,6 @@ static void interpreter_on_button(MicroBitEvent event)
     interpreter_run_method(method, source, value);
     uBit.sleep(10);
 
-//    LOG("button 0x%x 0x%x start\n\r", source, event.value);
-//
-//    interpreter_run_method(METHOD_ON_BUTTON, source, event.value);
     LOG("int 0x%x 0x%x stop\n\r", source, event.value);
 }
 
@@ -365,45 +362,6 @@ static void interpreter_on_pin(MicroBitEvent event) {
 
 	LOG("PPpin 0x%x 0x%x stop\n\r", source, event.value);
 }
-//
-//static void interpreter_on_gesture(MicroBitEvent event)
-//{
-//    LOG("gesture 0x%x 0x%x start\n\r", event.source, event.value);
-//
-//    interpreter_run_method(METHOD_ON_GESTURE, event.source, event.value);
-//
-//    LOG("gesture 0x%x 0x%x stop\n\r", event.source, event.value);
-// }
-
-// static void interpreter_event(MicroBitEvent event)
-// {
-//     if (event.source == MICROBIT_ID_GESTURE && event.value == MICROBIT_ACCELEROMETER_EVT_SHAKE) {
-//         interpreter_on_gesture(event);
-//     } else
-
-//     if (event.source == MICROBIT_ID_BUTTON_A && event.value == MICROBIT_BUTTON_EVT_CLICK) {
-//         interpreter_on_button(event);
-//     } else
-//     if (event.source == MICROBIT_ID_BUTTON_B && event.value == MICROBIT_BUTTON_EVT_CLICK) {
-//         interpreter_on_button(event);
-//     } else
-//     if (event.source == MICROBIT_ID_BUTTON_AB && event.value == MICROBIT_BUTTON_EVT_CLICK) {
-//         interpreter_on_button(event);
-//     } else
-
-//     if (event.source == MICROBIT_ID_IO_P12 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) { // P0
-//         interpreter_on_pin(event);
-//     } else
-//     if (event.source == MICROBIT_ID_IO_P0 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) {  // P1
-//         interpreter_on_pin(event);
-//     } else
-//     if (event.source == MICROBIT_ID_IO_P1 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) {  // P2
-//         interpreter_on_pin(event);
-//     } else
-//     if (event.source == MICROBIT_ID_IO_P16 && event.value == MICROBIT_PIN_EVENT_ON_TOUCH) { // P3
-//         interpreter_on_pin(event);
-//     }
-// }
 
 static bool nothingToRun()
 {
@@ -467,68 +425,9 @@ static void interpreter_init()
     uBit.io.P1.isTouched();
     uBit.io.P16.isTouched();
 
-    // uBit.messageBus.listen(
-    //     MICROBIT_ID_ANY,
-    //     MICROBIT_EVT_ANY,
-    //     interpreter_event);
-
-
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_BUTTON_A,
-//        MICROBIT_BUTTON_EVT_CLICK,
-//        interpreter_on_button);
-//
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_BUTTON_B,
-//        MICROBIT_BUTTON_EVT_CLICK,
-//        interpreter_on_button);
-//
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_BUTTON_AB,
-//        MICROBIT_BUTTON_EVT_CLICK,
-//        interpreter_on_button);
-
- //   uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_BUTTON_EVT_CLICK, interpreter_on_button);
-
-    uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_EVT_ANY, interpreter_on_button);
-
-
-
-//    // Pin 0
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P12,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-//    // Pin 1
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P0,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-//    // Pin 2
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P1,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-//    // Pin 3
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_IO_P16,
-//        MICROBIT_EVT_ANY,
-//        interpreter_on_pin);
-//
-////    uBit.messageBus.listen(MICROBIT_ID_ANY, 1, interpreter_on_pin);
-//
-//    uBit.messageBus.listen(MICROBIT_ID_IO_P0, MICROBIT_BUTTON_EVT_CLICK, someFunction);
-
-//    uBit.messageBus.listen(
-//        MICROBIT_ID_GESTURE,
-//        MICROBIT_ACCELEROMETER_EVT_SHAKE,
-//        interpreter_on_gesture);
+	uBit.messageBus.listen(MICROBIT_ID_ANY, MICROBIT_EVT_ANY, interpreter_on_event);
 
     interpreter_reset();
-
 
     uBit.sleep(200);
 }
