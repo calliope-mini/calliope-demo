@@ -1,47 +1,31 @@
-//
-// Created by wowa on 13.04.19.
-//
+/*!
+ * @file CalliopeServiceTouchpin.cpp
+ *
+ * BT service for the Touchpins on the Calliope board.
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Waldemar Gruenwald <https://github.com/gruenwaldi>
+ */
 
-#include "CalliopeServiceTouchpin.h"
-
-/*
-The MIT License (MIT)
-
-Copyright (c) 2016 British Broadcasting Corporation.
-This software is provided by Lancaster University by arrangement with the BBC.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
-*/
 
 /**
-  * Class definition for the custom MicroBit light Service.
-  * Provides a BLE service to remotely read the silicon light of the nRF51822.
+  * Class definition for the custom Calliope Touchpin Service.
+  * Provides a BLE service to remotely notify about the touch on the touchpins..
   */
 #include "MicroBitConfig.h"
 #include "CalliopeServiceMaster.h"
 #include "ble/UUID.h"
+#include "CalliopeServiceTouchpin.h"
 
 /**
   * Constructor.
-  * Create a representation of the lightService
+  * Create a representation of the CalliopeTouchpinService.
   * @param _ble The instance of a BLE device that we're running on.
-  * @param _thermometer An instance of MicroBitThermometer to use as our light source.
+  * @param _io The instance of the pins connected to the touchpins.
   */
 CalliopeTouchpinService::CalliopeTouchpinService(BLEDevice &_ble, MicroBitIO &_io) :
 		ble(_ble),
@@ -79,9 +63,6 @@ CalliopeTouchpinService::CalliopeTouchpinService(BLEDevice &_ble, MicroBitIO &_i
 	io.P12.isTouched();
 	io.P0.isTouched();
 	io.P1.isTouched();
-//	MicroBitPin P16(MICROBIT_ID_IO_P16, MICROBIT_PIN_P16, PIN_CAPABILITY_DIGITAL_IN);
-//	P16.isTouched();
-
 	io.P16.isTouched();
 
 
@@ -137,38 +118,26 @@ void CalliopeTouchpinService::touchpinUpdate(MicroBitEvent event) {
 			default:
 				value = event.value;
 		}
+		// check the TOUCH-PINs
 		switch (event.source) {
-			// check the TOUCH-PINs
-			case MICROBIT_ID_IO_P12:
+			case MICROBIT_ID_IO_P12: // = 19
 				source = 0;
-//				value = event.value;
-//				serial.printf("pin 0x%x 0x%x start\n\r", source, event.value);
 				break;
-
-			case MICROBIT_ID_IO_P0:
+			case MICROBIT_ID_IO_P0: // = 7
 				source = 1;
-//				value = event.value;
-//				serial.printf("pin 0x%x 0x%x start\n\r", source, event.value);
 				break;
-
 			case MICROBIT_ID_IO_P1: // = 8
 				source = 2;
-//				value = event.value;
-//				serial.printf("pin 0x%x 0x%x start\n\r", source, event.value);
 				break;
-
 			case MICROBIT_ID_IO_P16: // = 23
 				source = 3;
-//				value = event.value;
-//				serial.printf("pin 0x%x 0x%x start\n\r", source, event.value);
 				break;
 			default:
 				source = 5;
-//				value = 2;
-//				serial.printf("default pin 0x%x 0x%x start\n\r", event.source,  event.value);
 				break;
 
 		}
+		// write the value to the buffer and notify the service
 		TouchpinDataCharacteristicBuffer = (source << 8) + value;
 		ble.gattServer().notify(
 				characteristicHandle,

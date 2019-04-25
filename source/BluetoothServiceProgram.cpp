@@ -1,4 +1,16 @@
-// TODO add header
+/*!
+ * @file BluetoothServiceProgram.cpp
+ *
+ * Programming Service, neccessary for the Playground Application
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Torsten Curdt <https://github.com/tcurdt>
+ * @author Waldemar Gruenwald <https://github.com/gruenwaldi>
+ */
 
 #include "MicroBit.h"
 #include "Bytes.h"
@@ -18,7 +30,7 @@ BluetoothServiceProgram::BluetoothServiceProgram(Interpreter &_interpreter) :
         )
 {
 	characteristic.requireSecurity(
-			SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);//SECURITY_MODE_ENCRYPTION_OPEN_LINK);//MICROBIT_BLE_SECURITY_LEVEL);
+			SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);
     characteristic.setReadAuthorizationCallback(this, &BluetoothServiceProgram::onDataRead);
 
     GattCharacteristic *characteristics[] = {

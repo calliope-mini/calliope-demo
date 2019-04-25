@@ -1,7 +1,17 @@
-//TODO add header
-//
-// Created by wowa on 21.03.19.
-//
+/*!
+ * @file CalliopeServiceInterpreter.cpp
+ *
+ * Combined Program and Notify Service for Playground Interpreter
+ *
+ * @note: not in use yet, maybe never TODO: cleanup
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Waldemar Gruenwald <https://github.com/gruenwaldi>
+ */
 
 #include "Bytes.h"
 #include "MicroBitConfig.h"
@@ -67,10 +77,6 @@ CalliopeServiceInterpreter::CalliopeServiceInterpreter(BLEDevice &_ble, Interpre
 
 void CalliopeServiceInterpreter::send(uint16_t address, uint16_t value) {
     if (ble.getGapState().connected) {
-
-//        LOG("send addr:%d, val:%d\r\n", address, value);
-
-        //uint8_t buffer[4];
         notifyCharacteristicsBuffer[0] = HI16(address);
         notifyCharacteristicsBuffer[1] = LO16(address);
         notifyCharacteristicsBuffer[2] = HI16(value);

@@ -1,36 +1,20 @@
-//TODO add header
-//
-// Created by wowa on 19.03.19.
-//
+/*!
+ * @file CalliopeServiceSpeaker.cpp
+ *
+ * BT service for the Speaker on the Calliope board.
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Waldemar Gruenwald <https://github.com/gruenwaldi>
+ */
 
-/*
-The MIT License (MIT)
-
-Copyright (c) 2016 British Broadcasting Corporation.
-This software is provided by Lancaster University by arrangement with the BBC.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
-*/
 
 /**
-  * Class definition for the custom Calliope RGB LED Service.
-  * Provides a BLE service to remotely set the color or turn of the RGB LED.
+  * Class definition for the custom Calliope Speaker Service.
+  * Provides a BLE service to remotely play a tone over the speaker on the Calliope board..
   */
 #include "MicroBitConfig.h"
 #include "ble/UUID.h"
@@ -42,17 +26,21 @@ extern MicroBit uBit;
 /*!
  * Play a tone, which is asked for by the CalliopeServiceSpeaker
  *
+ * @note: this function is called inderictly, via invoke(...)
+ *
  * @param buffer (uint16_t frequency[Hz], uint16_t length[ms])
+ *
+ * @code:
+ * invoke(playSound, (void *) params->data);
  */
 static void  playSound(void *buffer) {
-    uint8_t *speakerBuffer = (uint8_t*)buffer;
+	uint16_t *speakerBuffer = (uint16_t *) buffer;
     //todo make this independent of uBit
-	if (((uint16_t) (speakerBuffer[2] + (speakerBuffer[3] << 8)) == 0) ||
-	    ((uint16_t) (speakerBuffer[0] + (speakerBuffer[1] << 8)) ==
-	     0)) {    //!< if a 0 is transmitted, just turn the sound off.
+	if ((speakerBuffer[1] == 0) ||
+	    (speakerBuffer[0] == 0)) {    //!< if a 0 is transmitted, just turn the sound off.
 		uBit.soundmotor.soundOff();
 	} else { //!< if the length of the tone is bigger then 0
-		uBit.soundmotor.soundOn((uint16_t) (speakerBuffer[0] + (speakerBuffer[1] << 8)));
+		uBit.soundmotor.soundOn(speakerBuffer[0]);
 		// TODO the next two lines create a memory overflow
 //		fiber_sleep((uint16_t) (speakerBuffer[2] + (speakerBuffer[3] << 8)));
 //		uBit.soundmotor.soundOff();
@@ -66,8 +54,9 @@ static void  playSound(void *buffer) {
   * @param _ble The instance of a BLE device that we're running on.
   * @param _rgb An instance of CalliopeSpeaker to interface with.
   */
-CalliopeSpeakerService::CalliopeSpeakerService(BLEDevice &_ble) :
-        ble(_ble) {
+CalliopeSpeakerService::CalliopeSpeakerService(BLEDevice &_ble, CalliopeSoundMotor &_soundmotor) :
+		ble(_ble),
+		soundmotor(_soundmotor) {
 
     // Create the data structures that represent each of our characteristics in Soft Device.
     GattCharacteristic speakerCharacteristic(CalliopeSpeakerCharacteristicUUID,
@@ -99,7 +88,13 @@ CalliopeSpeakerService::CalliopeSpeakerService(BLEDevice &_ble) :
   */
 void CalliopeSpeakerService::onDataWritten(const GattWriteCallbackParams *params) {
     if (params->handle == speakerCharacteristicHandle && params->len == sizeof(speakerCharacteristicBuffer)) {
-        invoke(playSound, (void *) params->data);
+	    uint16_t *speakerBuffer = (uint16_t *) params->data;
+	    if ((speakerBuffer[1] == 0) ||
+	        (speakerBuffer[0] == 0)) {    //!< if a 0 is transmitted, just turn the sound off.
+		    soundmotor.soundOff();
+	    } else { //!< if the length of the tone is bigger then 0
+		    soundmotor.soundOn(speakerBuffer[0]);
+	    }
     }
 }
 

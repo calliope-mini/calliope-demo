@@ -1,6 +1,15 @@
-// TODO header
-// Created by wowa on 16.04.19.
-//
+/*!
+ * @file CalliopeServiceGesture.h
+ *
+ * Bluetooth Gesture Service, requires Accelerometer and events
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Waldemar Gruenwald <https://github.com/gruenwaldi>
+ */
 
 #ifndef CALLIOPE_DEMO_CALLIOPESERVICEMOVE_H
 #define CALLIOPE_DEMO_CALLIOPESERVICEMOVE_H

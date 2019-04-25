@@ -1,4 +1,29 @@
-//todo bring it back together to work
+/**
+ * Calliope Demo Code.
+ *
+ * The code contains is the wrapper for the main functionality found after
+ * unpacking the Calliope mini. It contains the basic test functionality for
+ * in-production testing, as well as some small demo programs that can be
+ * selected using A and B buttons.
+ *
+ * - Oracle (press a button and get a smiley or sad face)
+ * - Rock, Paper, Scissors, Well
+ * - Volume meter
+ * - Multiplication
+ * - Playground
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Matthias L. Jugel <leo@calliope.cc>
+ * @author Stephan Noller <stephan@calliope.cc>
+ * @author Franka Futterlieb <franka@urbn.de>
+ * @author Niranjan Rao
+ * @author Waldemar Gruenwald <waldemar.gruenwald@ubirch.com>
+ */
+
 #include <BMX055Accelerometer.h>
 #include "MicroBit.h"
 #include "Storage.h"
@@ -10,7 +35,6 @@
 #include "RunRockPaperScissors.h"
 #include "RunMultiplication.h"
 #include "RunVolumeMeter.h"
-//#include "Interpreter.h"
 #include "nrf.h"
 #include "PlaygroundFree.h"
 #include "CalliopeServiceMaster.h"
