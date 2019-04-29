@@ -113,7 +113,7 @@ public:
 	 * Set the current services status.
 	 * @param status to be set
 	 */
-	void setStatus(const uint8_t *status);
+	void setStatus(const uint32_t *status);
 
 
 	/*!
@@ -121,7 +121,7 @@ public:
 	 * @param status will be
 	 * @return
 	 */
-	uint8_t getStatus(uint8_t *status);
+	uint8_t getStatus(uint32_t *status);
 
 
     /*!

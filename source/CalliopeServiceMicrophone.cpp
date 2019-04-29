@@ -65,6 +65,9 @@ void CalliopeMicrophoneService::onDataRead(GattReadAuthCallbackParams *params) {
 		    if (tempAnalogValue > microphoneDataCharacteristicBuffer) {
 			    microphoneDataCharacteristicBuffer = tempAnalogValue;
 		    }
+		    if (microphoneDataCharacteristicBuffer > 512)
+			    microphoneDataCharacteristicBuffer -= 511;
+		    else microphoneDataCharacteristicBuffer = 0;
 	    }
 
 //        if (microphoneDataCharacteristicBuffer > 512) {

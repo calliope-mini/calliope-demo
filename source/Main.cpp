@@ -25,6 +25,7 @@
  */
 
 #include <BMX055Accelerometer.h>
+#include <nrf_soc.h>
 #include "MicroBit.h"
 #include "Storage.h"
 #include "Images.h"
@@ -43,89 +44,124 @@ MicroBit uBit;
 
 CalliopeServiceMaster *masterService;
 
+/*!
+ * Show the Histogram, which represents the ID of the device
+ * @param display The instance of the LED matrix display
+ */
 static void showNameHistogram(MicroBitDisplay &display)
 {
-    NRF_FICR_Type *ficr = NRF_FICR;
-    uint32_t n = ficr->DEVICEID[1];
-    uint32_t ld = 1;
-    uint32_t d = MICROBIT_DFU_HISTOGRAM_HEIGHT;
-    uint32_t h;
+	NRF_FICR_Type *ficr = NRF_FICR;
+	uint32_t n = ficr->DEVICEID[1];
+	uint32_t ld = 1;
+	uint32_t d = MICROBIT_DFU_HISTOGRAM_HEIGHT;
+	uint32_t h;
 
-    display.clear();
-    for (uint32_t i = 0; i < MICROBIT_DFU_HISTOGRAM_WIDTH; i++) {
-        h = (n % d) / ld;
+	display.clear();
+	for (uint32_t i = 0; i < MICROBIT_DFU_HISTOGRAM_WIDTH; i++) {
+		h = (n % d) / ld;
 
-        n -= h;
-        d *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
-        ld *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
+		n -= h;
+		d *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
+		ld *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
 
-        for (uint32_t j = 0; j < h + 1; j++)
-            display.image.setPixelValue(
-                    static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_WIDTH - i - 1),
-                    static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_HEIGHT - j - 1),
-                    255);
-    }
+		for (uint32_t j = 0; j < h + 1; j++)
+			display.image.setPixelValue(
+					static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_WIDTH - i - 1),
+					static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_HEIGHT - j - 1),
+					255);
+	}
 }
 
+/*!
+ * This is the idle loop of the Calliope device.
+ * Therein the Master status is checked, for eventually resetting the device,
+ * if the corresponding flag was set.
+ */
 static inline void waitForever()
 {
-    while (true) {
-        uBit.sleep(1000);
-        uint8_t buffer[4];
-        if(masterService->getStatus(buffer)){
-            LOG("status changed\r\n");
-            uBit.storage.put("MasterStatus",buffer, 4);
-            LOG("storing ok\r\n");
-            if((uint32_t)(buffer[3] << 24) & CALLIOPE_SERVICE_FLAG_RESET){
-                LOG("resetting\r\n");
-	            //uBit.sleep(500);
-                uBit.reset();
-            }
-        } else
-            LOG("status ok\r\n");
-    }
+	while (true) {
+		uBit.sleep(1000);
+		uint32_t buffer;
+		if (masterService->getStatus(&buffer)) {
+			uBit.serial.printf("status changed:%08x\r\n", buffer);
+			uBit.storage.put("MasterStatus", (uint8_t *) &buffer, 4);
+			uBit.serial.printf("storing ok\r\n");
+			if (buffer & CALLIOPE_SERVICE_FLAG_RESET) {
+				uBit.serial.printf("resetting\r\n");
+				//uBit.sleep(500);
+				uBit.reset();
+			}
+		} elseLOG("status ok\r\n");
+	}
 }
 
+/*!
+ * Animation for entering a specific demo application.
+ */
 static void menuAnimateEnter()
 {
-    uBit.display.print(*images(ImageDot));
-    uBit.sleep(200);
-    uBit.display.print(*images(ImageSmallRect));
-    uBit.sleep(200);
-    uBit.display.print(*images(ImageLargeRect));
-    uBit.sleep(200);
-    uBit.display.clear();
+	uBit.display.print(*images(ImageDot));
+	uBit.sleep(200);
+	uBit.display.print(*images(ImageSmallRect));
+	uBit.sleep(200);
+	uBit.display.print(*images(ImageLargeRect));
+	uBit.sleep(200);
+	uBit.display.clear();
 }
 
+/*!
+ * Animation for leaving a specific demo application
+ */
 static void menuAnimateLeave()
 {
-    uBit.display.print(*images(ImageLargeRect));
-    uBit.sleep(200);
-    uBit.display.print(*images(ImageSmallRect));
-    uBit.sleep(200);
-    uBit.display.print(*images(ImageDot));
-    uBit.sleep(200);
-    uBit.display.clear();
+	uBit.display.print(*images(ImageLargeRect));
+	uBit.sleep(200);
+	uBit.display.print(*images(ImageSmallRect));
+	uBit.sleep(200);
+	uBit.display.print(*images(ImageDot));
+	uBit.sleep(200);
+	uBit.display.clear();
 }
 
-static void onReset(void /*MicroBitEvent event*/) {
-	uint32_t buffer = 0;
-	uBit.storage.put("MasterStatus", (uint8_t *) &buffer, 4);
-}
-
-void checkReset(void) {
+/*!
+ * Check if the Services have to be reset.
+ * TODO maybe delete this functionality, because it might not be needed anymore?
+ */
+void checkServicesReset(void) {
 	int value = uBit.io.P0.getAnalogValue(); // P0 is a value in the range of 0 - 1024
 
 	if (value > 400) {
 		uBit.serial.printf("RESET ALL SERVICES : %d\r\n", value);
-		onReset();
+		uint32_t buffer = 0;
+		uBit.storage.put("MasterStatus", (uint8_t *) &buffer, 4);
 	}
 	uBit.io.P0.isTouched();
 }
 
+/*!
+ * Get the reason for the reset condition, it might have come from the Master Service,
+ * in which case the interpreter has to be restarted.
+ */
+void getResetReason() {
+	KeyValuePair *status;
+	status = uBit.storage.get("MasterStatus");
+	uBit.serial.printf("status = 0x%08x, %s\r\n", *(uint32_t *) status->value, status->key);
+
+	if (*(uint32_t *) status->value & CALLIOPE_SERVICE_FLAG_RESET) {
+		setStorageKey(KEY_INTERPRETER);
+		*(uint32_t *) status->value = *(uint32_t *) status->value & (~(CALLIOPE_SERVICE_FLAG_RESET));
+		uBit.storage.put(reinterpret_cast<const char *>(status->key), status->value, sizeof(status->value));
+	}
+	free(status);
+}
+
+
 int main()
 {
-    uBit.init();
+	uBit.init();
+
+	getResetReason();
+
 	// check the accelerometer
 	if (BMX055Accelerometer::isDetected(uBit.i2c)) {
 		uBit.accelerometer.updateSample();
@@ -138,17 +174,13 @@ int main()
 	if (hasStorageKey(KEY_INTERPRETER)) {
 		removeStorageKey(KEY_INTERPRETER);
 
+		PlaygroundFreeInit(uBit);
+		checkServicesReset();
+
 		//minimize serial buffer
 		uBit.serial.setTxBufferSize(0);
 
 		showNameHistogram(uBit.display); //uBit.bleManager.pairingMode(uBit.display, uBit.buttonA);//
-
-
-		checkReset();
-
-
-		PlaygroundFreeInit(uBit);
-//        interpreter_start();
 
 		// not required - just to make it obvious this does not return
 		waitForever();

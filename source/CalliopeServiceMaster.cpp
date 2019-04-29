@@ -118,11 +118,11 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
     uint32_t tempStatus = 0;
     // check the stored status information
     KeyValuePair *status;
-    status = uBit.storage.get("MasterStatus");LOG("status = 0x%08x, %s\r\n", *(uint32_t *) status->value, status->key);
+	status = uBit.storage.get("MasterStatus");LOG("status = 0x%08x, %s\r\n", *(uint32_t *) status->value, status->key);
     if (status != NULL){
         tempStatus = updateServices(*(uint32_t*)status->value);
 	    memcpy(&serviceStatus, status->value, 4);
-        free(status);LOG("tempStatus: 0x%08x\r\n", tempStatus);
+	    free(status);LOG("tempStatus: 0x%08x\r\n", tempStatus);
     }
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
@@ -130,7 +130,7 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
     ble.setAdvertisingTimeout(0);
     ble.startAdvertising();
 
-    if(tempStatus == (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM)){ LOG("starting interpreter\r\n");
+	if (tempStatus == (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM)) { LOG("starting interpreter\r\n");
 	    interpreter_run();
     }
 }
@@ -158,7 +158,7 @@ void CalliopeServiceMaster::onDataWritten(const GattWriteCallbackParams *params)
 	    //uBit.display.print(*images(ImageSmiley), 1000);
 	    if (serviceStatus != *(uint32_t *) params->data) {
             send(params->data);
-            setStatus(params->data);
+		    setStatus((uint32_t *) params->data);
 		    if (!(serviceStatus & CALLIOPE_SERVICE_FLAG_RESET)) {
 			    updateServices(serviceStatus);LOG("update on the fly\r\n");
 		    }
@@ -177,9 +177,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new CalliopeRGBService(*uBit.ble, uBit.rgb);
         tempStatus |= CALLIOPE_SERVICE_FLAG_RGB;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                CalliopeRGBServiceUUID,
-                16);LOG("new CalliopeRGBService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        CalliopeRGBServiceUUID,
+		        16);LOG("new CalliopeRGBService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_MICROPHONE    (uint32_t)0x00000002
     // Microphone Service
@@ -187,9 +187,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new CalliopeMicrophoneService(*uBit.ble, uBit.io);
         tempStatus |= CALLIOPE_SERVICE_FLAG_MICROPHONE;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                CalliopeMicrophoneServiceUUID,
-                16);LOG("new CalliopeMicrophoneService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        CalliopeMicrophoneServiceUUID,
+		        16);LOG("new CalliopeMicrophoneService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_BRIGHTNESS         (uint32_t)0x00000004
     // Light Sensor Service
@@ -197,9 +197,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new CalliopeLightSensorService(*uBit.ble, uBit.display);
         tempStatus |= CALLIOPE_SERVICE_FLAG_BRIGHTNESS;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                CalliopeLightSensorServiceUUID,
-                16);LOG("new CalliopeLightSensorService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        CalliopeLightSensorServiceUUID,
+		        16);LOG("new CalliopeLightSensorService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_SPEAKER       (uint32_t)0x00000008
     // Light Sensor Service
@@ -207,9 +207,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
 	    new CalliopeSpeakerService(*uBit.ble, uBit.soundmotor);
         tempStatus |= CALLIOPE_SERVICE_FLAG_SPEAKER;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                CalliopeSpeakerServiceUUID,
-                16);LOG("new CalliopeSpeakerService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        CalliopeSpeakerServiceUUID,
+		        16);LOG("new CalliopeSpeakerService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_LED           (uint32_t)0x00000010
     // LED service
@@ -217,9 +217,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new MicroBitLEDService(*uBit.ble, uBit.display);
         tempStatus |= CALLIOPE_SERVICE_FLAG_LED;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                MicroBitLEDServiceUUID,
-                16);LOG("new MicroBitLEDService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        MicroBitLEDServiceUUID,
+		        16);LOG("new MicroBitLEDService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_TEMPERATURE   (uint32_t)0x00000020
     // Temperature service
@@ -227,9 +227,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
         tempStatus |= CALLIOPE_SERVICE_FLAG_TEMPERATURE;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                MicroBitTemperatureServiceUUID,
-                16);LOG("new MicroBitTemperatureService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        MicroBitTemperatureServiceUUID,
+		        16);LOG("new MicroBitTemperatureService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_BUTTON        (uint32_t)0x00000040
     // Button service
@@ -237,9 +237,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new MicroBitButtonService(*uBit.ble);
         tempStatus |= CALLIOPE_SERVICE_FLAG_BUTTON;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                MicroBitButtonServiceUUID,
-                16);LOG("new MicroBitButtonService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        MicroBitButtonServiceUUID,
+		        16);LOG("new MicroBitButtonService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_MAGNETOMETER  (uint32_t)0x00000080
     // Magnetometer service
@@ -247,9 +247,9 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
         tempStatus |= CALLIOPE_SERVICE_FLAG_MAGNETOMETER;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                MicroBitMagnetometerServiceUUID,
-                16);LOG("new MicroBitMagnetometerService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        MicroBitMagnetometerServiceUUID,
+		        16);LOG("new MicroBitMagnetometerService\r\n");
     }
 	// CALLIOPE_SERVICE_FLAG_ACCELEROMETER (uint32_t)0x00000100
 	// Accelerometer Service
@@ -287,65 +287,69 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
         new MicroBitEventService(*uBit.ble, uBit.messageBus);
         tempStatus |= CALLIOPE_SERVICE_FLAG_EVENT;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                MicroBitEventServiceUUID,
-                16);LOG("new MicroBitEventService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        MicroBitEventServiceUUID,
+		        16);LOG("new MicroBitEventService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_INTERPRETER   (uint32_t)0x10000000
     // Interpreter Program Service
     if (requestedStatus & CALLIOPE_SERVICE_FLAG_INTERPRETER) {
         if (interpreter == NULL) {
-            interpreter = new Interpreter;LOG("new interpreter\r\n");
+	        interpreter = new Interpreter;LOG("new interpreter\r\n");
         }
         new CalliopeServiceInterpreter(*uBit.ble, *interpreter);
         tempStatus |= CALLIOPE_SERVICE_FLAG_INTERPRETER;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                CalliopeServiceInterpreterUUID,
-                16);LOG("new CalliopeServiceInterpreter\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        CalliopeServiceInterpreterUUID,
+		        16);LOG("new CalliopeServiceInterpreter\r\n");
     }
 	// CALLIOPE_SERVICE_FLAG_PROGRAM   (uint32_t)0x20000000
     // Interpreter Program Service
     if (requestedStatus & CALLIOPE_SERVICE_FLAG_PROGRAM){
         if(interpreter == NULL){
-            interpreter = new Interpreter;LOG("new interpreter\r\n");
+	        interpreter = new Interpreter;LOG("new interpreter\r\n");
         }
         new BluetoothServiceProgram(*interpreter);
         tempStatus |= CALLIOPE_SERVICE_FLAG_PROGRAM;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                BluetoothServiceProgramUUID,
-                16);LOG("new programService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        BluetoothServiceProgramUUID,
+		        16);LOG("new programService\r\n");
     }
     // CALLIOPE_SERVICE_FLAG_NOTIFY    (uint32_t)0x40000000
     // Interpreter Notify Service
     if (requestedStatus & CALLIOPE_SERVICE_FLAG_NOTIFY){
         if(interpreter == NULL){
-            interpreter = new Interpreter;LOG("new interpreter\r\n");
+	        interpreter = new Interpreter;LOG("new interpreter\r\n");
         }
         new BluetoothServiceNotify(*interpreter);
         tempStatus |= CALLIOPE_SERVICE_FLAG_NOTIFY;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
-                GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-                BluetoothServiceNotifyUUID,
-                16);LOG("new notifyService\r\n");
+		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
+		        BluetoothServiceNotifyUUID,
+		        16);LOG("new notifyService\r\n");
     }
+	// CALLIOPE_SERVICE_FLAG_RESET    (uint32_t)0x80000000
+	// Software reset
+	if (requestedStatus & CALLIOPE_SERVICE_FLAG_RESET) {
+
+	}
 
 
-
-    return tempStatus;
+	return tempStatus;
 }
 
 
-void CalliopeServiceMaster::setStatus(const uint8_t *status){
+void CalliopeServiceMaster::setStatus(const uint32_t *status) {
 	memcpy(&serviceStatus, status, 4);
     statusChanged = 1;
 }
 
 
-uint8_t CalliopeServiceMaster::getStatus(uint8_t *status){
+uint8_t CalliopeServiceMaster::getStatus(uint32_t *status) {
+	memcpy(status, &serviceStatus, 4);
     if(statusChanged) {
-	    memcpy(status, &serviceStatus, 4);
         statusChanged = 0;
         return 1;
     }
