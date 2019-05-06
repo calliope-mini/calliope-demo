@@ -32,6 +32,7 @@
 
 extern MicroBit uBit;
 Interpreter *interpreter;
+BluetoothServiceNotify *notify;
 
 /*!
   * Callback when a BLE connection is established.
@@ -329,7 +330,7 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
 	        interpreter = new Interpreter;
 	        LOG("new interpreter\r\n");
         }
-	    new BluetoothServiceNotify(*uBit.ble, *interpreter);
+	    notify = new BluetoothServiceNotify(*uBit.ble, *interpreter);
         tempStatus |= CALLIOPE_SERVICE_FLAG_NOTIFY;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
 		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,

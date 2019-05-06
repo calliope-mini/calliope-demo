@@ -8,7 +8,6 @@ extern MicroBit uBit;
 
 extern Interpreter *interpreter;
 extern CalliopeServiceMaster *masterService;
-BluetoothServiceNotify *notify;
 
 static uint16_t find_stop(InterpreterMethod method)
 {
