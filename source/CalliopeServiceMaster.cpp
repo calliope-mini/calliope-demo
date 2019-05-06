@@ -20,7 +20,6 @@
 #include "Images.h"
 #include "BluetoothServiceNotify.h"
 #include "BluetoothServiceProgram.h"
-#include "CalliopeServiceInterpreter.h"
 #include "CalliopeServiceSpeaker.h"
 #include "CalliopeServiceLightSensor.h"
 #include "CalliopeServiceMicrophone.h"
@@ -296,19 +295,6 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
 		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
 		        MicroBitEventServiceUUID,
 		        16);LOG("new MicroBitEventService\r\n");
-    }
-    // CALLIOPE_SERVICE_FLAG_INTERPRETER   (uint32_t)0x10000000
-    // Interpreter Program Service
-    if (requestedStatus & CALLIOPE_SERVICE_FLAG_INTERPRETER) {
-        if (interpreter == NULL) {
-	        interpreter = new Interpreter;LOG("new interpreter\r\n");
-        }
-        new CalliopeServiceInterpreter(*uBit.ble, *interpreter);
-        tempStatus |= CALLIOPE_SERVICE_FLAG_INTERPRETER;    //>! set the corresponding flag
-        ble.accumulateAdvertisingPayload(
-		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
-		        CalliopeServiceInterpreterUUID,
-		        16);LOG("new CalliopeServiceInterpreter\r\n");
     }
 	// CALLIOPE_SERVICE_FLAG_PROGRAM   (uint32_t)0x20000000
     // Interpreter Program Service

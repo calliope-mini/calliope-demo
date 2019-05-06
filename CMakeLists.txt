@@ -181,7 +181,6 @@ add_executable(calliope-demo
         source/PlaygroundFree.cpp
         source/CalliopeServiceMaster.cpp
         source/CalliopeServiceSpeaker.cpp
-        source/CalliopeServiceInterpreter.cpp
         source/CalliopeServiceTouchpin.cpp
         source/CalliopeServiceGesture.cpp source/CalliopeServiceGesture.h)
 #else()
