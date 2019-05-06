@@ -80,7 +80,7 @@ static void showNameHistogram(MicroBitDisplay &display)
 static inline void waitForever()
 {
 	while (true) {
-		uBit.sleep(1000);
+		uBit.sleep(200);
 		uint32_t buffer;
 		if (masterService->getStatus(&buffer)) {
 			uBit.serial.printf("status changed:%08x\r\n", buffer);
@@ -91,7 +91,8 @@ static inline void waitForever()
 				//uBit.sleep(500);
 				uBit.reset();
 			}
-		} elseLOG("status ok\r\n");
+		} else
+			LOG("status ok\r\n");
 	}
 }
 

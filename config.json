@@ -33,7 +33,7 @@
     "display_scroll_stride": -1,
     "display_print_speed": 400,
     "panic_on_heap_full": 0,
-    "stack_size": 1432,
+    "stack_size": 1332,
     "sram_base": "0x20000008",
     "sram_end": "0x20004000",
     "sd_limit": "0x20002000"

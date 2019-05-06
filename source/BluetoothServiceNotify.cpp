@@ -29,15 +29,15 @@ const uint8_t  BluetoothServiceNotifyUUID[] = {
 };
 
 
-BluetoothServiceNotify::BluetoothServiceNotify(Interpreter &_interpreter) :
-    interpreter(_interpreter),
-    ble(*uBit.ble),
-    characteristicsBuffer(),
+BluetoothServiceNotify::BluetoothServiceNotify(BLEDevice &_ble, Interpreter &_interpreter) :
+		interpreter(_interpreter),
+		ble(_ble),
+		characteristicsBuffer(),
     characteristic(
-        BluetoothServiceNotifyUUID,
-        (uint8_t *)&characteristicsBuffer, 0, sizeof(characteristicsBuffer),
-        GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ /* |
-        GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_NOTIFY*/
+		    BluetoothServiceNotifyUUID,
+		    (uint8_t *)&characteristicsBuffer, 0, sizeof(characteristicsBuffer),
+		    GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_READ |
+		    GattCharacteristic::BLE_GATT_CHAR_PROPERTIES_NOTIFY
     )
 {
     characteristic.requireSecurity(SecurityManager::MICROBIT_BLE_SECURITY_LEVEL);
@@ -69,7 +69,7 @@ void BluetoothServiceNotify::send(uint16_t address, uint16_t value)
         characteristicsBuffer[2] = HI16(value);
         characteristicsBuffer[3] = LO16(value);
 
-        ble.gattServer().write(
+	    ble.gattServer().notify(
             characteristicsHandle,
             (uint8_t *)characteristicsBuffer, sizeof(characteristicsBuffer));
     }

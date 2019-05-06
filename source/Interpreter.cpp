@@ -7,6 +7,7 @@
 extern MicroBit uBit;
 
 extern Interpreter *interpreter;
+extern CalliopeServiceMaster *masterService;
 BluetoothServiceNotify *notify;
 
 static uint16_t find_stop(InterpreterMethod method)
@@ -374,16 +375,33 @@ static bool nothingToRun()
     return true;
 }
 
+static void interpreterCheckMaster(int i) {
+	LOG("\r\ninterpreter checking master %d\r\n\r\n", i);
+	uint32_t buffer;
+	masterService->getStatus(&buffer);
+	if (!(buffer & (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM))) {
+		buffer |= CALLIOPE_SERVICE_FLAG_RESET;
+		LOG("status changed:%08x\r\n", buffer);
+		uBit.storage.put("MasterStatus", (uint8_t *) &buffer, 4);
+		LOG("storing ok\r\n");
+		uBit.reset();
+	}
+}
+
 static void interpreter_fiber()
 {
     LOG("interpreter\n\r");
 
-    while(nothingToRun()) {
-        uBit.sleep(100);
-    }
+	while (nothingToRun()) {
+		uBit.sleep(100);  // hier ist das problem
+		if (interpreter->status == INTERPRETER_MASTER_RX) {
+			interpreterCheckMaster(1);
+		}
+	}
 
-    while(true) {
+	while (true) {
         interpreter_reset_hardware();
+
 
         LOG("start\n\r");
 
@@ -394,9 +412,17 @@ static void interpreter_fiber()
         while(interpreter->status == INTERPRETER_OK) {
             interpreter_run_method(METHOD_FOREVER);
             uBit.sleep(10);
+	        if (interpreter->status == INTERPRETER_MASTER_RX) {
+		        interpreterCheckMaster(2);
+	        }
         }
 
-        LOG("rx\n\r");
+		if (interpreter->status == INTERPRETER_MASTER_RX) {
+			interpreterCheckMaster(3);
+		}
+
+
+		LOG("rx\n\r");
 
         while(interpreter->status != INTERPRETER_RD) {
             uBit.sleep(10);

@@ -118,11 +118,13 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
     uint32_t tempStatus = 0;
     // check the stored status information
     KeyValuePair *status;
-	status = uBit.storage.get("MasterStatus");LOG("status = 0x%08x, %s\r\n", *(uint32_t *) status->value, status->key);
+	status = uBit.storage.get("MasterStatus");
+	LOG("status = 0x%08x, %s\r\n", *(uint32_t *) status->value, status->key);
     if (status != NULL){
         tempStatus = updateServices(*(uint32_t*)status->value);
 	    memcpy(&serviceStatus, status->value, 4);
-	    free(status);LOG("tempStatus: 0x%08x\r\n", tempStatus);
+	    free(status);
+	    LOG("tempStatus: 0x%08x\r\n", tempStatus);
     }
 
     ble.setAdvertisingType(GapAdvertisingParams::ADV_CONNECTABLE_UNDIRECTED);
@@ -130,16 +132,19 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
     ble.setAdvertisingTimeout(0);
     ble.startAdvertising();
 
-	if (tempStatus == (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM)) { LOG("starting interpreter\r\n");
+	if (tempStatus == (CALLIOPE_SERVICE_FLAG_NOTIFY | CALLIOPE_SERVICE_FLAG_PROGRAM)) {
+		LOG("starting interpreter\r\n");
 	    interpreter_run();
-    }
+	} else {
+		LOG("NO INTERPRETER\r\n");
+	}
 }
 
 
 void CalliopeServiceMaster::send(const uint8_t *reply) {
     if (ble.getGapState().connected) {
 
-	    LOG("send: 0x%08x\r\n", reply);
+	    LOG("send: 0x%08x\r\n", *(uint32_t *) reply);
 
         ble.gattServer().write(
                 characteristicsHandle,
@@ -321,14 +326,16 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
     // Interpreter Notify Service
     if (requestedStatus & CALLIOPE_SERVICE_FLAG_NOTIFY){
         if(interpreter == NULL){
-	        interpreter = new Interpreter;LOG("new interpreter\r\n");
+	        interpreter = new Interpreter;
+	        LOG("new interpreter\r\n");
         }
-        new BluetoothServiceNotify(*interpreter);
+	    new BluetoothServiceNotify(*uBit.ble, *interpreter);
         tempStatus |= CALLIOPE_SERVICE_FLAG_NOTIFY;    //>! set the corresponding flag
         ble.accumulateAdvertisingPayload(
 		        GapAdvertisingData::COMPLETE_LIST_128BIT_SERVICE_IDS,
 		        BluetoothServiceNotifyUUID,
-		        16);LOG("new notifyService\r\n");
+		        16);
+	    LOG("new notifyService\r\n");
     }
 	// CALLIOPE_SERVICE_FLAG_RESET    (uint32_t)0x80000000
 	// Software reset
@@ -342,18 +349,25 @@ uint32_t CalliopeServiceMaster::updateServices(const uint32_t requestedStatus){
 
 
 void CalliopeServiceMaster::setStatus(const uint32_t *status) {
-	memcpy(&serviceStatus, status, 4);
-    statusChanged = 1;
+	memcpy(&serviceStatus, status, sizeof(uint32_t));
+	statusChanged = 1;
+	LOG("setStatus: %08x / %d\r\n", serviceStatus, statusChanged);
+	if (interpreter != NULL) {
+		interpreter->status = INTERPRETER_MASTER_RX;
+		//	interpreter_reset();
+	}
 }
 
 
 uint8_t CalliopeServiceMaster::getStatus(uint32_t *status) {
-	memcpy(status, &serviceStatus, 4);
-    if(statusChanged) {
-        statusChanged = 0;
-        return 1;
+	memcpy(status, &serviceStatus, sizeof(uint32_t));
+	if (statusChanged > 0) {
+		LOG("getStatus changed: %08x / %d\r\n", serviceStatus, statusChanged);
+		statusChanged = 0;
+		return 1;
     }
-    return 0;
+	LOG("getStatus unchanged: %08x / %d\r\n", serviceStatus, statusChanged);
+	return 0;
 }
 
 

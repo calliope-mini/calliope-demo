@@ -30,9 +30,9 @@ public:
 	/*!
 	 * Constructor.
 	 * Create a representation of BluetoothServiceNotify
-	 * @param interpreter Reference to an Interpreter instance
+	 * @param _interpreter Reference to an Interpreter instance
 	 */
-	BluetoothServiceNotify(Interpreter &interpreter);
+	BluetoothServiceNotify(BLEDevice &_ble, Interpreter &_interpreter);
 
 	/*!
 	 * Callback. Invoked when any of our attributes are read via BLE.

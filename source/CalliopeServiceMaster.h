@@ -68,7 +68,7 @@
 #define CALLIOPE_SERVICE_FLAG_RESET         (uint32_t)0x80000000
 
 // LOG output on serial console
-//#define DEBUG_MASTER
+#define DEBUG_MASTER
 #ifdef DEBUG_MASTER
 #define LOG(format, ...) uBit.serial.printf(format, ##__VA_ARGS__)
 #else
