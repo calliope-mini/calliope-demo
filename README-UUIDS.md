@@ -1,5 +1,7 @@
 # Bluetooth Services with UUIDs
 
+//TODO update this file
+
 [BluetoothServiceNotify](source/BluetoothServiceNotify.cpp)
 
 BluetoothServiceNotifyUUID = 

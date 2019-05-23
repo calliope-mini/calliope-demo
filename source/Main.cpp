@@ -21,7 +21,7 @@
  * @author Stephan Noller <stephan@calliope.cc>
  * @author Franka Futterlieb <franka@urbn.de>
  * @author Niranjan Rao
- * @author Waldemar Gruenwald <waldemar.gruenwald@ubirch.com>
+ * @author Waldemar Gruenwald <https://github.com/gruenwaldi>
  */
 
 #include <BMX055Accelerometer.h>
@@ -39,38 +39,13 @@
 #include "nrf.h"
 #include "PlaygroundFree.h"
 #include "CalliopeServiceMaster.h"
+#include "Utils.h"
 
 MicroBit uBit;
 
 CalliopeServiceMaster *masterService;
 
-/*!
- * Show the Histogram, which represents the ID of the device
- * @param display The instance of the LED matrix display
- */
-static void showNameHistogram(MicroBitDisplay &display)
-{
-	NRF_FICR_Type *ficr = NRF_FICR;
-	uint32_t n = ficr->DEVICEID[1];
-	uint32_t ld = 1;
-	uint32_t d = MICROBIT_DFU_HISTOGRAM_HEIGHT;
-	uint32_t h;
 
-	display.clear();
-	for (uint32_t i = 0; i < MICROBIT_DFU_HISTOGRAM_WIDTH; i++) {
-		h = (n % d) / ld;
-
-		n -= h;
-		d *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
-		ld *= MICROBIT_DFU_HISTOGRAM_HEIGHT;
-
-		for (uint32_t j = 0; j < h + 1; j++)
-			display.image.setPixelValue(
-					static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_WIDTH - i - 1),
-					static_cast<int16_t>(MICROBIT_DFU_HISTOGRAM_HEIGHT - j - 1),
-					255);
-	}
-}
 
 /*!
  * This is the idle loop of the Calliope device.

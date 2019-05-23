@@ -27,6 +27,7 @@
 #include "CalliopeServiceTouchpin.h"
 #include "CalliopeServiceGesture.h"
 #include "CalliopeServiceMaster.h"
+#include "Utils.h"
 
 
 extern MicroBit uBit;
@@ -47,7 +48,7 @@ static void bleConnectionCallback(const Gap::ConnectionCallbackParams_t *) {
   */
 static void bleDisconnectionCallback(const Gap::DisconnectionCallbackParams_t *) {
 	LOG("DISCONNECTED\r\n");
-    uBit.display.print(*images(ImageScissors));
+	showNameHistogram(uBit.display);
 }
 
 
@@ -94,7 +95,7 @@ CalliopeServiceMaster::CalliopeServiceMaster(BLEDevice &_ble) :
 
     // TODO make this configuration dependent
 #ifdef TARGET_NRF51_CALLIOPE
-    ManagedString namePrefix("BBC micro:bit [");//"Calliope mini [");
+	ManagedString namePrefix("Calliope mini [");
 #else
     ManagedString namePrefix("BBC micro:bit [");
 #endif
