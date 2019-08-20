@@ -1,8 +1,25 @@
+/*!
+ * @file BluetoothServiceProgram.h
+ *
+ * Programming Service, neccessary for the Playground Application
+ *
+ * @copyright (c) Calliope gGmbH.
+ *
+ * Licensed under the Apache Software License 2.0 (ASL 2.0)
+ * Portions (c) Copyright British Broadcasting Corporation under MIT License.
+ *
+ * @author Torsten Curdt <https://github.com/tcurdt>
+ * @author Waldemar Gruenwald <https://github.com/gruenwaldi>
+ */
+
 #ifndef BLUETOOTH_SERVICE_PROGRAM_H
 #define BLUETOOTH_SERVICE_PROGRAM_H
 
 #include "ble/BLE.h"
 #include "Interpreter.h"
+
+extern const uint8_t BluetoothServiceProgramUUID[];
+
 
 /*!
  * @class BluetoothServiceProgram
@@ -34,17 +51,8 @@ private:
     BLEDevice &ble;
 
     GattAttribute::Handle_t characteristicsHandle;
-    GattCharacteristic characteristic;
     uint8_t characteristicsBuffer[CHARACTERISTICS_BUFFER_LEN];
-};
-
-
-const uint8_t BluetoothServiceProgramUUID[] = {
-        0xff, 0x66, 0xdd, 0xee,
-        0x25, 0x1d,
-        0x47, 0x0a,
-        0xa0, 0x62,
-        0xfa, 0x19, 0x22, 0xdf, 0xa9, 0xa8
+    GattCharacteristic characteristic;
 };
 
 #endif // BLUETOOTH_SERVICE_PROGRAM_H

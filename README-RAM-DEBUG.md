@@ -37,7 +37,7 @@ is executed before the main, so the stack pointer will not be touched.
 
 Insert the following code into this file, which will take care of the rest.
 
-```[bash]
+``` c
 #include "compiler_abstraction.h"
 
 // Value is sprayed into all of the ISR stack at boot time.

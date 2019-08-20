@@ -175,7 +175,14 @@ add_executable(calliope-demo
         source/Slice.h
         source/Storage.h
         source/Utils.cpp
-)
+        source/CalliopeServiceRGB.cpp
+        source/CalliopeServiceLightSensor.cpp
+        source/CalliopeServiceMicrophone.cpp
+        source/PlaygroundFree.cpp
+        source/CalliopeServiceMaster.cpp
+        source/CalliopeServiceSpeaker.cpp
+        source/CalliopeServiceTouchpin.cpp
+        source/CalliopeServiceGesture.cpp source/CalliopeServiceGesture.h)
 #else()
 #   add_executable(calliope-demo
 #          source/CalliopeTestBoard.cpp
